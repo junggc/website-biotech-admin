@@ -50,7 +50,7 @@ public class UserLoginExpiredStrategy implements SessionInformationExpiredStrate
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/login");
 
                 request.setAttribute("isLocked", true);
-                request.setAttribute("isLockedMsg", "중복 로그인으로 로그아웃 처리되었습니다.\\n재 로그인 후 이용해주세요.");
+                request.setAttribute("isLockedMsg", "중복 로그인으로 로그아웃 처리되었습니다.\\n다시 로그인 후 이용해주세요.");
 
                 requestDispatcher.forward(request, response);
             }

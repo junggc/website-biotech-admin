@@ -72,6 +72,7 @@ log.debug("###################findMember.getBlocked()="+findMember.getBlocked())
 
 
         }else if(exception instanceof LockedException){ // LoginSuccessHandler에서 LockedException발생시 넘어 온 경우
+            log.debug("############"+"사용자 못찾음2222222221111111111");
             request.setAttribute("isLocked", true);
             request.setAttribute("isLockedMsg", exception.getMessage());
         }else if(exception instanceof UsernameNotFoundException){
@@ -83,6 +84,8 @@ log.debug("###################findMember.getBlocked()="+findMember.getBlocked())
                 System.out.println("사용자 못찾음2222");
                 log.debug("############"+"사용자 못찾음222222222");
             }
+        }else{
+            log.debug("############"+"사용자 못찾음2222222221111111111elseselse");
         }
 
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/login");

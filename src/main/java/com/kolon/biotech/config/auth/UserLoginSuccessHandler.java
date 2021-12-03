@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 @Slf4j
 @Component
@@ -41,9 +43,17 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
         String currentUser = userDetails.getUsername();
 
         Member findAccount = memberRepository.findByLoginId(currentUser).get();
+        //90일 경과
+        //log.debug("#####??DDD?D?D?D?D?"+ChronoUnit.DAYS.between(LocalDateTime.now(),LocalDateTime.now()));
+        LocalDateTime pwdDate = findAccount.getPasswordChangeDate() != null ? findAccount.getPasswordChangeDate() : findAccount.getRegDtime();
+        if(ChronoUnit.DAYS.between(pwdDate,LocalDateTime.now()) >= 90){
+            findAccount.setBlocked("true");
+            throw new LockedException("비밀번호 변경 90일이 경과하여 계정이 잠겼습니다.\\n마스터관리자에 문의바랍니다.");
+        }
+
         if(findAccount.getFailCount() >= 5){
             // 아래 예외로 인해 로그인 실패가 발생하고, 로그인 실패 핸들러 호출됨
-            throw new LockedException("계정이 잠겼습니다. 비밀번호 찾기 후 로그인 해 주세요");
+            throw new LockedException("계정이 잠겼습니다.\\n마스터관리자에 문의바랍니다.");
         }else{
             findAccount.setFailCount(0);
             findAccount.setLoginDate(LocalDateTime.now());
