@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+	<!-- Custom CSS -->
+	<link
+			href="/assets/libs/select2/dist/css/select2.min.css"
+			rel="stylesheet"
+			th:href="@{/assets/libs/select2/dist/css/select2.min.css}"
+			type="text/css"
+	/>
+	<link
+			href="/assets/libs/jquery-minicolors/jquery.minicolors.css"
+			rel="stylesheet"
+			th:href="@{/assets/libs/jquery-minicolors/jquery.minicolors.css}"
+			type="text/css"
+	/>
+	<link
+			href="/assets/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css"
+			rel="stylesheet"
+			th:href="@{/assets/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css}"
+			type="text/css"
+	/>
+	<link
+			href="/assets/libs/quill/dist/quill.snow.css"
+			rel="stylesheet"
+			th:href="@{/assets/libs/quill/dist/quill.snow.css}"
+			type="text/css"
+	/>
+	<!-- This Page JS -->
+	<script href="/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"
+	        th:src="@{/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
+	<script href="/dist/js/pages/mask/mask.init.js" th:src="@{/dist/js/pages/mask/mask.init.js}"></script>
+	<script href="/assets/libs/select2/dist/js/select2.full.min.js"
+	        th:src="@{/assets/libs/select2/dist/js/select2.full.min.js}"></script>
+	<script href="/assets/libs/select2/dist/js/select2.min.js"
+	        th:src="@{/assets/libs/select2/dist/js/select2.min.js}"></script>
+	<script href="/assets/libs/jquery-asColor/dist/jquery-asColor.min.js"
+	        th:src="@{/assets/libs/jquery-asColor/dist/jquery-asColor.min.js}"></script>
+	<script href="/assets/libs/jquery-asGradient/dist/jquery-asGradient.js"
+	        th:src="@{/assets/libs/jquery-asGradient/dist/jquery-asGradient.js}"></script>
+	<script href="/assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js"
+	        th:src="@{/assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js}"></script>
+	<script href="/assets/libs/jquery-minicolors/jquery.minicolors.min.js"
+	        th:src="@{/assets/libs/jquery-minicolors/jquery.minicolors.min.js}"></script>
+	<script href="/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"
+	        th:src="@{/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js}"></script>
+	<script href="/assets/libs/quill/dist/quill.min.js" th:src="@{/assets/libs/quill/dist/quill.min.js}"></script>
+
+	<script href="/assets/libs/jquery-validation/dist/jquery.validate.min.js"
+	        th:src="@{/assets/libs/jquery-validation/dist/jquery.validate.min.js}"></script>
+	<script href="/assets/libs/jquery-validation/dist/additional-methods.js"
+	        th:src="@{/assets/libs/jquery-validation/dist/additional-methods.js}"></script>
+
+	<script href="/dext5editor/js/dext5editor.js"
+			th:src="@{/dext5editor/js/dext5editor.js}"></script>
+	<script>
+    $(function () {
+          $("#datepicker-autoclose1").datepicker({
+            format:'yyyy-mm-dd',
+			language: 'kr',
+            autoclose: true,
+            todayHighlight: true,
+          });
+
+			$("#datepicker-autoclose2").datepicker({
+				format:'yyyy-mm-dd',
+				language: 'kr',
+				autoclose: true,
+				todayHighlight: true,
+			});
+
+          $(".select2").select2();
+
+          $("#input_file").on("change", fileCheck);
+
+		//좌측 메뉴 활성화
+		$(".sidebar-link").each(function(){
+			if($(this).attr("href").indexOf("mainpopList") > 0){
+				$(this).addClass("active");
+				$(this).closest('li').addClass("active");
+				$(this).closest('li').closest('ul').addClass("in");
+				$(this).closest('li').closest('ul').prev().addClass("active");
+				$(this).closest('li').closest('ul').closest('li').addClass('selected');
+				return false;
+			}
+		});
+    });
+
+
+
+
+    // 파일 현재 필드 숫자 totalCount랑 비교값
+    var fileCount = 0;
+    // 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
+    var totalCount = 1;
+    // 파일 고유넘버
+    var fileNum = 0;
+    // 첨부파일 배열
+    var content_files = [];
+    var delete_files = [];
+
+    function fileCheck(e) {
+        var files = e.target.files;
+
+        // 파일 배열 담기
+        var filesArr = Array.prototype.slice.call(files);
+
+        // 파일 개수 확인 및 제한
+        if (fileCount + filesArr.length > totalCount) {
+          $.alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
+          return;
+        } else {
+             fileCount = fileCount + filesArr.length;
+        }
+
+        // 각각의 파일 배열담기 및 기타
+        filesArr.forEach(function (f) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+			content_files = [];
+            content_files.push(f);
+            $('#articlefileChange').append(
+                '<div id="file' + fileNum + '" onclick="fileDelete(\'file' + fileNum + '\')">'
+                + '<img src="' + e.target.result + '" alt="">'
+                + '<i class="me-2 mdi mdi-minus"></i>'
+                + '<div/>'
+            );
+            fileNum ++;
+          };
+          reader.readAsDataURL(f);
+        });
+
+        //초기화 한다.
+        $("#input_file").val("");
+      }
+
+    // 파일 부분 삭제 함수
+    function fileDelete(fileNum){
+        var no = fileNum.replace(/[^0-9]/g, "");
+		content_files = [];
+        $('#' + fileNum).remove();
+        fileCount --;
+    }
+
+	function removeContent(fildId){
+		console.log('fild',fildId);
+		delete_files.push(fildId);
+		$("#dbfile1").remove();
+	}
+
+    /*
+     * 폼 submit 로직
+     */
+        function registerAction(){
+
+        var form = $("#is_form")[0];
+        var formData = new FormData(form);
+
+            for (var x = 0; x < content_files.length; x++) {
+                // 삭제 안한것만 담아 준다.
+                if(!content_files[x].is_delete){
+                     formData.append("file", content_files[x]);
+                }
+            }
+
+			for(var y = 0; y<delete_files.length; y++){
+				formData.append("deletefilenum", delete_files[y]);
+			}
+
+
+       /*
+       * 파일업로드 multiple ajax처리
+       */
+        $.ajax({
+              type: "POST",
+              url: "/mainpopEditProcess",
+              data : formData,
+			  cache:false,
+              processData: false,
+              contentType: false,
+              success: function (data) {
+				console.log('data',data);
+				alert("파일업로드 성공");
+              },
+              error: function (xhr, status, error) {
+                alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
+             return false;
+              }
+            });
+            return false;
+        }
+
+	</script>
+</head>
+
+<div class="page-wrapper" layout:fragment="content">
+	<div class="page-breadcrumb">
+		<div class="row">
+			<div class="col-12 d-flex no-block align-items-center">
+				<h4 class="page-title">메인팝업 관리</h4>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<form class="form-horizontal" id="is_form" method="post" enctype="multipart/form-data"
+					      name="is_form"
+					      th:object="${mainpop}">
+						<input type="hidden" name="id" th:value="*{id}"/>
+						<div class="card-body">
+							<h4 class="card-title">메인팝업 등록</h4>
+							<div class="form-group row">
+								<label class="col-md-1">전시여부</label>
+								<div class="col-md-3">
+									<div class="form-check">
+										<input class="form-check-input" id="dispYn1" name="dispYn" required=""
+										       th:checked="dispYn == 'Y'"
+										       th:field="*{dispYn}"
+										       type="radio" value="Y">
+										<label class="form-check-label mb-0" for="dispYn1">전시</label>
+									</div>
+									<div class="form-check">
+										<input class="form-check-input" id="dispYn2" name="dispYn" required=""
+										       th:checked="dispYn == 'N'"
+										       th:field="*{dispYn}"
+										       type="radio" value="N">
+										<label class="form-check-label mb-0" for="dispYn2">미전시</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-1">언어구분</label>
+								<div class="col-md-9">
+									<div class="form-check">
+										<input class="form-check-input" id="langKoYn1" name="langKoYn" required=""
+											   th:checked="langKoYn == 'Y'"
+											   th:field="*{langKoYn}"
+											   type="radio" value="Y">
+										<label class="form-check-label mb-0" for="langKoYn1">국문</label>
+									</div>
+									<div class="form-check">
+										<input class="form-check-input" id="langKoYn2" name="langKoYn" required=""
+											   th:checked="langKoYn == 'N'"
+											   th:field="*{langKoYn}"
+											   type="radio" value="N">
+										<label class="form-check-label mb-0" for="langKoYn2">영문</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label
+										class="col-md-1"
+										for="title"
+								>제목</label
+								>
+								<div class="col-sm-9">
+									<input
+											class="form-control"
+											id="title"
+											name="title"
+											placeholder="제목을 입력하세요."
+											th:field="*{title}"
+											type="text"
+									/>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-1">팝업이미지</label>
+								<div class="col-md-9">
+									<div class="custom-file">
+										<input class="custom-file-input" id="input_file"
+											   required="" type="file">
+										<br/>
+										<div id="articlefileChange">
+											<th:block th:if="*{not #strings.isEmpty(popImgPath)}">
+												<div th:id="'dbfile1'" th:onclick="'removeContent(' + *{popImgRealPath} + ');'">
+													<img th:src="*{popImgPath}"/>
+													<i class="me-2 mdi mdi-minus"></i>
+												</div>
+											</th:block>
+											<label class="custom-file-label" for="input_file">2MB 이하의 jpg, png만 업로드 가능</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label
+										class="col-md-1"
+										for="widthPoint"
+								>가로 위치</label
+								>
+								<div class="col-sm-9">
+									<input
+											class="form-control"
+											id="widthPoint"
+											name="widthPoint"
+											placeholder=""
+											th:field="*{widthPoint}"
+											type="text"
+									/>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label
+										class="col-md-1"
+										for="heightPoint"
+								>세로 위치</label
+								>
+								<div class="col-sm-9">
+									<input
+											class="form-control"
+											id="heightPoint"
+											name="heightPoint"
+											placeholder=""
+											th:field="*{heightPoint}"
+											type="text"
+									/>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label
+										class="col-md-1"
+										for="popImgLink"
+								>팝업 연결링크</label
+								>
+								<div class="col-sm-9">
+									<input
+											class="form-control"
+											id="popImgLink"
+											name="popImgLink"
+											placeholder=""
+											th:field="*{popImgLink}"
+											type="text"
+									/>
+									<div class="form-check">
+										<input class="form-check-input" id="popImgLinkTarget1" name="popImgLinkTarget" required=""
+											   th:checked="popImgLinkTarget == '_blank'"
+											   th:field="*{popImgLinkTarget}"
+											   type="radio" value="_blank">
+										<label class="form-check-label mb-0" for="popImgLinkTarget1">새창</label>
+									</div>
+									<div class="form-check">
+										<input class="form-check-input" id="popImgLinkTarget2" name="popImgLinkTarget" required=""
+											   th:checked="popImgLinkTarget == '_self'"
+											   th:field="*{popImgLinkTarget}"
+											   type="radio" value="_self">
+										<label class="form-check-label mb-0" for="popImgLinkTarget2">현재창</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-1">전시시작일시</label>
+								<div class="col-md-3">
+									<div class="input-group">
+										<input class="form-control" id="datepicker-autoclose1" name="dispStartDay"
+											   placeholder="yyyy-mm-dd"
+											   type="text"
+											   th:value="*{dispStartDay}"
+											   readOnly="true">
+										<div class="input-group-append">
+											<span class="input-group-text h-100"><i class="mdi mdi-calendar"></i></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<select aria-hidden="true"
+											class="select2 form-select shadow-none select2-hidden-accessible"
+											data-select2-id="1" id="dispStartTime" name="dispStartTime"
+											style="width: 100%; height: 36px" tabindex="-1">
+										<option th:selected="*{dispStartTime} == '00'" value="00">00시</option>
+										<option th:selected="*{dispStartTime} == '01'" value="01">01시</option>
+										<option th:selected="*{dispStartTime} == '02'" value="02">02시</option>
+										<option th:selected="*{dispStartTime} == '03'" value="03">03시</option>
+										<option th:selected="*{dispStartTime} == '04'" value="04">04시</option>
+										<option th:selected="*{dispStartTime} == '05'" value="05">05시</option>
+										<option th:selected="*{dispStartTime} == '06'" value="06">06시</option>
+										<option th:selected="*{dispStartTime} == '07'" value="07">07시</option>
+										<option th:selected="*{dispStartTime} == '08'" value="08">08시</option>
+										<option th:selected="*{dispStartTime} == '09'" value="09">09시</option>
+										<option th:selected="*{dispStartTime} == '10'" value="10">10시</option>
+										<option th:selected="*{dispStartTime} == '11'" value="11">11시</option>
+										<option th:selected="*{dispStartTime} == '12'" value="12">12시</option>
+										<option th:selected="*{dispStartTime} == '13'" value="13">13시</option>
+										<option th:selected="*{dispStartTime} == '14'" value="14">14시</option>
+										<option th:selected="*{dispStartTime} == '15'" value="15">15시</option>
+										<option th:selected="*{dispStartTime} == '16'" value="16">16시</option>
+										<option th:selected="*{dispStartTime} == '17'" value="17">17시</option>
+										<option th:selected="*{dispStartTime} == '18'" value="18">18시</option>
+										<option th:selected="*{dispStartTime} == '19'" value="19">19시</option>
+										<option th:selected="*{dispStartTime} == '20'" value="20">20시</option>
+										<option th:selected="*{dispStartTime} == '21'" value="21">21시</option>
+										<option th:selected="*{dispStartTime} == '22'" value="22">22시</option>
+										<option th:selected="*{dispStartTime} == '23'" value="23">23시</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-md-1">전시종료일시</label>
+								<div class="col-md-3">
+									<div class="input-group">
+										<input class="form-control" id="datepicker-autoclose2" name="dispEndDay"
+											   placeholder="yyyy-mm-dd"
+											   type="text"
+											   th:value="*{dispEndDay}"
+											   readOnly="true">
+										<div class="input-group-append">
+											<span class="input-group-text h-100"><i class="mdi mdi-calendar"></i></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<select aria-hidden="true"
+											class="select2 form-select shadow-none select2-hidden-accessible"
+											data-select2-id="1" id="dispEndTime" name="dispEndTime"
+											style="width: 100%; height: 36px" tabindex="-1">
+										<option th:selected="*{dispEndTime} == '00'" value="00">00시</option>
+										<option th:selected="*{dispEndTime} == '01'" value="01">01시</option>
+										<option th:selected="*{dispEndTime} == '02'" value="02">02시</option>
+										<option th:selected="*{dispEndTime} == '03'" value="03">03시</option>
+										<option th:selected="*{dispEndTime} == '04'" value="04">04시</option>
+										<option th:selected="*{dispEndTime} == '05'" value="05">05시</option>
+										<option th:selected="*{dispEndTime} == '06'" value="06">06시</option>
+										<option th:selected="*{dispEndTime} == '07'" value="07">07시</option>
+										<option th:selected="*{dispEndTime} == '08'" value="08">08시</option>
+										<option th:selected="*{dispEndTime} == '09'" value="09">09시</option>
+										<option th:selected="*{dispEndTime} == '10'" value="10">10시</option>
+										<option th:selected="*{dispEndTime} == '11'" value="11">11시</option>
+										<option th:selected="*{dispEndTime} == '12'" value="12">12시</option>
+										<option th:selected="*{dispEndTime} == '13'" value="13">13시</option>
+										<option th:selected="*{dispEndTime} == '14'" value="14">14시</option>
+										<option th:selected="*{dispEndTime} == '15'" value="15">15시</option>
+										<option th:selected="*{dispEndTime} == '16'" value="16">16시</option>
+										<option th:selected="*{dispEndTime} == '17'" value="17">17시</option>
+										<option th:selected="*{dispEndTime} == '18'" value="18">18시</option>
+										<option th:selected="*{dispEndTime} == '19'" value="19">19시</option>
+										<option th:selected="*{dispEndTime} == '20'" value="20">20시</option>
+										<option th:selected="*{dispEndTime} == '21'" value="21">21시</option>
+										<option th:selected="*{dispEndTime} == '22'" value="22">22시</option>
+										<option th:selected="*{dispEndTime} == '23'" value="23">23시</option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="border-top" style="text-align:center;">
+							<div class="card-body">
+								<button class="btn btn-success text-white" onclick="registerAction();"
+								        type="button">
+									등록
+								</button>
+								<button class="btn btn-danger text-white" type="button">
+									취소
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+</html>

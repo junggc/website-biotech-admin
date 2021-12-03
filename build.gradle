@@ -1,0 +1,91 @@
+plugins { // (1)
+    id 'org.springframework.boot' version '2.4.5'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+    id 'war'
+}
+
+group 'com.kolon.biotech'
+version '1.0.0-SNAPSHOT-'+new Date().format("yyyyMMddHHmmss")
+sourceCompatibility = 1.8   
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+// for Junit 5
+test { // (2)
+    useJUnitPlatform()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
+    implementation(group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '2.4.1')
+
+    implementation('org.projectlombok:lombok')
+    annotationProcessor('org.projectlombok:lombok')
+    testImplementation('org.projectlombok:lombok')
+    testAnnotationProcessor('org.projectlombok:lombok')
+
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    implementation('com.h2database:h2')
+    implementation('org.mariadb.jdbc:mariadb-java-client')
+
+    implementation('org.springframework.session:spring-session-jdbc') // 권한 관련
+
+    implementation('org.springframework.boot:spring-boot-starter-security')
+    implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity5')
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.springframework.security:spring-security-test') // 권한 관련
+
+    implementation('org.apache.commons:commons-text:1.8')
+    implementation(group: 'commons-io', name: 'commons-io', version: '2.6')
+    implementation(group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5')
+    //implementation(group: 'org.apache.commons', name: 'commons-lang3', version: '3.11')
+
+
+
+    implementation('io.springfox:springfox-swagger2:2.9.2')
+    implementation('io.springfox:springfox-swagger-ui:2.9.2')
+
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // slf4j & logback
+    implementation('org.slf4j:jcl-over-slf4j')
+    implementation('ch.qos.logback:logback-classic')
+
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+}
+
+
+//bootwar를 사용하면 단독실행가능
+//war를 사용할때는 외부 was에서만 실행가능
+//둘다 true일순 없다.
+bootWar.enabled = false
+war.enabled = true
+
+sourceSets {
+    String activeProfile
+    if(!project.hasProperty('profile')){
+        activeProfile = 'local'
+    }else{
+        activeProfile = System.properties['profile']
+    }
+
+    println "zone: "+activeProfile
+
+    main {
+        java { srcDirs "src/main/java" }
+        resources {
+            srcDirs  "src/main/resources", "src/main/resources-$activeProfile"
+        }
+    }
+}

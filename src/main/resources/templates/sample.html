@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script>
+    const hello = "[[#{hello}]]";
+    console.log(hello);
+
+    const hello2 = "[(#{hello})]";
+    console.log(hello2);
+</script>
+<body>
+<h1 th:text="${#strings.unescapeJava(name)}"></h1>
+<h1 th:text="#{hello}"></h1>
+<h1 th:text="#{hello}"></h1>
+<hr>
+<h1 style="color: red;" th:text="${#messages.msg('hello')}"></h1>
+<h1 style="color: red;" th:text="${#messages.msgOrNull('hello')}"></h1>
+<hr>
+<h1 style="color: red;" th:text="${#messages.msg('hello2')}"></h1> <!-- 없을 경우 : ??hello2_ko?? 와 같이 나옴 -->
+<h1 style="color: red;" th:text="${#messages.msgOrNull('hello2')}"></h1> <!-- 없을 경우 : 아무것도 안찍힘 -->
+</body>
+</html>

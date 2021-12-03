@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+	<!-- Custom CSS -->
+	<link
+			href="/assets/libs/select2/dist/css/select2.min.css"
+			rel="stylesheet"
+			th:href="@{/assets/libs/select2/dist/css/select2.min.css}"
+			type="text/css"
+	/>
+	<link
+			href="/assets/libs/jquery-minicolors/jquery.minicolors.css"
+			rel="stylesheet"
+			th:href="@{/assets/libs/jquery-minicolors/jquery.minicolors.css}"
+			type="text/css"
+	/>
+	<link
+			href="/assets/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css"
+			rel="stylesheet"
+			th:href="@{/assets/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css}"
+			type="text/css"
+	/>
+	<link
+			href="/assets/libs/quill/dist/quill.snow.css"
+			rel="stylesheet"
+			th:href="@{/assets/libs/quill/dist/quill.snow.css}"
+			type="text/css"
+	/>
+	<!-- This Page JS -->
+	<script href="/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"
+	        th:src="@{/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
+	<script href="/dist/js/pages/mask/mask.init.js" th:src="@{/dist/js/pages/mask/mask.init.js}"></script>
+	<script href="/assets/libs/select2/dist/js/select2.full.min.js"
+	        th:src="@{/assets/libs/select2/dist/js/select2.full.min.js}"></script>
+	<script href="/assets/libs/select2/dist/js/select2.min.js"
+	        th:src="@{/assets/libs/select2/dist/js/select2.min.js}"></script>
+	<script href="/assets/libs/jquery-asColor/dist/jquery-asColor.min.js"
+	        th:src="@{/assets/libs/jquery-asColor/dist/jquery-asColor.min.js}"></script>
+	<script href="/assets/libs/jquery-asGradient/dist/jquery-asGradient.js"
+	        th:src="@{/assets/libs/jquery-asGradient/dist/jquery-asGradient.js}"></script>
+	<script href="/assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js"
+	        th:src="@{/assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js}"></script>
+	<script href="/assets/libs/jquery-minicolors/jquery.minicolors.min.js"
+	        th:src="@{/assets/libs/jquery-minicolors/jquery.minicolors.min.js}"></script>
+	<script href="/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"
+	        th:src="@{/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js}"></script>
+	<script href="/assets/libs/quill/dist/quill.min.js" th:src="@{/assets/libs/quill/dist/quill.min.js}"></script>
+
+	<script href="/assets/libs/jquery-validation/dist/jquery.validate.min.js"
+	        th:src="@{/assets/libs/jquery-validation/dist/jquery.validate.min.js}"></script>
+	<script href="/assets/libs/jquery-validation/dist/additional-methods.js"
+	        th:src="@{/assets/libs/jquery-validation/dist/additional-methods.js}"></script>
+
+	<script href="/dext5editor/js/dext5editor.js"
+			th:src="@{/dext5editor/js/dext5editor.js}"></script>
+	<script>
+    $(function () {
+
+		//좌측 메뉴 활성화
+		$(".sidebar-link").each(function(){
+			if($(this).attr("href").indexOf("prbinfoList") > 0){
+				$(this).addClass("active");
+				$(this).closest('li').addClass("active");
+				$(this).closest('li').closest('ul').addClass("in");
+				$(this).closest('li').closest('ul').prev().addClass("active");
+				$(this).closest('li').closest('ul').closest('li').addClass('selected');
+				return false;
+			}
+		});
+
+    });
+
+
+
+
+    /*
+     * 폼 submit 로직
+     */
+        function registerAction(){
+
+        var form = $("#is_form")[0];
+        var formData = new FormData(form);
+
+
+       /*
+       * 파일업로드 multiple ajax처리
+       */
+        $.ajax({
+              type: "POST",
+              url: "/prbinfoEditProcess",
+              data : formData,
+			  cache:false,
+              processData: false,
+              contentType: false,
+              success: function (data) {
+				console.log('data',data);
+				alert("파일업로드 성공");
+              },
+              error: function (xhr, status, error) {
+                alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
+             return false;
+              }
+            });
+            return false;
+        }
+
+	</script>
+</head>
+
+<div class="page-wrapper" layout:fragment="content">
+	<div class="page-breadcrumb">
+		<div class="row">
+			<div class="col-12 d-flex no-block align-items-center">
+				<h4 class="page-title">개인정보처리방침 관리</h4>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<form class="form-horizontal" id="is_form" method="post" enctype="multipart/form-data"
+					      name="is_form"
+					      th:object="${obj}">
+						<input type="hidden" name="id" th:value="*{id}"/>
+						<div class="card-body">
+							<h4 class="card-title">개인정보처리방침 등록</h4>
+
+							<div class="form-group row">
+								<label class="col-md-1">등록일</label>
+								<div class="col-md-3" th:if="*{not #strings.isEmpty(regDtime)}"
+									 th:text="*{#temporals.format(regDtime, 'yyyy-MM-dd')}">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label
+										class="col-md-1"
+										for="content"
+								>내용</label
+								>
+								<div class="col-sm-9">
+									<script type="text/javascript">
+										var dext5Editor = new Dext5editor("content");
+									</script>
+									<textarea th:text="*{content}" name="content" id="content" style="display:none" ></textarea>
+								</div>
+							</div>
+
+						</div>
+						<div class="border-top" style="text-align:center;">
+							<div class="card-body">
+								<button class="btn btn-success text-white" onclick="registerAction();"
+								        type="button">
+									등록
+								</button>
+								<button class="btn btn-danger text-white" type="button">
+									취소
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+</html>

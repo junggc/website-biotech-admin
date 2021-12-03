@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="author">
+    <!--    <meta name="_csrf" th:content="${_csrf.token}"/>-->
+    <!--    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
+
+
+    <link href="/dist/css/style.min.css" rel="stylesheet" th:href="@{/dist/css/style.min.css}"/>
+
+    <script href="/assets/libs/jquery/dist/jquery.min.js" th:src="@{/assets/libs/jquery/dist/jquery.min.js}"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script href="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"
+            th:src="@{/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script href="/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"
+            th:src="@{/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js}"></script>
+    <script href="/assets/extra-libs/sparkline/sparkline.js"
+            th:src="@{/assets/extra-libs/sparkline/sparkline.js}"></script>
+    <!--Wave Effects -->
+    <script href="/dist/js/waves.js" th:src="@{/dist/js/waves.js}"></script>
+    <!--Menu sidebar -->
+    <script href="/dist/js/sidebarmenu.js" th:src="@{/dist/js/sidebarmenu.js}"></script>
+    <!--Custom JavaScript -->
+    <script href="/dist/js/custom.min.js" th:src="@{/dist/js/custom.min.js}"></script>
+
+
+</head>
+
+<body>
+<!-- Page Wrapper -->
+<div
+        data-boxed-layout="full"
+        data-header-position="absolute"
+        data-layout="vertical"
+        data-navbarbg="skin5"
+        data-sidebar-position="absolute"
+        data-sidebartype="full"
+        id="main-wrapper"
+>
+
+    <!--            <div layout:fragment="header"></div>-->
+    <!--            <div th:replace="~{fragments/header::headerFragment}"></div>-->
+    <div th:replace="fragments/header::headerFragment"></div>
+
+
+    <!--        <div layout:fragment="left"></div>-->
+    <!--        <div th:replace="~{fragments/left::leftFragment}"></div>-->
+    <div th:replace="fragments/left::leftFragment"></div>
+
+    <!--            <div layout:fragment="content"></div>-->
+    <!--            <div th:replace="~{fragments/content::contentFragment}"></div>-->
+    <div layout:fragment="content"></div>
+
+    <!--            <div layout:fragment="footer"></div>-->
+    <!--            <footer th:replace="~{fragments/footer::footerFragment}"></footer>-->
+    <footer th:replace="fragments/footer::footerFragment"></footer>
+</div>
+</body>
+
+</html>
