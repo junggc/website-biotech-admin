@@ -69,8 +69,8 @@ dependencies {
 //bootwar를 사용하면 단독실행가능
 //war를 사용할때는 외부 was에서만 실행가능
 //둘다 true일순 없다.
-bootWar.enabled = false
-war.enabled = true
+bootWar.enabled = true
+war.enabled = false
 
 sourceSets {
     String activeProfile

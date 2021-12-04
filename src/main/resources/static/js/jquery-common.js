@@ -15,4 +15,26 @@
             }
         }
     });
+
+    $.validator.addMethod("filesize", function (value, element, param) {
+        return this.optional(element)||$(element).data('size') <= param;
+    });
+
+    $.validator.addMethod("extension2", function (value, element, param) {
+        return this.optional(element)||param.indexOf($(element).data('ext')) > -1;
+    });
+
+    $.validator.setDefaults({
+        onkeyup: false,
+        onclick: false,
+        onfocusout: false,
+        showErrors: function(errorMap,errorList){
+            // console.log('errorMap',errorMap);
+            // console.log('errorList',errorList);
+            if(this.numberOfInvalids()){ // 에러가 있으면
+                alert(errorList[0].message); // 경고창으로 띄움
+            }
+        }
+    });
+
 })(jQuery);

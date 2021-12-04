@@ -107,7 +107,7 @@ public class MainvisualService {
 
             Files.copy(miFile.getInputStream(), fileLocation.resolve(newFilename));
 
-            _uriPath = uriPath+"/"+path+"/"+newFilename;
+            _uriPath = uriPath+path+"/"+newFilename;
             realFilePath = filePath + "/" + newFilename;
 
             mainvisual.setPcImgName(oriFileName);
@@ -122,7 +122,7 @@ public class MainvisualService {
 
             Files.copy(siFile.getInputStream(), fileLocation.resolve(newFilename));
 
-            _uriPath = uriPath+"/"+path+"/"+newFilename;
+            _uriPath = uriPath+path+"/"+newFilename;
             realFilePath = filePath + "/" + newFilename;
 
             mainvisual.setMoImgName(oriFileName);

@@ -51,6 +51,7 @@ public class MainRestController {
             , @RequestParam(value = "mvFileDelete", required = false) String mvFileDelete
             , Model model) throws Exception{
 
+        log.debug("############>>>"+pcImg.isEmpty());
         Mainvisual _mainMainvisual = mainvisualService.setWriteStroe(
                 mainvisual
                 , pcImg

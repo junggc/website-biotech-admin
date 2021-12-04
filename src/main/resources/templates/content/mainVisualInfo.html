@@ -57,6 +57,7 @@
 	<script href="/assets/libs/jquery-validation/dist/additional-methods.js"
 	        th:src="@{/assets/libs/jquery-validation/dist/additional-methods.js}"></script>
 
+	<script href="/js/jquery-common.js" th:src="@{/js/jquery-common.js}"></script>
 	<script href="/dext5editor/js/dext5editor.js"
 			th:src="@{/dext5editor/js/dext5editor.js}"></script>
 	<script>
@@ -85,6 +86,123 @@
 				return false;
 			}
 		});
+
+		$("input[type=radio][name=type]").change(function(){
+			var cvalue = $("input[name='type']:checked").val();
+			if(cvalue == 'I'){
+				$("#pcImgFile").show();
+				$("#moImgFile").show();
+				$("#mvFileSelect").hide();
+				$("#mvFileInfo").hide();
+				$("#mvFileUrlInfo").hide();
+				$("#mvFileCheck").val('');
+				mvcontent_files = [];
+				$('#mvarticlefileChange').html('');
+				$("#videosUrl").val('');
+
+				$("input[type=radio][name=videosWay]").prop('checked', false);
+			}else if(cvalue == 'M'){
+				$("#pcImgFile").hide();
+				$("#moImgFile").hide();
+				$("#mvFileSelect").show();
+				$("#pcImgCheck").val('');
+				content_files = [];
+				$('#articlefileChange').html('');
+				$("#moImgCheck").val('');
+				mocontent_files = [];
+				$('#moarticlefileChange').html('');
+
+				//첫번째거 강제선택
+				// $("input[type=radio][name=videosWay][value=URL]").prop('checked', true);
+				// $("input[type=radio][name=videosWay]").trigger('change');
+
+			}
+		});
+
+		$("input[type=radio][name=type]").trigger('change');
+
+		$("input[type=radio][name=videosWay]").change(function(){
+			var cvalue = $("input[name='videosWay']:checked").val();
+			if(cvalue == 'URL'){
+				$("#mvFileUrlInfo").show();
+				$("#mvFileInfo").hide();
+
+				mvcontent_files = [];
+                $('#mvarticlefileChange').html('');
+
+			}else if(cvalue == 'UPLOAD'){
+				$("#mvFileUrlInfo").hide();
+				$("#mvFileInfo").show();
+
+				$("#videosUrl").val('');
+			}
+		});
+
+		$("input[type=radio][name=videosWay]").trigger('change');
+
+		$("#is_form").validate({
+			ignore: "",
+			rules: {
+				dispYn: {required:true},
+				langKoYn: {required:true},
+				title: {required:true},
+				type: {required: true},
+				pcImgCheck: {
+					required: function(element){
+						return $("input[name='type']:checked").val() == 'I' && element.value == '';
+					}
+					,extension2: 'png|jpg'
+					,filesize : 2097152
+				},
+				moImgCheck: {
+					required: function(element){
+						return $("input[name='type']:checked").val() == 'I' && element.value == '';
+					}
+					,extension2: 'png|jpg'
+					,filesize : 2097152
+				},
+				videosWay: {
+					required: function(element){
+						return $("input[name='type']:checked").val() == 'M';
+					}
+				},
+				videosUrl: {
+					required: function(element){
+						return $("input[name='type']:checked").val() == 'M' && $("input[name='videosWay']:checked").val() == 'URL' && element.value == '';
+					}
+				},
+				mvFileCheck: {
+					required: function(element){
+						return $("input[name='type']:checked").val() == 'M' && $("input[name='videosWay']:checked").val() == 'UPLOAD' && element.value == '';
+					}
+					,extension2: 'mp4'
+					,filesize : 4194304
+				},
+				topSubTxt: {maxlength:100},
+				bottomMainTxt: {maxlength:100}
+
+			},
+
+            messages: {
+				dispYn: {required:"전시여부를 선택해주세요."},
+				langKoYn: {required:"언어구분을 선택해주세요."},
+				title: {required:"제목을 입력해주세요."},
+				type: {required: "유형를 선택해주세요."},
+				pcImgCheck: {required: "pc이미지를 선택해주세요.",extension2: "pc이미지는 png만 업로드 가능합니다.",filesize: "pc이미지는 2MB이하만 업로드 가능합니다."},
+				moImgCheck: {required: "모바일이미지를 선택해주세요.",extension2: "모바일이미지는 png만 업로드 가능합니다.",filesize: "모바일이미지는 2MB이하만 업로드 가능합니다."},
+				videosWay: {required: "동영상선택을 선택해주세요."},
+				videosUrl: {required: "동영상 연결 url을 입력해주세요."},
+				mvFileCheck: {required: "동영상을 선택해주세요.",extension2: "동영상은 mp4만 업로드 가능합니다.", filesize: "동영상은 4MB이하만 업로드 가능합니다."},
+				topSubTxt: {maxlength:"최대 100글자까지 입력가능합니다."},
+				bottomMainTxt: {maxlength:"최대 100글자까지 입력가능합니다."}
+			},
+			errorPlacement: function(error, element) {
+
+			}
+		});
+
+
+
     });
 
 
@@ -109,7 +227,7 @@
 
         // 파일 개수 확인 및 제한
         if (fileCount + filesArr.length > totalCount) {
-          $.alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
+          alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
           return;
         } else {
              fileCount = fileCount + filesArr.length;
@@ -117,15 +235,21 @@
 
         // 각각의 파일 배열담기 및 기타
         filesArr.forEach(function (f) {
+		  var name = f.name;
+		  var ext = f.name.split('.').pop().toLowerCase();
+		  var size = f.size;
           var reader = new FileReader();
           reader.onload = function (e) {
 			content_files = [];
             content_files.push(f);
+			$("#pcImgCheck").val(name);
+			$("#pcImgCheck").attr('data-ext',ext);
+			$("#pcImgCheck").attr('data-size',size);
             $('#articlefileChange').html(
-                '<div id="file' + fileNum + '" onclick="fileDelete(\'file' + fileNum + '\')">'
-				+ '<img src="' + e.target.result + '" alt="">'
+				 '<div id="file' + fileNum + '" onclick="fileDelete(\'file' + fileNum + '\')">'
+				+ '<img src="' + e.target.result + '" width="200" height="200" alt="">'
                 + '<i class="me-2 mdi mdi-minus"></i>'
-                + '<div/>'
+                + '</div>'
             );
             fileNum ++;
           };
@@ -171,7 +295,7 @@
 
 		// 파일 개수 확인 및 제한
 		if (mofileCount + filesArr.length > mototalCount) {
-			$.alert('파일은 최대 '+mototalCount+'개까지 업로드 할 수 있습니다.');
+			alert('파일은 최대 '+mototalCount+'개까지 업로드 할 수 있습니다.');
 			return;
 		} else {
 			mofileCount = mofileCount + filesArr.length;
@@ -179,15 +303,21 @@
 
 		// 각각의 파일 배열담기 및 기타
 		filesArr.forEach(function (f) {
+			var name = f.name;
+			var ext = f.name.split('.').pop().toLowerCase();
+			var size = f.size;
 			var reader = new FileReader();
 			reader.onload = function (e) {
 				mocontent_files = [];
 				mocontent_files.push(f);
+				$("#moImgCheck").val(name);
+				$("#moImgCheck").attr('data-ext',ext);
+				$("#moImgCheck").attr('data-size',size);
 				$('#moarticlefileChange').html(
 						'<div id="mofile' + mofileNum + '" onclick="mofileDelete(\'mofile' + mofileNum + '\')">'
-						+ '<img src="' + e.target.result + '" alt="">'
+						+ '<img src="' + e.target.result + '" width="200" height="200" alt="">'
 						+ '<i class="me-2 mdi mdi-minus"></i>'
-						+ '<div/>'
+						+ '</div>'
 				);
 				mofileNum ++;
 			};
@@ -233,7 +363,7 @@
 
 		// 파일 개수 확인 및 제한
 		if (mvfileCount + filesArr.length > mvtotalCount) {
-			$.alert('파일은 최대 '+mvtotalCount+'개까지 업로드 할 수 있습니다.');
+			alert('파일은 최대 '+mvtotalCount+'개까지 업로드 할 수 있습니다.');
 			return;
 		} else {
 			mvfileCount = mvfileCount + filesArr.length;
@@ -241,15 +371,21 @@
 
 		// 각각의 파일 배열담기 및 기타
 		filesArr.forEach(function (f) {
+			var name = f.name;
+			var ext = f.name.split('.').pop().toLowerCase();
+			var size = f.size;
 			var reader = new FileReader();
 			reader.onload = function (e) {
 				mvcontent_files = [];
 				mvcontent_files.push(f);
+				$("#mvFileCheck").val(name);
+				$("#mvFileCheck").attr('data-ext',ext);
+				$("#mvFileCheck").attr('data-size',size);
 				$('#mvarticlefileChange').append(
 						'<div id="mvfile' + mvfileNum + '" onclick="mvfileDelete(\'mvfile' + mvfileNum + '\')">'
 						+ '<font style="font-size:12px">' + f.name + '</font>'
 						+ '<i class="me-2 mdi mdi-minus"></i>'
-						+ '<div/>'
+						+ '</div>'
 				);
 				mvfileNum ++;
 			};
@@ -281,40 +417,46 @@
      */
         function registerAction(){
 
+			if(!$("#is_form").valid()){
+				return false;
+			}
+
+
         var form = $("#is_form")[0];
         var formData = new FormData(form);
 
-            // for (var x = 0; x < content_files.length; x++) {
-            //     formData.append("pcImg", content_files[x]);
-            // }
-			//
+            for (var x = 0; x < content_files.length; x++) {
+                formData.append("pcImg", content_files[x]);
+            }
+
 			for(var y = 0; y<delete_files.length; y++){
 				formData.append("pcImgDelete", delete_files[y]);
 			}
-			//
-			// for (var x = 0; x < mocontent_files.length; x++) {
-			// 	formData.append("moImg", mocontent_files[x]);
-			// }
-			//
+
+			for (var x = 0; x < mocontent_files.length; x++) {
+				formData.append("moImg", mocontent_files[x]);
+			}
+
 			for(var y = 0; y<modelete_files.length; y++){
 				formData.append("moImgDelete", modelete_files[y]);
 			}
-			//
-			// for (var x = 0; x < mvcontent_files.length; x++) {
-			// 	formData.append("mvFile", mvcontent_files[x]);
-			// }
-			//
+
+			for (var x = 0; x < mvcontent_files.length; x++) {
+				formData.append("mvFile", mvcontent_files[x]);
+			}
+
 			for(var y = 0; y<mvdelete_files.length; y++){
 				formData.append("mvFileDelete", mvdelete_files[y]);
 			}
 
+			console.log('formData',formData);
 
        /*
        * 파일업로드 multiple ajax처리
        */
         $.ajax({
               type: "POST",
-              url: "/noticeEditProcess",
+              url: "/mainvisualEditProcess",
               data : formData,
 			  cache:false,
               processData: false,
@@ -357,14 +499,14 @@
 								<label class="col-sm-3 control-label" data-name="dispYn">전시여부</label>
 								<div class="col-md-9">
 									<div class="form-check">
-										<input class="form-check-input" id="dispYn1" name="dispYn" required=""
+										<input class="form-check-input" id="dispYn1" name="dispYn"
 										       th:checked="dispYn == 'Y'"
 										       th:field="*{dispYn}"
 										       type="radio" value="Y">
 										<label class="form-check-label mb-0" for="dispYn1">전시</label>
 									</div>
 									<div class="form-check">
-										<input class="form-check-input" id="dispYn2" name="dispYn" required=""
+										<input class="form-check-input" id="dispYn2" name="dispYn"
 											   th:checked="dispYn == 'N'"
 											   th:field="*{dispYn}"
 											   type="radio" value="N">
@@ -377,14 +519,14 @@
 								<label class="col-sm-3 control-label" data-name="langKoYn">언어구분</label>
 								<div class="col-md-9">
 									<div class="form-check">
-										<input class="form-check-input" id="langKoYn1" name="langKoYn" required=""
+										<input class="form-check-input" id="langKoYn1" name="langKoYn"
 											   th:checked="langKoYn == 'Y'"
 											   th:field="*{langKoYn}"
 											   type="radio" value="Y">
 										<label class="form-check-label mb-0" for="langKoYn1">국문</label>
 									</div>
 									<div class="form-check">
-										<input class="form-check-input" id="langKoYn2" name="langKoYn" required=""
+										<input class="form-check-input" id="langKoYn2" name="langKoYn"
 											   th:checked="langKoYn == 'N'"
 											   th:field="*{langKoYn}"
 											   type="radio" value="N">
@@ -413,79 +555,78 @@
 								<label class="col-sm-3 control-label" data-name="type">유형</label>
 								<div class="col-md-9">
 									<div class="form-check">
-										<input class="form-check-input" id="type1" name="type" required=""
+										<input class="form-check-input" id="type1" name="type"
 											   th:checked="type == 'I'"
 											   th:field="*{type}"
 											   type="radio" value="I">
 										<label class="form-check-label mb-0" for="type1">이미지</label>
 									</div>
 									<div class="form-check">
-										<input class="form-check-input" id="type2" name="type" required=""
+										<input class="form-check-input" id="type2" name="type"
 											   th:checked="type == 'M'"
 											   th:field="*{type}"
 											   type="radio" value="M">
-										<label class="form-check-label mb-0" for="langKoYn2">동영상</label>
+										<label class="form-check-label mb-0" for="type2">동영상</label>
 									</div>
 								</div>
 							</div>
-							<div id = "pcImgFile" class="form-group required row">
+							<div id = "pcImgFile" class="form-group required row" style="display:none;">
 								<label class="col-sm-3 control-label" data-name="pcImg">PC이미지</label>
 								<div class="col-md-9">
 									<div class="custom-file">
-										<input class="custom-file-input" id="input_file" name="pcImg"
-											   required="" type="file">
+										<input class="custom-file-input" id="input_file" name="pcImg" type="file">
+										<label class="custom-file-label" for="input_file">2MB 이하의 png만 업로드 가능</label>
+										<input type="hidden" name="pcImgCheck" id="pcImgCheck" value=""/>
 										<br/>
 										<div id="articlefileChange">
 											<th:block th:if="*{pcImgPath != null}">
 												<div th:id="'dbfile1'" th:onclick="'removeContent(' + *{pcImgRealPath} + ');'">
 													<img th:src="*{pcImgPath}"/>
 													<i class="me-2 mdi mdi-minus"></i>
-													<div/>
 												</div>
 											</th:block>
-											<label class="custom-file-label" for="input_file">2MB 이하의 png만 업로드 가능</label>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div  id = "pcImgFileInfo" class="form-group row">
-								<label
-										class="col-sm-3"
-										for="title"
-								>PC 이미지 연결 링크</label
-								>
-								<div class="col-md-9">
-									<input
-											class="form-control"
-											id="pcImgLink"
-											name="pcImgLink"
-											placeholder="연결할 URL을 입력해주세요."
-											th:field="*{pcImgLink}"
-											type="text"
-									/>
-									<div class="form-check">
-										<input class="form-check-input" id="pcImgTarget1" name="pcImgTarget" required=""
-											   th:checked="pcImgTarget == '_blank'"
-											   th:field="*{pcImgTarget}"
-											   type="radio" value="_blank">
-										<label class="form-check-label mb-0" for="pcImgTarget1">새창</label>
-									</div>
-									<div class="form-check">
-										<input class="form-check-input" id="pcImgTarget2" name="pcImgTarget" required=""
-											   th:checked="pcImgTarget == '_self'"
-											   th:field="*{pcImgTarget}"
-											   type="radio" value="_self">
-										<label class="form-check-label mb-0" for="langKoYn2">현재창</label>
-									</div>
-								</div>
-
-							</div>
-							<div id = "moImgFile" class="form-group required row">
+<!--							<div  id = "pcImgFileInfo" class="form-group row">-->
+<!--								<label-->
+<!--										class="col-sm-3"-->
+<!--										for="title"-->
+<!--								>PC 이미지 연결 링크</label-->
+<!--								>-->
+<!--								<div class="col-md-9">-->
+<!--									<input-->
+<!--											class="form-control"-->
+<!--											id="pcImgLink"-->
+<!--											name="pcImgLink"-->
+<!--											placeholder="연결할 URL을 입력해주세요."-->
+<!--											th:field="*{pcImgLink}"-->
+<!--											type="text"-->
+<!--									/>-->
+<!--									<div class="form-check">-->
+<!--										<input class="form-check-input" id="pcImgTarget1" name="pcImgTarget"-->
+<!--											   th:checked="pcImgTarget == '_blank'"-->
+<!--											   th:field="*{pcImgTarget}"-->
+<!--											   type="radio" value="_blank">-->
+<!--										<label class="form-check-label mb-0" for="pcImgTarget1">새창</label>-->
+<!--									</div>-->
+<!--									<div class="form-check">-->
+<!--										<input class="form-check-input" id="pcImgTarget2" name="pcImgTarget"-->
+<!--											   th:checked="pcImgTarget == '_self'"-->
+<!--											   th:field="*{pcImgTarget}"-->
+<!--											   type="radio" value="_self">-->
+<!--										<label class="form-check-label mb-0" for="langKoYn2">현재창</label>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+							<div id = "moImgFile" class="form-group required row" style="display:none;">
 								<label class="col-sm-3 control-label" data-name="moImg">모바일 이미지</label>
 								<div class="col-md-9">
 									<div class="custom-file">
-										<input class="custom-file-input" id="moinput_file" name="moImg"
-											   required="" type="file">
+										<input class="custom-file-input" id="moinput_file" type="file">
+										<label class="custom-file-label" for="moinput_file">2MB 이하의 png만 업로드 가능</label>
+										<input type="hidden" name="moImgCheck" id="moImgCheck" value=""/>
 										<br/>
 										<div id="moarticlefileChange">
 											<th:block th:if="*{moImgPath != null}">
@@ -495,54 +636,53 @@
 													<div/>
 												</div>
 											</th:block>
-											<label class="custom-file-label" for="moinput_file">2MB 이하의 png만 업로드 가능</label>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div  id = "moImgFileInfo" class="form-group row">
-								<label
-										class="col-sm-3"
-										for="title"
-								>모바일 이미지 연결 링크</label
-								>
-								<div class="col-md-9">
-									<input
-											class="form-control"
-											id="moImgLink"
-											name="moImgLink"
-											placeholder="연결할 URL을 입력해주세요."
-											th:field="*{moImgLink}"
-											type="text"
-									/>
-									<div class="form-check">
-										<input class="form-check-input" id="moImgTarget1" name="moImgTarget" required=""
-											   th:checked="moImgTarget == '_blank'"
-											   th:field="*{moImgTarget}"
-											   type="radio" value="_blank">
-										<label class="form-check-label mb-0" for="moImgTarget1">새창</label>
-									</div>
-									<div class="form-check">
-										<input class="form-check-input" id="moImgTarget2" name="moImgTarget" required=""
-											   th:checked="moImgTarget == '_self'"
-											   th:field="*{moImgTarget}"
-											   type="radio" value="_self">
-										<label class="form-check-label mb-0" for="moImgTarget2">현재창</label>
-									</div>
-								</div>
-							</div>
-							<div id="mvFileSelect" class="form-group required row">
+<!--							<div  id = "moImgFileInfo" class="form-group row">-->
+<!--								<label-->
+<!--										class="col-sm-3"-->
+<!--										for="title"-->
+<!--								>모바일 이미지 연결 링크</label-->
+<!--								>-->
+<!--								<div class="col-md-9">-->
+<!--									<input-->
+<!--											class="form-control"-->
+<!--											id="moImgLink"-->
+<!--											name="moImgLink"-->
+<!--											placeholder="연결할 URL을 입력해주세요."-->
+<!--											th:field="*{moImgLink}"-->
+<!--											type="text"-->
+<!--									/>-->
+<!--									<div class="form-check">-->
+<!--										<input class="form-check-input" id="moImgTarget1" name="moImgTarget"-->
+<!--											   th:checked="moImgTarget == '_blank'"-->
+<!--											   th:field="*{moImgTarget}"-->
+<!--											   type="radio" value="_blank">-->
+<!--										<label class="form-check-label mb-0" for="moImgTarget1">새창</label>-->
+<!--									</div>-->
+<!--									<div class="form-check">-->
+<!--										<input class="form-check-input" id="moImgTarget2" name="moImgTarget"-->
+<!--											   th:checked="moImgTarget == '_self'"-->
+<!--											   th:field="*{moImgTarget}"-->
+<!--											   type="radio" value="_self">-->
+<!--										<label class="form-check-label mb-0" for="moImgTarget2">현재창</label>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+							<div id="mvFileSelect" class="form-group required row" style="display:none;">
 								<label class="col-sm-3 control-label" data-name="videosWay">동영상 선택</label>
 								<div class="col-md-9">
 									<div class="form-check">
-										<input class="form-check-input" id="videosWay1" name="videosWay" required=""
+										<input class="form-check-input" id="videosWay1" name="videosWay"
 											   th:checked="videosWay == 'URL'"
 											   th:field="*{videosWay}"
 											   type="radio" value="URL">
 										<label class="form-check-label mb-0" for="videosWay1">URL 방식</label>
 									</div>
 									<div class="form-check">
-										<input class="form-check-input" id="videosWay2" name="videosWay" required=""
+										<input class="form-check-input" id="videosWay2" name="videosWay"
 											   th:checked="videosWay == 'UPLOAD'"
 											   th:field="*{videosWay}"
 											   type="radio" value="UPLOAD">
@@ -550,7 +690,7 @@
 									</div>
 								</div>
 							</div>
-							<div  id = "mvFileUrlInfo" class="form-group required row">
+							<div  id = "mvFileUrlInfo" class="form-group required row" style="display:none;">
 								<label
 										class="col-sm-3 control-label"
 										data-name="videosUrl"
@@ -568,12 +708,13 @@
 									/>
 								</div>
 							</div>
-							<div id = "mvFile" class="form-group required row">
+							<div id = "mvFileInfo" class="form-group required row" style="display:none;">
 								<label class="col-sm-3 control-label" data-name="mvFile">동영상 업로드</label>
 								<div class="col-md-9">
 									<div class="custom-file">
-										<input class="custom-file-input" id="mvinput_file" name="mvFile"
-											   required="" type="file">
+										<input class="custom-file-input" id="mvinput_file" type="file">
+										<label class="custom-file-label" for="moinput_file">5MB 이하의 MP4 파일만만 첨부 가능합니다.</label>
+										<input type="hidden" name="mvFileCheck" id="mvFileCheck" value=""/>
 										<br/>
 										<div id="mvarticlefileChange">
 											<th:block th:if="*{videosPath != null}">
@@ -583,7 +724,6 @@
 													<div/>
 												</div>
 											</th:block>
-											<label class="custom-file-label" for="moinput_file">5MB 이하의 MP4 파일만만 첨부 가능합니다.</label>
 										</div>
 									</div>
 								</div>
