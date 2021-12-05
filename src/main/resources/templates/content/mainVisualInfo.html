@@ -574,14 +574,14 @@
 								<label class="col-sm-3 control-label" data-name="pcImg">PC이미지</label>
 								<div class="col-md-9">
 									<div class="custom-file">
-										<input class="custom-file-input" id="input_file" name="pcImg" type="file">
+										<input class="custom-file-input" id="input_file" type="file">
 										<label class="custom-file-label" for="input_file">2MB 이하의 png만 업로드 가능</label>
 										<input type="hidden" name="pcImgCheck" id="pcImgCheck" value=""/>
 										<br/>
 										<div id="articlefileChange">
 											<th:block th:if="*{pcImgPath != null}">
 												<div th:id="'dbfile1'" th:onclick="'removeContent(' + *{pcImgRealPath} + ');'">
-													<img th:src="*{pcImgPath}"/>
+													<img th:attr="src=*{pcImgPath}" width="100" height="100"/>
 													<i class="me-2 mdi mdi-minus"></i>
 												</div>
 											</th:block>

@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) { // 4
-        web.ignoring().antMatchers("/assets/**","/dext5editor/**","/dist/**","/error/**","/css/**", "/js/**", "/img/**", "/h2-console/**").requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        web.ignoring().antMatchers("/assets/**","/dext5editor/**","/dist/**","/error/**","/css/**", "/js/**", "/upload/**", "/img/**", "/h2-console/**").requestMatchers(PathRequest.toStaticResources().atCommonLocations());
         web.httpFirewall(defaultHttpFirewall());
     }
 
