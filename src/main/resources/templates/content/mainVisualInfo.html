@@ -201,8 +201,6 @@
 			}
 		});
 
-
-
     });
 
 
@@ -225,6 +223,7 @@
         // 파일 배열 담기
         var filesArr = Array.prototype.slice.call(files);
 
+		fileCount = $('#articlefileChange').children().length;
         // 파일 개수 확인 및 제한
         if (fileCount + filesArr.length > totalCount) {
           alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
@@ -266,6 +265,11 @@
 		content_files = [];
         //content_files[no].is_delete = true;
         $('#' + fileNum).remove();
+
+		$("#pcImgCheck").val('');
+		$("#pcImgCheck").attr('data-ext','');
+		$("#pcImgCheck").attr('data-size','');
+
         fileCount --;
     }
 
@@ -273,7 +277,12 @@
 		console.log('fild',fildId);
 		delete_files.push(fildId);
 		$("#dbfile1").remove();
+
+		$("#pcImgCheck").val('');
+		$("#pcImgCheck").attr('data-ext','');
+		$("#pcImgCheck").attr('data-size','');
 	}
+
 	/***********************pc이미지****************************/
 
 	/***********************mo이미지****************************/
@@ -293,6 +302,7 @@
 		// 파일 배열 담기
 		var filesArr = Array.prototype.slice.call(files);
 
+		mofileCount = $('#moarticlefileChange').children().length;
 		// 파일 개수 확인 및 제한
 		if (mofileCount + filesArr.length > mototalCount) {
 			alert('파일은 최대 '+mototalCount+'개까지 업로드 할 수 있습니다.');
@@ -334,6 +344,11 @@
 		mocontent_files = [];
 		//mocontent_files[no].is_delete = true;
 		$('#' + fileNum).remove();
+
+		$("#moImgCheck").val('');
+		$("#moImgCheck").attr('data-ext','');
+		$("#moImgCheck").attr('data-size','');
+
 		mofileCount --;
 	}
 
@@ -341,6 +356,11 @@
 		console.log('fild',fildId);
 		modelete_files.push(fildId);
 		$("#modbfile1").remove();
+
+		$("#moImgCheck").val('');
+		$("#moImgCheck").attr('data-ext','');
+		$("#moImgCheck").attr('data-size','');
+
 	}
 	/**********************mo이미지****************************/
 
@@ -361,6 +381,7 @@
 		// 파일 배열 담기
 		var filesArr = Array.prototype.slice.call(files);
 
+		mvfileCount = $('#mvarticlefileChange').children().length;
 		// 파일 개수 확인 및 제한
 		if (mvfileCount + filesArr.length > mvtotalCount) {
 			alert('파일은 최대 '+mvtotalCount+'개까지 업로드 할 수 있습니다.');
@@ -402,6 +423,11 @@
 		mvcontent_files = [];
 		//mvcontent_files[no].is_delete = true;
 		$('#' + fileNum).remove();
+
+		$("#mvFileCheck").val('');
+		$("#mvFileCheck").attr('data-ext','');
+		$("#mvFileCheck").attr('data-size','');
+
 		mvfileCount --;
 	}
 
@@ -409,6 +435,10 @@
 		console.log('fild',fildId);
 		mvdelete_files.push(fildId);
 		$("#mvdbfile1").remove();
+
+		$("#mvFileCheck").val('');
+		$("#mvFileCheck").attr('data-ext','');
+		$("#mvFileCheck").attr('data-size','');
 	}
 	/**********************mv파일****************************/
 
@@ -576,12 +606,12 @@
 									<div class="custom-file">
 										<input class="custom-file-input" id="input_file" type="file">
 										<label class="custom-file-label" for="input_file">2MB 이하의 png만 업로드 가능</label>
-										<input type="hidden" name="pcImgCheck" id="pcImgCheck" value=""/>
+										<input type="hidden" name="pcImgCheck" id="pcImgCheck" value="" th:value="*{pcImgName}" th:attr="data-ext=*{pcImgExt}" th:attrappend="data-size=*{pcImgLength}"/>
 										<br/>
 										<div id="articlefileChange">
 											<th:block th:if="*{pcImgPath != null}">
-												<div th:id="'dbfile1'" th:onclick="'removeContent(' + *{pcImgRealPath} + ');'">
-													<img th:attr="src=*{pcImgPath}" width="100" height="100"/>
+												<div th:id="dbfile1" th:onclick="removeContent([[*{pcImgRealPath}]])">
+													<img th:src="*{pcImgPath}" width="100" height="100"/>
 													<i class="me-2 mdi mdi-minus"></i>
 												</div>
 											</th:block>
@@ -626,12 +656,12 @@
 									<div class="custom-file">
 										<input class="custom-file-input" id="moinput_file" type="file">
 										<label class="custom-file-label" for="moinput_file">2MB 이하의 png만 업로드 가능</label>
-										<input type="hidden" name="moImgCheck" id="moImgCheck" value=""/>
+										<input type="hidden" name="moImgCheck" id="moImgCheck" value="" th:value="*{moImgName}" th:attr="data-ext=*{moImgExt}" th:attrappend="data-size=*{moImgLength}"/>
 										<br/>
 										<div id="moarticlefileChange">
 											<th:block th:if="*{moImgPath != null}">
-												<div th:id="'modbfile1'" th:onclick="'moremoveContent(' + *{moImgRealPath} + ');'">
-													<img th:src="*{moImgPath}"/>
+												<div th:id="'modbfile1'" th:onclick="removeContent([[*{moImgRealPath}]])">
+													<img th:src="*{moImgPath}" width="100" height="100"/>
 													<i class="me-2 mdi mdi-minus"></i>
 													<div/>
 												</div>
@@ -714,11 +744,11 @@
 									<div class="custom-file">
 										<input class="custom-file-input" id="mvinput_file" type="file">
 										<label class="custom-file-label" for="moinput_file">5MB 이하의 MP4 파일만만 첨부 가능합니다.</label>
-										<input type="hidden" name="mvFileCheck" id="mvFileCheck" value=""/>
+										<input type="hidden" name="mvFileCheck" id="mvFileCheck" value="" th:value="*{videosName}" th:attr="data-ext=*{videosExt}" th:attrappend="data-size=*{videosLength}"/>
 										<br/>
 										<div id="mvarticlefileChange">
 											<th:block th:if="*{videosPath != null}">
-												<div th:id="'mvdbfile1'" th:onclick="'mvremoveContent(' + *{videosRealPath} + ');'">
+												<div th:id="'mvdbfile1'"  th:onclick="removeContent([[*{videosRealPath}]])">
 													<font style="font-size:12px" th:text="*{videosName}"></font>
 													<i class="me-2 mdi mdi-minus"></i>
 													<div/>

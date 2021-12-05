@@ -71,6 +71,10 @@ public class MainvisualService {
         log.debug("===================setWriteStroe============================");
         log.debug("########"+mainvisual.getId()+"#########");
 
+        Mainvisual _mainvisual = null;
+        if(mainvisual.getId() != null && mainvisual.getId() > 0){
+            _mainvisual = mainvisualRepository.findById(mainvisual.getId()).get();
+        }
         //파일삭제
         if(deleteMiFile != null && !"".equals(deleteMiFile)){
             File f = new File(deleteMiFile);
@@ -102,8 +106,14 @@ public class MainvisualService {
         String realFilePath = "";
 
         if(miFile != null && !miFile.isEmpty()){
+
+            if(_mainvisual != null){
+                File f = new File(_mainvisual.getPcImgRealPath());
+                f.delete();
+            }
+
             String oriFileName = miFile.getOriginalFilename();
-            String newFilename = new SimpleDateFormat("yyyyMMddHHmmss.SSS").format(new Date()) + "." + FilenameUtils.getExtension(miFile.getOriginalFilename()).toLowerCase();;
+            String newFilename = new SimpleDateFormat("yyyyMMddHHmmss.SSS").format(new Date()) + "." + FilenameUtils.getExtension(miFile.getOriginalFilename()).toLowerCase();
 
             Files.copy(miFile.getInputStream(), fileLocation.resolve(newFilename));
 
@@ -113,10 +123,23 @@ public class MainvisualService {
             mainvisual.setPcImgName(oriFileName);
             mainvisual.setPcImgPath(_uriPath);
             mainvisual.setPcImgRealPath(realFilePath);
+            mainvisual.setPcImgExt(FilenameUtils.getExtension(miFile.getOriginalFilename()).toLowerCase());
+            mainvisual.setPcImgLength(String.valueOf(miFile.getSize()));
 
+        }else{
+            mainvisual.setPcImgName(_mainvisual.getPcImgName());
+            mainvisual.setPcImgPath(_mainvisual.getPcImgPath());
+            mainvisual.setPcImgRealPath(_mainvisual.getPcImgRealPath());
+            mainvisual.setPcImgExt(_mainvisual.getPcImgExt());
+            mainvisual.setPcImgLength(_mainvisual.getPcImgLength());
         }
 
         if(siFile != null && !siFile.isEmpty()){
+            if(_mainvisual != null){
+                File f = new File(_mainvisual.getMoImgRealPath());
+                f.delete();
+            }
+
             String oriFileName = siFile.getOriginalFilename();
             String newFilename = new SimpleDateFormat("yyyyMMddHHmmss.SSS").format(new Date()) + "." + FilenameUtils.getExtension(siFile.getOriginalFilename()).toLowerCase();;
 
@@ -128,9 +151,22 @@ public class MainvisualService {
             mainvisual.setMoImgName(oriFileName);
             mainvisual.setMoImgPath(_uriPath);
             mainvisual.setMoImgRealPath(realFilePath);
+            mainvisual.setMoImgExt(FilenameUtils.getExtension(siFile.getOriginalFilename()).toLowerCase());
+            mainvisual.setMoImgLength(String.valueOf(siFile.getSize()));
+        }else{
+            mainvisual.setMoImgName(_mainvisual.getMoImgName());
+            mainvisual.setMoImgPath(_mainvisual.getMoImgPath());
+            mainvisual.setMoImgRealPath(_mainvisual.getMoImgRealPath());
+            mainvisual.setMoImgExt(_mainvisual.getMoImgExt());
+            mainvisual.setMoImgLength(_mainvisual.getMoImgLength());
         }
 
         if(mvFile != null && !mvFile.isEmpty()){
+            if(_mainvisual != null){
+                File f = new File(_mainvisual.getVideosRealPath());
+                f.delete();
+            }
+
             String oriFileName = mvFile.getOriginalFilename();
             String newFilename = new SimpleDateFormat("yyyyMMddHHmmss.SSS").format(new Date()) + "." + FilenameUtils.getExtension(mvFile.getOriginalFilename()).toLowerCase();;
 
@@ -142,6 +178,14 @@ public class MainvisualService {
             mainvisual.setVideosName(oriFileName);
             mainvisual.setVideosPath(_uriPath);
             mainvisual.setVideosRealPath(realFilePath);
+            mainvisual.setVideosExt(FilenameUtils.getExtension(mvFile.getOriginalFilename()).toLowerCase());
+            mainvisual.setVideosLength(String.valueOf(mvFile.getSize()));
+        }else{
+            mainvisual.setVideosName(_mainvisual.getVideosName());
+            mainvisual.setVideosPath(_mainvisual.getVideosPath());
+            mainvisual.setVideosRealPath(_mainvisual.getVideosRealPath());
+            mainvisual.setVideosExt(_mainvisual.getVideosExt());
+            mainvisual.setVideosLength(_mainvisual.getVideosLength());
         }
 
         Mainvisual r_mainvidual = mainvisualRepository.save(mainvisual);
