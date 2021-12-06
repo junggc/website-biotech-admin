@@ -114,7 +114,7 @@
                 '<div id="file' + fileNum + '" onclick="fileDelete(\'file' + fileNum + '\')">'
                 + '<font style="font-size:12px">' + f.name + '</font>'
                 + '<i class="me-2 mdi mdi-minus"></i>'
-                + '<div/>'
+                + ''
             );
             fileNum ++;
           };
@@ -336,7 +336,7 @@
 												<div th:id="'dbfile'+${filedata.id}" th:onclick="'removeContent(' + ${filedata.id} + ');'">
 													<font style="font-size:12px" th:text="${filedata.fileName}"></font>
 													<i class="me-2 mdi mdi-minus"></i>
-												<div/>
+												
 											</div>
 										</div>
 										<label class="custom-file-label" for="input_file">10MB 이하의 jpg, gif,

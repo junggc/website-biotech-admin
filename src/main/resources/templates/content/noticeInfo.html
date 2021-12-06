@@ -57,6 +57,7 @@
 	<script href="/assets/libs/jquery-validation/dist/additional-methods.js"
 	        th:src="@{/assets/libs/jquery-validation/dist/additional-methods.js}"></script>
 
+	<script href="/js/jquery-common.js" th:src="@{/js/jquery-common.js}"></script>
 	<script href="/dext5editor/js/dext5editor.js"
 			th:src="@{/dext5editor/js/dext5editor.js}"></script>
 	<script>
@@ -80,6 +81,30 @@
 			}
 		});
 
+		$("#is_form").validate({
+			ignore: "",
+			rules: {
+				dispYn: {required:true},
+				dispStartDay: {required:true},
+				dispStartTime: {required:true},
+				langKoYn: {required:true},
+				title: {required:true},
+				content: {required:true}
+			},
+
+			messages: {
+				dispYn: {required:"전시여부를 선택해주세요."},
+				dispStartDay: {required:"전시시작일을 입력해주세요."},
+				dispStartTime: {required:"전시시작시간을 입력해주세요."},
+				langKoYn: {required:"언어구분을 선택해주세요."},
+				title: {required:"제목을 입력해주세요."},
+				content: {required:"내용을 입력해주세요."}
+			},
+			errorPlacement: function(error, element) {
+
+			}
+		});
+
 		$(document).ready(function() {
 			DEXT5.setBodyValueExLikeDiv($('textarea[name=content]').val(), 'content');
 		});
@@ -99,14 +124,16 @@
     var delete_files = [];
 
     function fileCheck(e) {
+		console.log('e',e);
         var files = e.target.files;
 
         // 파일 배열 담기
         var filesArr = Array.prototype.slice.call(files);
 
+		fileCount = $('#articlefileChange').children().length;
         // 파일 개수 확인 및 제한
         if (fileCount + filesArr.length > totalCount) {
-          $.alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
+          alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
           return;
         } else {
              fileCount = fileCount + filesArr.length;
@@ -114,14 +141,24 @@
 
         // 각각의 파일 배열담기 및 기타
         filesArr.forEach(function (f) {
+			var name = f.name;
+			var nameLen = name.length;
+			var ext = f.name.split('.').pop().toLowerCase();
+			var size = f.size;
+
+			//파일 확장자 체크
+			var _lastDot = name.lastIndexOf(".");
+			var _fileExt = name.substring(_lastDot, nameLen).toLowerCase();
+
+
           var reader = new FileReader();
           reader.onload = function (e) {
             content_files.push(f);
             $('#articlefileChange').append(
-                '<div id="file' + fileNum + '" onclick="fileDelete(\'file' + fileNum + '\')">'
+                '<div id="file' + fileNum + '" onclick="fileDelete(\'file' + fileNum + '\')" data-ext="'+ext+'">'
                 + '<font style="font-size:12px">' + f.name + '</font>'
                 + '<i class="me-2 mdi mdi-minus"></i>'
-                + '<div/>'
+                + ''
             );
             fileNum ++;
           };
@@ -153,6 +190,10 @@
 			var content = DEXT5.getBodyValueExLikeDiv('content');
 			$('textarea[name=content]').val(content);
 
+			if(!$("#is_form").valid()){
+				return false;
+			}
+
 			var form = $("#is_form")[0];
         	var formData = new FormData(form);
 
@@ -181,6 +222,7 @@
               success: function (data) {
 				console.log('data',data);
 				alert("파일업로드 성공");
+				  location.reload();
               },
               error: function (xhr, status, error) {
                 alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
@@ -216,14 +258,14 @@
 								<label class="col-md-1 control-label">전시여부</label>
 								<div class="col-md-3">
 									<div class="form-check dpib">
-										<input class="form-check-input" id="dispYn1" name="dispYn" required=""
+										<input class="form-check-input" id="dispYn1" name="dispYn" 
 										       th:checked="dispYn == 'Y'"
 										       th:field="*{dispYn}"
 										       type="radio" value="Y">
 										<label class="form-check-label mb-0" for="dispYn1">전시</label>
 									</div>
 									<div class="form-check dpib">
-										<input class="form-check-input" id="dispYn2" name="dispYn" required=""
+										<input class="form-check-input" id="dispYn2" name="dispYn" 
 										       th:checked="dispYn == 'N'"
 										       th:field="*{dispYn}"
 										       type="radio" value="N">
@@ -280,14 +322,14 @@
 								<label class="col-md-1 control-label">국문여부</label>
 								<div class="col-md-9">
 									<div class="form-check">
-										<input class="form-check-input" id="langKoYn1" name="langKoYn" required=""
+										<input class="form-check-input" id="langKoYn1" name="langKoYn" 
 										       th:checked="langKoYn == 'Y'"
 										       th:field="*{langKoYn}"
 										       type="radio" value="Y">
 										<label class="form-check-label mb-0" for="langKoYn1">국문</label>
 									</div>
 									<div class="form-check">
-										<input class="form-check-input" id="langKoYn2" name="langKoYn" required=""
+										<input class="form-check-input" id="langKoYn2" name="langKoYn" 
 										       th:checked="langKoYn == 'N'"
 										       th:field="*{langKoYn}"
 										       type="radio" value="N">
@@ -338,16 +380,13 @@
 								<label class="col-md-1">첨부파일</label>
 								<div class="col-md-9">
 									<div class="custom-file">
-										<input class="custom-file-input" id="input_file" multiple
-										       required="" type="file">
+										<input class="custom-file-input" id="input_file" type="file" data-limitExt="jpg|gif|png|pdf|doc|hwp|mp4" data-sizeLimit="10485760">
 										<br/>
 										<div id="articlefileChange">
-											<div  th:each="filedata, i: ${notice.noticefileList}">
-												<div th:id="'dbfile'+${filedata.id}" th:onclick="'removeContent(' + ${filedata.id} + ');'">
-													<font style="font-size:12px" th:text="${filedata.fileName}"></font>
-													<i class="me-2 mdi mdi-minus"></i>
-												<div/>
-											</div>
+											<div th:each="filedata, i: ${notice.noticefileList}" th:id="'dbfile'+${filedata.id}" th:onclick="'removeContent(' + ${filedata.id} + ');'" th:attr="data-ext=${filedata.fileExt}" th:attrappend="data-size=${filedata.fileLength},data-name=${filedata.fileName}" >
+												<font style="font-size:12px" th:text="${filedata.fileName}"></font>
+												<i class="me-2 mdi mdi-minus"></i>
+											
 										</div>
 										<label class="custom-file-label" for="input_file">10MB 이하의 jpg, gif,
 											png, pdf, doc, hwp, mp4 파일만 첨부 가능합니다.</label>

@@ -54,6 +54,7 @@
 	<script href="/assets/libs/jquery-validation/dist/additional-methods.js"
 	        th:src="@{/assets/libs/jquery-validation/dist/additional-methods.js}"></script>
 
+	<script href="/js/jquery-common.js" th:src="@{/js/jquery-common.js}"></script>
 	<script href="/dext5editor/js/dext5editor.js"
 			th:src="@{/dext5editor/js/dext5editor.js}"></script>
 	<script>
@@ -87,6 +88,44 @@
 				return false;
 			}
 		});
+
+		$("#is_form").validate({
+			ignore: "",
+			rules: {
+				dispYn: {required:true},
+				langKoYn: {required:true},
+				title: {required:true},
+				popImgCheck: {
+					required: function(element){
+						return element.value == '';
+					}
+					,extension2: 'png|jpg'
+					,filesize : 2097152
+				},
+				widthPoint: {num:true},
+				heightPoint: {num:true},
+				dispStartDay: {required:true},
+				dispStartTime: {required:true},
+				dispEndDay: {required:true},
+				dispEndTime: {required:true}
+			},
+
+			messages: {
+				dispYn: {required:"전시여부를 선택해주세요."},
+				langKoYn: {required:"언어구분을 선택해주세요."},
+				title: {required:"제목을 입력해주세요."},
+				popImgCheck: {required: "pc이미지를 선택해주세요.",extension2: "pc이미지는 png, jpg만 업로드 가능합니다.",filesize: "pc이미지는 2MB이하만 업로드 가능합니다."},
+				widthPoint: {num:"숫자만 입력가능합니다."},
+				heightPoint: {num:"숫자만 입력가능합니다."},
+				dispStartDay: {required:"전시시작일을 입력해주세요."},
+				dispStartTime: {required:"전시시작시간을 입력해주세요."},
+				dispEndDay: {required:"정시종료일을 입력해주세요."},
+				dispEndTime: {required:"전시종료시간을 입력해주세요."}
+			},
+			errorPlacement: function(error, element) {
+
+			}
+		});
     });
 
 
@@ -108,9 +147,10 @@
         // 파일 배열 담기
         var filesArr = Array.prototype.slice.call(files);
 
+		fileCount = $('#articlefileChange').children().length;
         // 파일 개수 확인 및 제한
         if (fileCount + filesArr.length > totalCount) {
-          $.alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
+          alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
           return;
         } else {
              fileCount = fileCount + filesArr.length;
@@ -118,15 +158,21 @@
 
         // 각각의 파일 배열담기 및 기타
         filesArr.forEach(function (f) {
+			var name = f.name;
+			var ext = f.name.split('.').pop().toLowerCase();
+			var size = f.size;
           var reader = new FileReader();
           reader.onload = function (e) {
 			content_files = [];
             content_files.push(f);
+			  $("#popImgCheck").val(name);
+			  $("#popImgCheck").attr('data-ext',ext);
+			  $("#popImgCheck").attr('data-size',size);
             $('#articlefileChange').append(
                 '<div id="file' + fileNum + '" onclick="fileDelete(\'file' + fileNum + '\')">'
                 + '<img src="' + e.target.result + '" alt="">'
                 + '<i class="me-2 mdi mdi-minus"></i>'
-                + '<div/>'
+                + ''
             );
             fileNum ++;
           };
@@ -142,6 +188,11 @@
         var no = fileNum.replace(/[^0-9]/g, "");
 		content_files = [];
         $('#' + fileNum).remove();
+
+		$("#popImgCheck").val('');
+		$("#popImgCheck").attr('data-ext','');
+		$("#popImgCheck").attr('data-size','');
+
         fileCount --;
     }
 
@@ -149,6 +200,10 @@
 		console.log('fild',fildId);
 		delete_files.push(fildId);
 		$("#dbfile1").remove();
+
+		$("#popImgCheck").val('');
+		$("#popImgCheck").attr('data-ext','');
+		$("#popImgCheck").attr('data-size','');
 	}
 
     /*
@@ -156,14 +211,15 @@
      */
         function registerAction(){
 
+			if(!$("#is_form").valid()){
+				return false;
+			}
+
         var form = $("#is_form")[0];
         var formData = new FormData(form);
 
             for (var x = 0; x < content_files.length; x++) {
-                // 삭제 안한것만 담아 준다.
-                if(!content_files[x].is_delete){
-                     formData.append("file", content_files[x]);
-                }
+				formData.append("file", content_files[x]);
             }
 
 			for(var y = 0; y<delete_files.length; y++){
@@ -184,6 +240,7 @@
               success: function (data) {
 				console.log('data',data);
 				alert("파일업로드 성공");
+				location.reload();
               },
               error: function (xhr, status, error) {
                 alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
@@ -215,18 +272,18 @@
 						<input type="hidden" name="id" th:value="*{id}"/>
 						<div class="card-body">
 							<h4 class="card-title">메인팝업 등록</h4>
-							<div class="form-group row">
+							<div class="form-group required row">
 								<label class="col-md-1">전시여부</label>
 								<div class="col-md-3">
 									<div class="form-check">
-										<input class="form-check-input" id="dispYn1" name="dispYn" required=""
+										<input class="form-check-input" id="dispYn1" name="dispYn" 
 										       th:checked="dispYn == 'Y'"
 										       th:field="*{dispYn}"
 										       type="radio" value="Y">
 										<label class="form-check-label mb-0" for="dispYn1">전시</label>
 									</div>
 									<div class="form-check">
-										<input class="form-check-input" id="dispYn2" name="dispYn" required=""
+										<input class="form-check-input" id="dispYn2" name="dispYn" 
 										       th:checked="dispYn == 'N'"
 										       th:field="*{dispYn}"
 										       type="radio" value="N">
@@ -234,18 +291,18 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group required row">
 								<label class="col-md-1">언어구분</label>
 								<div class="col-md-9">
 									<div class="form-check">
-										<input class="form-check-input" id="langKoYn1" name="langKoYn" required=""
+										<input class="form-check-input" id="langKoYn1" name="langKoYn" 
 											   th:checked="langKoYn == 'Y'"
 											   th:field="*{langKoYn}"
 											   type="radio" value="Y">
 										<label class="form-check-label mb-0" for="langKoYn1">국문</label>
 									</div>
 									<div class="form-check">
-										<input class="form-check-input" id="langKoYn2" name="langKoYn" required=""
+										<input class="form-check-input" id="langKoYn2" name="langKoYn" 
 											   th:checked="langKoYn == 'N'"
 											   th:field="*{langKoYn}"
 											   type="radio" value="N">
@@ -253,7 +310,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group required row">
 								<label
 										class="col-md-1"
 										for="title"
@@ -270,17 +327,17 @@
 									/>
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group required row">
 								<label class="col-md-1">팝업이미지</label>
 								<div class="col-md-9">
 									<div class="custom-file">
-										<input class="custom-file-input" id="input_file"
-											   required="" type="file">
+										<input class="custom-file-input" id="input_file"  type="file">
+										<input type="hidden" name="popImgCheck" id="popImgCheck" value="" th:value="*{popImgName}" th:attr="data-ext=*{popImgExt}" th:attrappend="data-size=*{popImgLength}"/>
 										<br/>
 										<div id="articlefileChange">
 											<th:block th:if="*{not #strings.isEmpty(popImgPath)}">
-												<div th:id="'dbfile1'" th:onclick="'removeContent(' + *{popImgRealPath} + ');'">
-													<img th:src="*{popImgPath}"/>
+												<div th:id="'dbfile1'" th:onclick="removeContent([[*{pcImgRealPath}]])">
+													<img th:src="*{popImgPath}" width="100" height="100"/>
 													<i class="me-2 mdi mdi-minus"></i>
 												</div>
 											</th:block>
@@ -339,14 +396,14 @@
 											type="text"
 									/>
 									<div class="form-check">
-										<input class="form-check-input" id="popImgLinkTarget1" name="popImgLinkTarget" required=""
+										<input class="form-check-input" id="popImgLinkTarget1" name="popImgLinkTarget" 
 											   th:checked="popImgLinkTarget == '_blank'"
 											   th:field="*{popImgLinkTarget}"
 											   type="radio" value="_blank">
 										<label class="form-check-label mb-0" for="popImgLinkTarget1">새창</label>
 									</div>
 									<div class="form-check">
-										<input class="form-check-input" id="popImgLinkTarget2" name="popImgLinkTarget" required=""
+										<input class="form-check-input" id="popImgLinkTarget2" name="popImgLinkTarget" 
 											   th:checked="popImgLinkTarget == '_self'"
 											   th:field="*{popImgLinkTarget}"
 											   type="radio" value="_self">
@@ -354,7 +411,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group row">
+							<div class="form-group required row">
 								<label class="col-md-1">전시시작일시</label>
 								<div class="col-md-3">
 									<div class="input-group">
@@ -401,7 +458,7 @@
 								</div>
 							</div>
 
-							<div class="form-group row">
+							<div class="form-group required row">
 								<label class="col-md-1">전시종료일시</label>
 								<div class="col-md-3">
 									<div class="input-group">

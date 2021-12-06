@@ -41,6 +41,12 @@ public class Mainpop extends BaseTimeEntity {
     @Column(name = "POP_IMG_LINK_TARGET",length = 10)
     private String popImgLinkTarget;
 
+    @Column(name = "POP_IMG_EXT", length = 6)
+    private String popImgExt;
+
+    @Column(name = "POP_IMG_SIZE", length = 10)
+    private String popImgLength;
+
     @Column(name = "WIDTH_POINT",length = 5)
     private String widthPoint;
 

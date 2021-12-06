@@ -24,6 +24,10 @@
         return this.optional(element)||param.indexOf($(element).data('ext')) > -1;
     });
 
+    $.validator.addMethod('num',function(value, element){
+        return this.optional(element) || value.match(/^[0-9|\s]*$/);
+    });
+
     $.validator.setDefaults({
         onkeyup: false,
         onclick: false,
