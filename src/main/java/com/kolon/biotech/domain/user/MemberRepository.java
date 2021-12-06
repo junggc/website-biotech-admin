@@ -17,4 +17,7 @@ public interface MemberRepository extends JpaRepository<Member, Integer>, JpaSpe
 
     @Query("update Member e set e.blocked = 'false', e.failCount=0 where e.id=:ida")
     Member updateLoginReset(Integer ida);
+
+    @Query("update Member e set e.delYn='Y' where e.id=:ida")
+    Member updateDelYn(Integer ida);
 }

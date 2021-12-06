@@ -28,6 +28,14 @@
         return this.optional(element) || value.match(/^[0-9|\s]*$/);
     });
 
+    $.validator.addMethod("regex", function(value, element, regexpr) {
+        return regexpr.test(value);
+    }, "Please enter a valid pasword.");
+
+    $.validator.addMethod("sameidcheck", function(value, element) {
+        return this.optional(element)||value == 'true';
+    }, "Please enter a valid sameidcheck.");
+
     $.validator.setDefaults({
         onkeyup: false,
         onclick: false,

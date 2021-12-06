@@ -54,6 +54,7 @@
             th:src="@{/assets/libs/jquery-validation/dist/jquery.validate.min.js}"></script>
     <script href="/assets/libs/jquery-validation/dist/additional-methods.js"
             th:src="@{/assets/libs/jquery-validation/dist/additional-methods.js}"></script>
+    <script href="/js/jquery-common.js" th:src="@{/js/jquery-common.js}"></script>
     <script>
     $(function () {
         $(".select2").select2();
@@ -80,34 +81,104 @@
             }
         }
 
-        $.validator.addMethod("regex", function(value, element, regexpr) {
-            return regexpr.test(value);
-        }, "Please enter a valid pasword.");
+
 
         $("#is_form").validate({
             rules: {
                 loginId: {
                     required: true ,
-                    regex: /^[a-z|A-Z|0-9|\s]*$/ ,
-                    remote: {
-                        url:"/loginSameCheck",
-                        type:"post",
-                        data:{
-                            loginId : function(){
-                                return $("#loginId").val();
-                            }
-                        }
-                    }
+                    regex: /^[a-z|A-Z|0-9|\s]*$/
+                }
+                ,samecheck:{
+                    sameidcheck: true
+                }
+                ,name:{
+                    required: true
+                }
+                ,password:{
+                    required: true
+                }
+                ,password1:{
+                    required: true
+                    ,equalTo: "#password"
+                }
+                ,emailId:{
+                    required: true
+                }
+                ,emailDomain:{
+                    required: true
+                }
+                ,pnum:{
+                    required: true
+                }
+                ,rank:{
+                    required: true
+                }
+                ,useYn:{
+                    required: true
                 }
             },
             messages : {
                 loginId : {
                     required: "로그인 아이디는 필수입니다." ,
-                    regex: "영어 숫자만 입력가능합니다." ,
-                    remote: "사용중인 아이디 입니다."
+                    regex: "영어 숫자만 입력가능합니다."
                 }
+                ,samecheck:{
+                    sameidcheck: "아이디 중복체크를 해주세요."
+                }
+                ,name:{
+                    required: "이름을 입력해주세요."
+                }
+                ,password:{
+                    required: "비밀번호를 입력해주세요."
+                }
+                ,password1:{
+                    required: "비밀번호확인을 입력해주세요."
+                    ,equalTo: "비밀번호와 일치하지 않습니다."
+                }
+                ,emailId:{
+                    required: "이메일아이디를 입력해주세요."
+                }
+                ,emailDomain:{
+                    required: "이메일도메인을 입력해주세요."
+                }
+                ,pnum:{
+                    required: "연락처를 입력해주세요."
+                }
+                ,rank:{
+                    required: "직급을 입력해주세요."
+                }
+                ,useYn:{
+                    required: "사용여부를 선택해주세요."
+                }
+
             }
         });
+
+        sameIdCheck = function(){
+            var url = '/loginSameCheck';
+            $.ajax({
+                dataType : 'json'
+                , type : 'POST'
+                , async : true
+                , beforeSend : function (jqXHR, settings) {
+
+                }
+                , url : url //for ASP.NET, java
+                , data : { loginId: $("#loginId").val() }
+                , success : function (changes) {
+                    if(!changes){
+                        alert("사용중인 아이디입니다.");
+                        $("#samecheck").val('false');
+                    }else{
+                        $("#samecheck").val('true');
+                    }
+                }
+                , complete : function () {
+
+                }
+            });
+        }
     });
 
     </script>
@@ -129,6 +200,7 @@
                     <form class="form-horizontal" id="is_form" method="post" name="is_form" th:action="@{/createUser}"
                           th:object="${member}">
                         <input id="id" name="id" th:value="*{id}" type="hidden">
+                        <input id="samecheck" name="samecheck" value="" type="hidden">
                         <div class="card-body">
                             <h4 class="card-title">관리자 등록</h4>
                             <div class="form-group row">

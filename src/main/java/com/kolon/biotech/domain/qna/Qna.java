@@ -15,40 +15,59 @@ public class Qna extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false)
+    @Column(name = "QNA_ID", nullable = false)
     private Integer id;
 
-    @Column(name = "division", nullable = false,length = 1)
-    private String division;
+    @Column(name = "QNA_CATE", nullable = false,length = 60)
+    private String qnaCate;
 
-    @Column(name = "username", nullable = false,length = 300)
-    private String username;
+    @Column(name = "USER_NAME", nullable = false,length = 300)
+    private String userName;
 
-    @Column(name = "phone", nullable = false,length = 20)
+    @Column(name = "PHONE", nullable = false,length = 30)
     private String phone;
 
-    @Column(name = "useremail", nullable = false,length = 100)
-    private String useremail;
+    @Column(name = "USER_EMAIL", nullable = false,length = 300)
+    private String userEmail;
 
-    @Column(name = "usertitle", nullable = false,length = 900)
-    private String usertitle;
+    @Column(name = "USER_COMPANY", nullable = false,length = 900)
+    private String userCompany;
 
-    @Column(name = "usercontents", nullable = false,length = 3000)
-    private String usercontents;
+    @Column(name = "USER_CONTENTS", nullable = false,length = 3000)
+    private String userContents;
 
-    @Column(name = "userfile", nullable = false,length = 100)
-    private String userfile;
+    @Column(name = "USER_POSITION", nullable = false,length = 300)
+    private String userPosition;
 
-    @Column(name = "answer_date",length = 30)
-    private String answer_date;
+    @Column(name = "ANSWER_DATE",length = 30)
+    private String answerDate;
 
-    @Column(name = "answer_title",length = 900)
-    private String answer_title;
+    @Column(name = "ANSWER_TITLE",length = 900)
+    private String answerTitle;
 
-    @Column(name = "answer_contents",columnDefinition = "TEXT")
-    private String answer_contents;
+    @Column(name = "ANSWER_CONTENTS",columnDefinition = "TEXT")
+    private String answerContents;
 
-    @Column(name = "send_email",length = 50)
-    private String send_email;
+    @Column(name = "SEND_EMAIL",length = 50)
+    private String sendEmail;
+
+    @Column(name = "COUNTRY",length = 210)
+    private String country;
+
+    @Column(name = "FILE_NAME",length = 300)
+    private String fileName;
+
+    @Column(name = "FILE_EXT",length = 6)
+    private String fileExt;
+
+    @Column(name = "FILE_LENGTH",length = 10)
+    private String fileLength;
+
+    @Column(name = "URI_PATH",length = 500)
+    private String uriPath;
+
+    @Column(name = "FILE_PATH",length = 500)
+    private String filePath;
+
 
 }

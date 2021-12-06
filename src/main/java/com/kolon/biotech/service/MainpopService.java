@@ -65,6 +65,11 @@ public class MainpopService {
         log.debug("===================setWriteStroeNotice============================");
         log.debug("########"+obj.getId()+"#########");
 
+        Mainpop _mainpop = null;
+        if(obj.getId() != null && obj.getId() > 0){
+            _mainpop = mainPopRepository.findById(obj.getId()).get();
+        }
+
         //파일 삭제
         if(deleteFile != null && !"".equals(deleteFile)){
             File f = new File(deleteFile);
@@ -72,9 +77,15 @@ public class MainpopService {
         }
 
         if(file != null && !file.isEmpty()){
+
+            if(_mainpop != null){
+                File f = new File(_mainpop.getPopImgRealPath());
+                f.delete();
+            }
+
             log.debug("######"+file.getOriginalFilename()+"######");
             String oriFileName = file.getOriginalFilename();
-            String newFilename = new SimpleDateFormat("yyyyMMddHHmmss.SSS").format(new Date()) + "." + FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase();;
+            String newFilename = new SimpleDateFormat("yyyyMMddHHmmss.SSS").format(new Date()) + "." + FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase();
             String path = "/mainpop";
             String filePath = targetRootLocation + path;
 
@@ -88,12 +99,36 @@ public class MainpopService {
             obj.setPopImgName(oriFileName);
             obj.setPopImgPath(uriPath+"/"+path+"/"+newFilename);
             obj.setPopImgRealPath(filePath + "/" + newFilename);
+            obj.setPopImgExt(FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase());
+            obj.setPopImgLength(String.valueOf(file.getSize()));
+        }else{
+            obj.setPopImgName(_mainpop.getPopImgName());
+            obj.setPopImgPath(_mainpop.getPopImgPath());
+            obj.setPopImgRealPath(_mainpop.getPopImgRealPath());
+            obj.setPopImgExt(_mainpop.getPopImgExt());
+            obj.setPopImgLength(_mainpop.getPopImgLength());
         }
 
         Mainpop r_notice = mainPopRepository.save(obj);
 
         return r_notice;
 
+    }
+
+    @Transactional
+    public void delete(List<Integer> deleteList){
+        //파일 삭제 및 글삭제
+        if(deleteList != null && !deleteList.isEmpty()){
+            for(Integer id : deleteList){
+
+                //실제파일 삭제
+                Mainpop mainpop = mainPopRepository.findById(id).get();
+                File f = new File(mainpop.getPopImgRealPath());
+                f.delete();
+
+                mainPopRepository.deleteById(id);
+            }
+        }
     }
 
 

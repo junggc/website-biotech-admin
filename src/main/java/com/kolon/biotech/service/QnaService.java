@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -109,16 +110,16 @@ public class QnaService {
     }
 
     @Transactional
-    public void delete(List<Integer> deleteFileList){
+    public void delete(List<Integer> deleteList){
 
         //파일 삭제
-        if(deleteFileList != null && !deleteFileList.isEmpty()){
-            for(Integer id : deleteFileList){
+        if(deleteList != null && !deleteList.isEmpty()){
+            for(Integer id : deleteList){
 
                 //실제 파일 삭제
                 Qna nfile = qnaRepository.findById(id).get();
-//                File f = new File(nfile.getFilePath());
-//                f.delete();
+                File f = new File(nfile.getFilePath());
+                f.delete();
 
                 qnaRepository.deleteById(id);
             }

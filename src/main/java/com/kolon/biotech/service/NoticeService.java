@@ -128,16 +128,18 @@ public class NoticeService {
     }
 
     @Transactional
-    public void delete(List<Integer> deleteFileList){
+    public void delete(List<Integer> deleteList){
 
         //파일 삭제
-        if(deleteFileList != null && !deleteFileList.isEmpty()){
-            for(Integer id : deleteFileList){
+        if(deleteList != null && !deleteList.isEmpty()){
+            for(Integer id : deleteList){
 
                 //실제 파일 삭제
-                Noticefile nfile = noticefileRepository.findById(id).get();
-                File f = new File(nfile.getFilePath());
-                f.delete();
+                List<Noticefile> nfile = noticefileRepository.findAllByNoticeId(id);
+                for(Noticefile nf : nfile){
+                    File f = new File(nf.getFilePath());
+                    f.delete();
+                }
 
                 noticefileRepository.deleteById(id);
                 noticefileRepository.deleteByNoticeId(id);

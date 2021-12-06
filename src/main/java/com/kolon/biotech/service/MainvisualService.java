@@ -1,5 +1,6 @@
 package com.kolon.biotech.service;
 
+import com.kolon.biotech.domain.mainpop.Mainpop;
 import com.kolon.biotech.domain.mainvisual.Mainvisual;
 import com.kolon.biotech.domain.mainvisual.MainvisualRepository;
 import com.kolon.biotech.domain.notice.Notice;
@@ -192,6 +193,35 @@ public class MainvisualService {
 
         return r_mainvidual;
 
+    }
+
+    @Transactional
+    public void delete(List<Integer> deleteList){
+        if(deleteList != null && !deleteList.isEmpty()){
+            for(Integer id : deleteList){
+
+                //실제파일 삭제
+                Mainvisual mainvisual = mainvisualRepository.findById(id).get();
+
+                if(mainvisual.getPcImgRealPath() != null && !"".equals(mainvisual.getPcImgRealPath())){
+                    File f = new File(mainvisual.getPcImgRealPath());
+                    f.delete();
+                }
+
+                if(mainvisual.getMoImgRealPath() != null && !"".equals(mainvisual.getMoImgRealPath())){
+                    File f = new File(mainvisual.getMoImgRealPath());
+                    f.delete();
+                }
+
+                if(mainvisual.getVideosRealPath() != null && !"".equals(mainvisual.getVideosRealPath())){
+                    File f = new File(mainvisual.getVideosRealPath());
+                    f.delete();
+                }
+
+
+                mainvisualRepository.deleteById(id);
+            }
+        }
     }
 
 }

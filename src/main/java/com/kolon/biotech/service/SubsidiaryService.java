@@ -76,16 +76,10 @@ public class SubsidiaryService {
     }
 
     @Transactional
-    public void delete(List<Integer> deleteFileList)throws Exception{
+    public void delete(List<Integer> deleteList)throws Exception{
 
-        if(deleteFileList != null && !deleteFileList.isEmpty()){
-            for(Integer id : deleteFileList){
-
-                //실제 파일 삭제
-                Subsidiary nfile = subsidiaryRepository.findById(id).get();
-//                File f = new File(nfile.getFilePath());
-//                f.delete();
-
+        if(deleteList != null && !deleteList.isEmpty()){
+            for(Integer id : deleteList){
                 subsidiaryRepository.deleteById(id);
             }
 

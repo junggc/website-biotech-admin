@@ -79,16 +79,10 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void delete(List<Integer> deleteFileList){
-        if(deleteFileList != null && !deleteFileList.isEmpty()){
-            for(Integer id : deleteFileList){
-
-                //실제 파일 삭제
-                Member nfile = memberRepository.findById(id).get();
-//                File f = new File(nfile.getFilePath());
-//                f.delete();
-
-                memberRepository.deleteById(id);
+    public void delete(List<Integer> deleteList){
+        if(deleteList != null && !deleteList.isEmpty()){
+            for(Integer id : deleteList){
+                memberRepository.updateDelYn(id);
             }
         }
     }

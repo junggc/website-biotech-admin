@@ -51,4 +51,20 @@ public class MainpopRestController {
         return list;
     }
 
+    @PostMapping(value="/mainpopDelete")
+    public ResultJsonPagingDto  mainpopDelete(@RequestParam(value="deleteList") List<Integer> deleteList){
+        ResultJsonPagingDto dto = new ResultJsonPagingDto();
+        try{
+            mainpopService.delete(deleteList);
+
+            dto.setSuccess(true);
+            dto.setMessage(messageSourceAccessor.getMessage("deleteok"));
+        }catch(Exception e){
+            dto.setSuccess(true);
+            dto.setMessage(messageSourceAccessor.getMessage("deletefail"));
+        }
+
+        return dto;
+    }
+
 }

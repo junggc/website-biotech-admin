@@ -150,12 +150,21 @@
 			var _lastDot = name.lastIndexOf(".");
 			var _fileExt = name.substring(_lastDot, nameLen).toLowerCase();
 
+			if(!$("#input_file").data('ext').contains(_fileExt)){
+				alert($("#input_file").data('ext').replaceAll('|',',')+"만 첨부가능합니다.");
+				return false;
+			}
+
+			if($("#input_file").data('size') < size){
+				alert("최대 10MB까지 첨부가능합니다.");
+				return false;
+			}
 
           var reader = new FileReader();
           reader.onload = function (e) {
             content_files.push(f);
             $('#articlefileChange').append(
-                '<div id="file' + fileNum + '" onclick="fileDelete(\'file' + fileNum + '\')" data-ext="'+ext+'">'
+                '<div id="file' + fileNum + '" onclick="fileDelete(\'file' + fileNum + '\')" data-ext="'+ext+'" data-size="'+size+'">'
                 + '<font style="font-size:12px">' + f.name + '</font>'
                 + '<i class="me-2 mdi mdi-minus"></i>'
                 + ''

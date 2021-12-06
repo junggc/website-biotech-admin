@@ -64,4 +64,20 @@ public class MainRestController {
         return _mainMainvisual;
     }
 
+    @PostMapping(value="/mainvisualDelete")
+    public ResultJsonPagingDto  mainvisualDelete(@RequestParam(value="deleteList") List<Integer> deleteList){
+        ResultJsonPagingDto dto = new ResultJsonPagingDto();
+        try{
+            mainvisualService.delete(deleteList);
+
+            dto.setSuccess(true);
+            dto.setMessage(messageSourceAccessor.getMessage("deleteok"));
+        }catch(Exception e){
+            dto.setSuccess(true);
+            dto.setMessage(messageSourceAccessor.getMessage("deletefail"));
+        }
+
+        return dto;
+    }
+
 }

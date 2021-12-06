@@ -61,50 +61,8 @@ public class PrbinfoService {
     public Prbinfo setWriteStroe(Prbinfo obj, MultipartFile[] files, List<Integer> deleteFileList) throws IOException {
         log.debug("===================setWriteStroeNotice============================");
         log.debug("########"+obj.getId()+"#########");
+
         Prbinfo r_obj = prbinfoRepository.save(obj);
-
-        if(files != null && files.length > 0){
-
-            int i=0;
-            for(MultipartFile file : files){
-                log.debug("######"+file.getOriginalFilename()+"######");
-                String oriFileName = file.getOriginalFilename();
-                String newFilename = new SimpleDateFormat("yyyyMMddHHmmss.SSS").format(new Date()) + "." + FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase();;
-                String path = "/notice";
-                String filePath = targetRootLocation + path;
-
-                Path fileLocation = Paths.get(filePath);
-                if (!Files.isDirectory(fileLocation)) {
-                    Files.createDirectories(fileLocation);
-                }
-
-                Files.copy(file.getInputStream(), fileLocation.resolve(newFilename));
-
-//                File f = new File(filePath+"/"+newFilename);
-//
-//                file.transferTo(f);
-
-
-
-
-            }
-        }
-
-        //파일 삭제
-        if(deleteFileList != null && !deleteFileList.isEmpty()){
-            for(Integer id : deleteFileList){
-
-                //실제 파일 삭제
-                Prbinfo nfile = prbinfoRepository.findById(id).get();
-//                File f = new File(nfile.getFilePath());
-//                f.delete();
-
-                prbinfoRepository.deleteById(id);
-            }
-
-        }
-
-
         return r_obj;
 
     }

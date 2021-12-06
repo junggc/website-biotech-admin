@@ -75,6 +75,9 @@ public class Member extends BaseTimeEntity {
     @Transient
     private String mPassword;
 
+    @Column(name = "DEL_YN")
+    private String delYn;
+
 
 //    @Builder
 //    public Member(String auth, String loginId, String name, String password, String emailId,String emailDomain, String pnum, String rank, String useYn, String mainAuthority,String noticeAuthority){
