@@ -21,6 +21,10 @@
     />
     <!-- Custom CSS -->
     <link href="/dist/css/style.min.css" rel="stylesheet"/>
+    <script src="/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/assets/libs/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="/assets/libs/jquery-validation/dist/additional-methods.js"></script>
+    <script src="/js/jquery-common.js"></script>
 
     <script>
         /*<![CDATA[*/
@@ -29,6 +33,33 @@
         if(isLocked){
             alert("[[ ${isLockedMsg} ]]");
         }
+
+        $(function () {
+            $("#loginform").validate({
+                ignore: "",
+                rules: {
+                    loginId: {required:true},
+                    password: {required:true}
+                },
+
+                messages: {
+                    loginId: {required:"아이디를 입력해주세요."},
+                    password: {required:"비밀번호를 입력해주세요."}
+                },
+                errorPlacement: function(error, element) {
+
+                }
+            });
+
+            subutton = function(){
+                if($("#loginform").valid()){
+
+                    $("#loginform")[0].submit()
+                    return false;
+                }
+            }
+        });
+
     </script>
 	<style>
 		h1.logo {padding:130px 0 0 0;font-size:70px;color:#e6e6e6;font-weight:800;text-align:center;font-family:sans-serif;}
@@ -64,7 +95,7 @@
                     <!--                    <span class="db"><img alt="logo" src="/assets/images/logo.png"/></span>-->
                 </div>
                 <!-- Form -->
-                <form action="/login" class="form-horizontal" id="loginform" method="post">
+                <form action="/login" class="form-horizontal" name="loginform" id="loginform" method="post">
                     <div class="row pb-4">
                         <div class="col-sm-8">
                             <div class="input-group mb-3">
@@ -75,7 +106,7 @@
                                 </div-->
                                 <input aria-describedby="basic-addon1" aria-label="loginId"
                                        class="form-control form-control-lg"
-                                       name="loginId" placeholder="ID" required=""
+                                       name="loginId" placeholder="ID"
                                        type="text"/>
                             </div>
                             <div class="input-group mb-3">
@@ -85,16 +116,16 @@
                                 </div-->
                                 <input aria-describedby="basic-addon1" aria-label="Password"
                                        class="form-control form-control-lg"
-                                       name="password" placeholder="Password" required=""
+                                       name="password" placeholder="Password"
                                        type="password"/>
                             </div>
                         </div>
 						<div class="col-sm-4 form-group">
-                            <button class="btn btn-primary block full-width full-height m-b" type="submit">Login</button>
+                            <button class="btn btn-primary block full-width full-height m-b" type="button" onclick="subutton();">Login</button>
                         </div>
                     </div>
                     <div class="row border-top border-secondary">
-                        
+                        ※ 패스워드 5회 실패 시 비밀번호가 잠기오니  아래 연락처로 문의하십시오.
                     </div>
                 </form>
             </div>
@@ -121,7 +152,7 @@
 <!-- ============================================================== -->
 <!-- All Required js -->
 <!-- ============================================================== -->
-<script src="/assets/libs/jquery/dist/jquery.min.js"></script>
+
 <!-- Bootstrap tether Core JavaScript -->
 <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <!-- ============================================================== -->
