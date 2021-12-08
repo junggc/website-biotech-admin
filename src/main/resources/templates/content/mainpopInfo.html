@@ -132,7 +132,7 @@
 
 
     // 파일 현재 필드 숫자 totalCount랑 비교값
-    var fileCount = 0;
+    var fileCount = $('#articlefileChange').children().length;
     // 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
     var totalCount = 1;
     // 파일 고유넘버
@@ -204,6 +204,8 @@
 		$("#popImgCheck").val('');
 		$("#popImgCheck").attr('data-ext','');
 		$("#popImgCheck").attr('data-size','');
+
+		fileCount --;
 	}
 
     /*
@@ -336,7 +338,7 @@
 										<br/>
 										<div id="articlefileChange">
 											<th:block th:if="*{not #strings.isEmpty(popImgPath)}">
-												<div th:id="'dbfile1'" th:onclick="removeContent([[*{pcImgRealPath}]])">
+												<div th:id="'dbfile1'" th:onclick="removeContent([[*{popImgRealPath}]])">
 													<img th:src="*{popImgPath}" width="100" height="100"/>
 													<i class="me-2 mdi mdi-minus"></i>
 												</div>

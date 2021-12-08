@@ -208,7 +208,7 @@
 
 	/***********************pc이미지****************************/
     // 파일 현재 필드 숫자 totalCount랑 비교값
-    var fileCount = 0;
+    var fileCount = $('#articlefileChange').children().length;
     // 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
     var totalCount = 1;
     // 파일 고유넘버
@@ -287,7 +287,7 @@
 
 	/***********************mo이미지****************************/
 			// 파일 현재 필드 숫자 totalCount랑 비교값
-	var mofileCount = 0;
+	var mofileCount = $('#moarticlefileChange').children().length;
 	// 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
 	var mototalCount = 1;
 	// 파일 고유넘버
@@ -366,7 +366,7 @@
 
 	/***********************mv파일****************************/
 			// 파일 현재 필드 숫자 totalCount랑 비교값
-	var mvfileCount = 0;
+	var mvfileCount = $('#mvarticlefileChange').children().length;
 	// 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
 	var mvtotalCount = 1;
 	// 파일 고유넘버
@@ -493,8 +493,8 @@
               contentType: false,
               success: function (data) {
 				console.log('data',data);
-				alert("파일업로드 성공");
-				location.reload();
+				alert("메인비주얼이 저장되었습니다.");
+				location.href="/mainvisualList";
               },
               error: function (xhr, status, error) {
                 alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
@@ -761,13 +761,13 @@
 							<div class="form-group row">
 								<label for="topSubTxt" class="col-sm-3">메인비주얼 상단 서브 텍스트</label>
 								<div class="col-sm-9">
-									<textarea id="topSubTxt" name="topSubTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;"></textarea>
+									<textarea id="topSubTxt" name="topSubTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{topSubTxt}"></textarea>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="bottomMainTxt" class="col-sm-3">메인비주얼 하단 서브 텍스트</label>
 								<div class="col-sm-9">
-									<textarea id="bottomMainTxt" name="bottomMainTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;"></textarea>
+									<textarea id="bottomMainTxt" name="bottomMainTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{bottomMainTxt}"></textarea>
 								</div>
 							</div>
 

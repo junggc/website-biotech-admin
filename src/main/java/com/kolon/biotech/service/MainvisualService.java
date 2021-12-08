@@ -128,11 +128,14 @@ public class MainvisualService {
             mainvisual.setPcImgLength(String.valueOf(miFile.getSize()));
 
         }else{
-            mainvisual.setPcImgName(_mainvisual.getPcImgName());
-            mainvisual.setPcImgPath(_mainvisual.getPcImgPath());
-            mainvisual.setPcImgRealPath(_mainvisual.getPcImgRealPath());
-            mainvisual.setPcImgExt(_mainvisual.getPcImgExt());
-            mainvisual.setPcImgLength(_mainvisual.getPcImgLength());
+            if(_mainvisual != null){
+                mainvisual.setPcImgName(_mainvisual.getPcImgName());
+                mainvisual.setPcImgPath(_mainvisual.getPcImgPath());
+                mainvisual.setPcImgRealPath(_mainvisual.getPcImgRealPath());
+                mainvisual.setPcImgExt(_mainvisual.getPcImgExt());
+                mainvisual.setPcImgLength(_mainvisual.getPcImgLength());
+            }
+
         }
 
         if(siFile != null && !siFile.isEmpty()){
@@ -155,11 +158,14 @@ public class MainvisualService {
             mainvisual.setMoImgExt(FilenameUtils.getExtension(siFile.getOriginalFilename()).toLowerCase());
             mainvisual.setMoImgLength(String.valueOf(siFile.getSize()));
         }else{
-            mainvisual.setMoImgName(_mainvisual.getMoImgName());
-            mainvisual.setMoImgPath(_mainvisual.getMoImgPath());
-            mainvisual.setMoImgRealPath(_mainvisual.getMoImgRealPath());
-            mainvisual.setMoImgExt(_mainvisual.getMoImgExt());
-            mainvisual.setMoImgLength(_mainvisual.getMoImgLength());
+            if(_mainvisual != null){
+                mainvisual.setMoImgName(_mainvisual.getMoImgName());
+                mainvisual.setMoImgPath(_mainvisual.getMoImgPath());
+                mainvisual.setMoImgRealPath(_mainvisual.getMoImgRealPath());
+                mainvisual.setMoImgExt(_mainvisual.getMoImgExt());
+                mainvisual.setMoImgLength(_mainvisual.getMoImgLength());
+            }
+
         }
 
         if(mvFile != null && !mvFile.isEmpty()){
@@ -182,11 +188,14 @@ public class MainvisualService {
             mainvisual.setVideosExt(FilenameUtils.getExtension(mvFile.getOriginalFilename()).toLowerCase());
             mainvisual.setVideosLength(String.valueOf(mvFile.getSize()));
         }else{
-            mainvisual.setVideosName(_mainvisual.getVideosName());
-            mainvisual.setVideosPath(_mainvisual.getVideosPath());
-            mainvisual.setVideosRealPath(_mainvisual.getVideosRealPath());
-            mainvisual.setVideosExt(_mainvisual.getVideosExt());
-            mainvisual.setVideosLength(_mainvisual.getVideosLength());
+            if(_mainvisual != null){
+                mainvisual.setVideosName(_mainvisual.getVideosName());
+                mainvisual.setVideosPath(_mainvisual.getVideosPath());
+                mainvisual.setVideosRealPath(_mainvisual.getVideosRealPath());
+                mainvisual.setVideosExt(_mainvisual.getVideosExt());
+                mainvisual.setVideosLength(_mainvisual.getVideosLength());
+            }
+
         }
 
         Mainvisual r_mainvidual = mainvisualRepository.save(mainvisual);
