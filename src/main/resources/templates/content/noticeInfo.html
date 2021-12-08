@@ -122,6 +122,9 @@
     // 첨부파일 배열
     var content_files = [];
     var delete_files = [];
+	var limitext="jpg|gif|png|pdf|doc|hwp|mp4";
+	var limitsize=10485760;
+
 
     function fileCheck(e) {
 		console.log('e',e);
@@ -148,14 +151,14 @@
 
 			//파일 확장자 체크
 			var _lastDot = name.lastIndexOf(".");
-			var _fileExt = name.substring(_lastDot, nameLen).toLowerCase();
+			var _fileExt = name.substring(_lastDot+1, nameLen).toLowerCase();
 
-			if(!$("#input_file").data('ext').contains(_fileExt)){
-				alert($("#input_file").data('ext').replaceAll('|',',')+"만 첨부가능합니다.");
+			if(limitext.indexOf(_fileExt)<0){
+				alert(limitext.replaceAll('|',',')+"만 첨부가능합니다.");
 				return false;
 			}
 
-			if($("#input_file").data('size') < size){
+			if(limitsize < size){
 				alert("최대 10MB까지 첨부가능합니다.");
 				return false;
 			}
@@ -230,8 +233,8 @@
               contentType: false,
               success: function (data) {
 				console.log('data',data);
-				alert("파일업로드 성공");
-				  location.reload();
+				alert("공지사항이 등록되었습니다.");
+				  location.href="/noticeList";
               },
               error: function (xhr, status, error) {
                 alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
@@ -389,7 +392,7 @@
 								<label class="col-md-1">첨부파일</label>
 								<div class="col-md-9">
 									<div class="custom-file">
-										<input class="custom-file-input" id="input_file" type="file" data-limitExt="jpg|gif|png|pdf|doc|hwp|mp4" data-sizeLimit="10485760">
+										<input class="custom-file-input" id="input_file" type="file" />
 										<br/>
 										<div id="articlefileChange">
 											<div th:each="filedata, i: ${notice.noticefileList}" th:id="'dbfile'+${filedata.id}" th:onclick="'removeContent(' + ${filedata.id} + ');'" th:attr="data-ext=${filedata.fileExt}" th:attrappend="data-size=${filedata.fileLength},data-name=${filedata.fileName}" >
