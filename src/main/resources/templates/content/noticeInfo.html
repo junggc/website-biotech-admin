@@ -359,7 +359,7 @@
 											id="title"
 											name="title"
 											placeholder="제목을 입력하세요."
-											th:field="*{title}"
+											th:value="*{#strings.unescapeJava(title)}"
 											type="text"
 									/>
 								</div>
@@ -382,7 +382,7 @@
 									<script type="text/javascript">
 										var dext5Editor = new Dext5editor("content");
 									</script>
-									<textarea th:text="*{content}" name="content" id="content" style="display:none" ></textarea>
+									<textarea th:utext="*{content}" name="content" id="content" style="display:none" ></textarea>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -393,7 +393,7 @@
 										<br/>
 										<div id="articlefileChange">
 											<div th:each="filedata, i: ${notice.noticefileList}" th:id="'dbfile'+${filedata.id}" th:onclick="'removeContent(' + ${filedata.id} + ');'" th:attr="data-ext=${filedata.fileExt}" th:attrappend="data-size=${filedata.fileLength},data-name=${filedata.fileName}" >
-												<font style="font-size:12px" th:text="${filedata.fileName}"></font>
+												<font style="font-size:12px" th:utext="${filedata.fileName}"></font>
 												<i class="me-2 mdi mdi-minus"></i>
 											
 										</div>

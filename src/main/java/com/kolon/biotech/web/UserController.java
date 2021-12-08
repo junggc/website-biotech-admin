@@ -55,7 +55,7 @@ public class UserController {
 
     //회원가입 페이지 이동
     @GetMapping(value = "/userInfo")
-    public String userInfo(@ModelAttribute Member member, Model model) {
+    public String userInfo(@ModelAttribute Member member, Model model,@AuthenticationPrincipal MemberDto memberDto) {
 
         Member user = userService.getUser(member);
         model.addAttribute("member",user);
@@ -64,14 +64,14 @@ public class UserController {
 
     //회원가입 처리
     @PostMapping("/createUser")
-    public String createUser(@ModelAttribute Member user){
+    public String createUser(@ModelAttribute Member user,@AuthenticationPrincipal MemberDto memberDto){
         userService.joinUser(user);
         return "redirect:/userList";
     }
 
     //로그인 결과 페이지
     @GetMapping("/loginSuccess")
-    public String loginSuccess(){
+    public String loginSuccess(@AuthenticationPrincipal MemberDto memberDto){
         return "redirect:/main";
     }
 
@@ -79,6 +79,12 @@ public class UserController {
     public String userList(@AuthenticationPrincipal MemberDto memberDto){
 
         return "content/userList";
+    }
+
+    @GetMapping(value="logoutSuccess")
+    public String logoutSuccess(@AuthenticationPrincipal MemberDto memberDto){
+        log.debug("######memberDto="+memberDto.getUsername()+":"+memberDto.getLoginDate());
+        return "redirect:/login";
     }
 }
 
