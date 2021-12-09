@@ -102,11 +102,13 @@ public class MainpopService {
             obj.setPopImgExt(FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase());
             obj.setPopImgLength(String.valueOf(file.getSize()));
         }else{
-            obj.setPopImgName(_mainpop.getPopImgName());
-            obj.setPopImgPath(_mainpop.getPopImgPath());
-            obj.setPopImgRealPath(_mainpop.getPopImgRealPath());
-            obj.setPopImgExt(_mainpop.getPopImgExt());
-            obj.setPopImgLength(_mainpop.getPopImgLength());
+            if(_mainpop != null){
+                obj.setPopImgName(_mainpop.getPopImgName());
+                obj.setPopImgPath(_mainpop.getPopImgPath());
+                obj.setPopImgRealPath(_mainpop.getPopImgRealPath());
+                obj.setPopImgExt(_mainpop.getPopImgExt());
+                obj.setPopImgLength(_mainpop.getPopImgLength());
+            }
         }
 
         Mainpop r_notice = mainPopRepository.save(obj);
