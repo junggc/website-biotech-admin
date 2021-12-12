@@ -27,11 +27,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class QnaService {
 
-    private final QnaRepository qnaRepository;
+    @Autowired
+    private QnaRepository qnaRepository;
 
     @Value("${resources.uri_path}")
     private String uriPath;

@@ -26,11 +26,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class SubsidiaryService {
 
-    private final SubsidiaryRepository subsidiaryRepository;
+    @Autowired
+    private SubsidiaryRepository subsidiaryRepository;
 
     @Value("${resources.uri_path}")
     private String uriPath;

@@ -27,11 +27,11 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
 
-    private final MemberRepository memberRepository;
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Transactional
     public Member joinUser(Member memberDto) {

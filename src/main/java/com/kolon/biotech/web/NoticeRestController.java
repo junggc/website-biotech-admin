@@ -25,7 +25,6 @@ import java.util.List;
 
 
 @Slf4j
-@RequiredArgsConstructor
 @RestController
 public class NoticeRestController {
 
@@ -55,16 +54,20 @@ public class NoticeRestController {
     }
 
     @PostMapping("/noticeDelete")
-    public ResultJsonPagingDto noticeDelete(@RequestParam(value = "deleteList") List<Integer> deleteList){
+    public ResultJsonPagingDto noticeDelete(@RequestParam(value = "deleteList[]") Integer[] deleteList){
         ResultJsonPagingDto dto = new ResultJsonPagingDto();
         try{
+            log.debug("@@@@@@"+deleteList.length);
+            log.debug("@@@@@@"+deleteList[0]);
+            log.debug("@@@@@@"+deleteList[1]);
             noticeService.delete(deleteList);
 
             dto.setSuccess(true);
             dto.setMessage(messageSourceAccessor.getMessage("deleteok"));
 
         }catch(Exception e){
-
+            log.debug(e.getMessage());
+            e.printStackTrace();
             dto.setSuccess(true);
             dto.setMessage(messageSourceAccessor.getMessage("deletefail"));
 

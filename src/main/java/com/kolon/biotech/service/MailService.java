@@ -3,15 +3,16 @@ package com.kolon.biotech.service;
 import com.kolon.biotech.web.dto.MailDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class MailService {
 
+    @Autowired
     private JavaMailSender mailSender;
 
     public void mailSend(MailDto mailDto){

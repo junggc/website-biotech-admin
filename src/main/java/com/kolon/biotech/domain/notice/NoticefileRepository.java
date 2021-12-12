@@ -13,4 +13,7 @@ public interface NoticefileRepository extends JpaRepository<Noticefile, Integer>
 
     public void deleteByNoticeId(Integer noticeId);
 
+    public List<Noticefile> findAllByNoticeIdIn(Integer[] list);
+    public void deleteAllByIdIn(Integer[] list);
+
 }

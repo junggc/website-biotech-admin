@@ -32,13 +32,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class NoticeService {
 
-    private final NoticeRepository noticeRepository;
+    @Autowired
+    private NoticeRepository noticeRepository;
 
-    private final NoticefileRepository noticefileRepository;
+    @Autowired
+    private NoticefileRepository noticefileRepository;
 
     @Value("${resources.uri_path}")
     private String uriPath;
@@ -128,22 +129,21 @@ public class NoticeService {
     }
 
     @Transactional
-    public void delete(List<Integer> deleteList){
+    public void delete(Integer[] deleteList){
 
         //파일 삭제
-        if(deleteList != null && !deleteList.isEmpty()){
-            for(Integer id : deleteList){
-
-                //실제 파일 삭제
-                List<Noticefile> nfile = noticefileRepository.findAllByNoticeId(id);
-                for(Noticefile nf : nfile){
-                    File f = new File(nf.getFilePath());
+        if(deleteList != null && deleteList.length > 0){
+            //실제 파일 삭제
+            List<Noticefile> nfile = noticefileRepository.findAllByNoticeIdIn(deleteList);
+            for(Noticefile nf : nfile){
+                File f = new File(nf.getFilePath());
+                if(f!=null && f.isFile()){
                     f.delete();
                 }
-
-                noticefileRepository.deleteById(id);
-                noticefileRepository.deleteByNoticeId(id);
             }
+
+            noticefileRepository.deleteAllByIdIn(deleteList);
+            noticeRepository.deleteAllByIdIn(deleteList);
 
         }
 

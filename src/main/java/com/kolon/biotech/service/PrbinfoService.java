@@ -26,12 +26,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class PrbinfoService {
 
-
-    private final PrbinfoRepository prbinfoRepository;
+    @Autowired
+    private PrbinfoRepository prbinfoRepository;
 
     @Value("${resources.uri_path}")
     private String uriPath;

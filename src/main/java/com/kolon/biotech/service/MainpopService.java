@@ -29,11 +29,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class MainpopService {
 
-    private final MainPopRepository mainPopRepository;
+    @Autowired
+    private MainPopRepository mainPopRepository;
 
     @Value("${resources.uri_path}")
     private String uriPath;
