@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 
 <aside class="left-sidebar" data-sidebarbg="skin5" th:fragment="leftFragment">
@@ -8,31 +8,35 @@
 		<!-- Sidebar navigation-->
 		<nav class="sidebar-nav">
 			<ul class="pt-4" id="sidebarnav">
+				<span th:text="${#authentication.getPrincipal()}"></span>
+				<th:block th:if="${#authentication.getPrincipal().getMainAuthority() == 'Y'}">
+					<li class="sidebar-item">
+						<a aria-expanded="false" class="sidebar-link has-arrow waves-effect waves-dark"
+						   href="javascript:void(0);">
+							<i class="mdi mdi-chart-bar"></i>
+							<span class="hide-menu">메인관리</span>
+						</a>
+						<ul aria-expanded="false" class="collapse first-level">
+							<li class="sidebar-item">
+								<a class="sidebar-link" th:href="@{/mainvisualList}" href="/mainvisualList">
+									<i class="mdi mdi-note-outline"></i>
+									<span class="hide-menu">메인비주얼 관리</span></a>
+							</li>
+							<li class="sidebar-item">
+								<a class="sidebar-link" th:href="@{/mainpopList}" href="/mainpopList">
+									<i class="mdi mdi-note-plus"></i>
+									<span class="hide-menu">메인팝업 관리</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+				</th:block>
+
 				<li class="sidebar-item">
 					<a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
 					   th:href="@{/noticeList}" href="/noticeList">
 						<i class="mdi mdi-view-dashboard"></i><span class="hide-menu">공지사항관리</span>
 					</a>
-				</li>
-				<li class="sidebar-item">
-					<a aria-expanded="false" class="sidebar-link has-arrow waves-effect waves-dark"
-					   href="javascript:void(0);">
-						<i class="mdi mdi-chart-bar"></i>
-						<span class="hide-menu">메인관리</span>
-					</a>
-					<ul aria-expanded="false" class="collapse first-level">
-						<li class="sidebar-item">
-							<a class="sidebar-link" th:href="@{/mainvisualList}" href="/mainvisualList">
-								<i class="mdi mdi-note-outline"></i>
-								<span class="hide-menu">메인비주얼 관리</span></a>
-						</li>
-						<li class="sidebar-item">
-							<a class="sidebar-link" th:href="@{/mainpopList}" href="/mainpopList">
-								<i class="mdi mdi-note-plus"></i>
-								<span class="hide-menu">메인팝업 관리</span>
-							</a>
-						</li>
-					</ul>
 				</li>
 				<li class="sidebar-item">
 					<a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"

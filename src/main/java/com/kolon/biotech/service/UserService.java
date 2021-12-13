@@ -201,6 +201,8 @@ public class UserService implements UserDetailsService {
         MemberDto memberDto = new MemberDto();
         memberDto.setUsername(user.getLoginId());
         memberDto.setPassword(user.getPassword());
+        memberDto.setMainAuthority(user.getMainAuthority());
+        memberDto.setNoticeAuthority(user.getNoticeAuthority());
         memberDto.setAuthorities(authorities);
         memberDto.setEnabled(true);
         memberDto.setAccountNonLocked(true);
