@@ -2,10 +2,6 @@ package com.kolon.biotech.service;
 
 import com.kolon.biotech.domain.mainpop.MainPopRepository;
 import com.kolon.biotech.domain.mainpop.Mainpop;
-import com.kolon.biotech.domain.mainvisual.Mainvisual;
-import com.kolon.biotech.domain.notice.Notice;
-import com.kolon.biotech.domain.notice.Noticefile;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,6 +128,7 @@ public class MainpopService {
             }
         }
     }
+
 
 
 }

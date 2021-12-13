@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -13,6 +15,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "MAILINFO")
+@DynamicInsert
+@DynamicUpdate
 public class Mailinfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

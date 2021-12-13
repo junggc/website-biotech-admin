@@ -3,6 +3,8 @@ package com.kolon.biotech.domain.notice;
 import com.kolon.biotech.domain.BaseTimeEntity;
 import com.kolon.biotech.domain.user.Member;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
@@ -15,6 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "NOTICE")
+@DynamicInsert
+@DynamicUpdate
 public class Notice extends BaseTimeEntity {
 
     @Id

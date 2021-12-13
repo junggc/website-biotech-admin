@@ -9,6 +9,7 @@
 		<nav class="sidebar-nav">
 			<ul class="pt-4" id="sidebarnav">
 				<span th:text="${#authentication.getPrincipal()}"></span>
+				<span th:text="${#authentication.getPrincipal().getAuthorities()[0]}"></span>
 				<th:block th:if="${#authentication.getPrincipal().getMainAuthority() == 'Y'}">
 					<li class="sidebar-item">
 						<a aria-expanded="false" class="sidebar-link has-arrow waves-effect waves-dark"
@@ -31,13 +32,15 @@
 						</ul>
 					</li>
 				</th:block>
+				<th:block th:if="${#authentication.getPrincipal().getNoticeAuthority() == 'Y'}">
+					<li class="sidebar-item">
+						<a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+						   th:href="@{/noticeList}" href="/noticeList">
+							<i class="mdi mdi-view-dashboard"></i><span class="hide-menu">공지사항관리</span>
+						</a>
+					</li>
+				</th:block>
 
-				<li class="sidebar-item">
-					<a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-					   th:href="@{/noticeList}" href="/noticeList">
-						<i class="mdi mdi-view-dashboard"></i><span class="hide-menu">공지사항관리</span>
-					</a>
-				</li>
 				<li class="sidebar-item">
 					<a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
 					   th:href="@{/qnaList}" href="qnaList">

@@ -4,6 +4,8 @@ import com.kolon.biotech.domain.BaseTimeEntity;
 import groovyjarjarpicocli.CommandLine;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -13,6 +15,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "NOTICE_FILE")
+@DynamicInsert
+@DynamicUpdate
 public class Noticefile extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -2,6 +2,8 @@ package com.kolon.biotech.domain.user;
 
 import com.kolon.biotech.domain.BaseTimeEntity;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "MEMBER")
+@DynamicInsert
+@DynamicUpdate
 public class Member extends BaseTimeEntity {
 //https://asbnotebook.com/spring-boot-thymeleaf-form-validation-example/
     @Id

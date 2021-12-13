@@ -76,23 +76,23 @@ public class MainvisualService {
         if(mainvisual.getId() != null && mainvisual.getId() > 0){
             _mainvisual = mainvisualRepository.findById(mainvisual.getId()).get();
         }
-        //파일삭제
-        if(deleteMiFile != null && !"".equals(deleteMiFile)){
-            File f = new File(deleteMiFile);
-            f.delete();
-        }
-
-        //파일삭제
-        if(deleteSiFile != null && !"".equals(deleteSiFile)){
-            File f = new File(deleteSiFile);
-            f.delete();
-        }
-
-        //파일삭제
-        if(deleteMvFile != null && !"".equals(deleteMvFile)){
-            File f = new File(deleteMvFile);
-            f.delete();
-        }
+//        //파일삭제
+//        if(deleteMiFile != null && !"".equals(deleteMiFile)){
+//            File f = new File(deleteMiFile);
+//            f.delete();
+//        }
+//
+//        //파일삭제
+//        if(deleteSiFile != null && !"".equals(deleteSiFile)){
+//            File f = new File(deleteSiFile);
+//            f.delete();
+//        }
+//
+//        //파일삭제
+//        if(deleteMvFile != null && !"".equals(deleteMvFile)){
+//            File f = new File(deleteMvFile);
+//            f.delete();
+//        }
 
 
         //파일먼저 올리기
@@ -113,6 +113,11 @@ public class MainvisualService {
                 f.delete();
             }
 
+            if(_mainvisual != null){
+                File f = new File(_mainvisual.getVideosRealPath());
+                f.delete();
+            }
+
             String oriFileName = miFile.getOriginalFilename();
             String newFilename = new SimpleDateFormat("yyyyMMddHHmmss.SSS").format(new Date()) + "." + FilenameUtils.getExtension(miFile.getOriginalFilename()).toLowerCase();
 
@@ -127,20 +132,22 @@ public class MainvisualService {
             mainvisual.setPcImgExt(FilenameUtils.getExtension(miFile.getOriginalFilename()).toLowerCase());
             mainvisual.setPcImgLength(String.valueOf(miFile.getSize()));
 
-        }else{
-            if(_mainvisual != null){
-                mainvisual.setPcImgName(_mainvisual.getPcImgName());
-                mainvisual.setPcImgPath(_mainvisual.getPcImgPath());
-                mainvisual.setPcImgRealPath(_mainvisual.getPcImgRealPath());
-                mainvisual.setPcImgExt(_mainvisual.getPcImgExt());
-                mainvisual.setPcImgLength(_mainvisual.getPcImgLength());
-            }
+            mainvisual.setVideosName("");
+            mainvisual.setVideosPath("");
+            mainvisual.setVideosRealPath("");
+            mainvisual.setVideosExt("");
+            mainvisual.setVideosLength("");
 
         }
 
         if(siFile != null && !siFile.isEmpty()){
             if(_mainvisual != null){
                 File f = new File(_mainvisual.getMoImgRealPath());
+                f.delete();
+            }
+
+            if(_mainvisual != null){
+                File f = new File(_mainvisual.getVideosRealPath());
                 f.delete();
             }
 
@@ -157,20 +164,27 @@ public class MainvisualService {
             mainvisual.setMoImgRealPath(realFilePath);
             mainvisual.setMoImgExt(FilenameUtils.getExtension(siFile.getOriginalFilename()).toLowerCase());
             mainvisual.setMoImgLength(String.valueOf(siFile.getSize()));
-        }else{
-            if(_mainvisual != null){
-                mainvisual.setMoImgName(_mainvisual.getMoImgName());
-                mainvisual.setMoImgPath(_mainvisual.getMoImgPath());
-                mainvisual.setMoImgRealPath(_mainvisual.getMoImgRealPath());
-                mainvisual.setMoImgExt(_mainvisual.getMoImgExt());
-                mainvisual.setMoImgLength(_mainvisual.getMoImgLength());
-            }
 
+            mainvisual.setVideosName("");
+            mainvisual.setVideosPath("");
+            mainvisual.setVideosRealPath("");
+            mainvisual.setVideosExt("");
+            mainvisual.setVideosLength("");
         }
 
         if(mvFile != null && !mvFile.isEmpty()){
             if(_mainvisual != null){
                 File f = new File(_mainvisual.getVideosRealPath());
+                f.delete();
+            }
+
+            if(_mainvisual != null){
+                File f = new File(_mainvisual.getPcImgRealPath());
+                f.delete();
+            }
+
+            if(_mainvisual != null){
+                File f = new File(_mainvisual.getMoImgRealPath());
                 f.delete();
             }
 
@@ -187,15 +201,22 @@ public class MainvisualService {
             mainvisual.setVideosRealPath(realFilePath);
             mainvisual.setVideosExt(FilenameUtils.getExtension(mvFile.getOriginalFilename()).toLowerCase());
             mainvisual.setVideosLength(String.valueOf(mvFile.getSize()));
-        }else{
-            if(_mainvisual != null){
-                mainvisual.setVideosName(_mainvisual.getVideosName());
-                mainvisual.setVideosPath(_mainvisual.getVideosPath());
-                mainvisual.setVideosRealPath(_mainvisual.getVideosRealPath());
-                mainvisual.setVideosExt(_mainvisual.getVideosExt());
-                mainvisual.setVideosLength(_mainvisual.getVideosLength());
-            }
 
+            mainvisual.setPcImgName("");
+            mainvisual.setPcImgPath("");
+            mainvisual.setPcImgRealPath("");
+            mainvisual.setPcImgExt("");
+            mainvisual.setPcImgLength("");
+
+            mainvisual.setMoImgName("");
+            mainvisual.setMoImgPath("");
+            mainvisual.setMoImgRealPath("");
+            mainvisual.setMoImgExt("");
+            mainvisual.setMoImgLength("");
+        }
+
+        if(_mainvisual == null){
+            mainvisual.setOrderSeq(mainvisualRepository.findMaxOrderSeq());
         }
 
         Mainvisual r_mainvidual = mainvisualRepository.save(mainvisual);
@@ -230,6 +251,21 @@ public class MainvisualService {
 
                 mainvisualRepository.deleteById(id);
             }
+        }
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public void upOrder(Integer id) throws Exception{
+        //현재 아이디의 orderseq를 구하고 maxorderseq와 비교했을떄 max보다 작은경우만 동작
+        Mainvisual mv = mainvisualRepository.findById(id).get();
+        int mvSeq = mv.getOrderSeq();
+        int max = mainvisualRepository.findMaxOrderSeq();
+        if(mvSeq < max){
+            //현재아이디의 ordeerseq+1의 값을 가진 놈을 구함.
+            Mainvisual umv = mainvisualRepository.findByOrderSeq(mvSeq+1);
+            mv.setOrderSeq(umv.getOrderSeq());
+            umv.setOrderSeq(mvSeq);
         }
     }
 

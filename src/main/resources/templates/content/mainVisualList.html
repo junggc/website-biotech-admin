@@ -109,7 +109,7 @@
                     {data: 'regId', targets: 6, orderable: false, visible: true},
                     {data: 'regDtime', targets: 7, orderable: false, visible: true},
 					{data: function(data, type){
-							return '<i class="me-2 mdi mdi-chevron-double-up"></i><i class="me-2 mdi mdi-chevron-double-down"></i>';
+							return '<i class="me-2 mdi mdi-chevron-double-up" onclick="chup_orderSeq("'+data.id+'");"></i><i class="me-2 mdi mdi-chevron-double-down" onclick="chdn_orderSeq("'+data.id+'");"></i>';
 						}, targets: 8, orderable: false, visible: true
 					}
 
@@ -129,6 +129,50 @@
 			$("#zero_config_paginate").parent("div").addClass("page-wrap");
 			$("#zero_config_paginate").parent("div").siblings("div").addClass("before-page-wrap");
 
+			//순서변경
+			chup_orderSeq = function(ida){
+				$.ajax({
+					type: "POST",
+					url: "/mainvisualUpOrder",
+					data : {id:ida},
+					cache:false,
+					processData: false,
+					contentType: false,
+					sync:true,
+					success: function (data) {
+						console.log('data',data);
+						alert("메인비주얼이 저장되었습니다.");
+						location.href="/mainvisualList";
+					},
+					error: function (xhr, status, error) {
+						alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
+						return false;
+					}
+				});
+				return false;
+			}
+
+			chdn_orderSeq = function(id){
+				$.ajax({
+					type: "POST",
+					url: "/mainvisualDnOrder",
+					data : {id:ida},
+					cache:false,
+					processData: false,
+					contentType: false,
+					sync:true,
+					success: function (data) {
+						console.log('data',data);
+						alert("메인비주얼이 저장되었습니다.");
+						location.href="/mainvisualList";
+					},
+					error: function (xhr, status, error) {
+						alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
+						return false;
+					}
+				});
+				return false;
+			}
         });
 
 

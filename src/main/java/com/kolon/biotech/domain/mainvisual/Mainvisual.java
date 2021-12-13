@@ -2,6 +2,8 @@ package com.kolon.biotech.domain.mainvisual;
 
 import com.kolon.biotech.domain.BaseTimeEntity;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -11,6 +13,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "MAINVISUAL")
+@DynamicInsert
+@DynamicUpdate
 public class Mainvisual extends BaseTimeEntity {
 
     @Id
