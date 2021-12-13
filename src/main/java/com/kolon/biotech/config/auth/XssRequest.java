@@ -178,6 +178,10 @@ public class XssRequest extends HttpServletRequestWrapper {
             rslt = rslt.replaceAll("\'","&#39;");
             rslt = rslt.replaceAll("\"","&#34;");
 
+            rslt = rslt.replaceAll("(?i)cookie", "cook1e");
+            rslt = rslt.replaceAll("(?i)document", "d0cument");
+            rslt = rslt.replaceAll("(?i)script", "scr1pt");
+            rslt = rslt.replaceAll("(?i)alert", "a1ert");
             //#&;
 
         }
