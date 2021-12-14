@@ -8,9 +8,9 @@
 		<!-- Sidebar navigation-->
 		<nav class="sidebar-nav">
 			<ul class="pt-4" id="sidebarnav">
-				<span th:text="${#authentication.getPrincipal()}"></span>
-				<span th:text="${#authentication.getPrincipal().getAuthorities()[0]}"></span>
-				<th:block th:if="${#authentication.getPrincipal().getMainAuthority() == 'Y'}">
+<!--				<span th:text="${#authentication.getPrincipal()}"></span>-->
+<!--				<span th:text="${#authentication.getPrincipal().getAuthorities()[0] == 'ROLE_ADMIN'}"></span>-->
+				<th:block th:if="${#authentication.getPrincipal().getMainAuthority() == 'Y' or #authentication.getPrincipal().getAuthorities()[0] == 'ROLE_ADMIN'}">
 					<li class="sidebar-item">
 						<a aria-expanded="false" class="sidebar-link has-arrow waves-effect waves-dark"
 						   href="javascript:void(0);">
@@ -32,7 +32,7 @@
 						</ul>
 					</li>
 				</th:block>
-				<th:block th:if="${#authentication.getPrincipal().getNoticeAuthority() == 'Y'}">
+				<th:block th:if="${#authentication.getPrincipal().getNoticeAuthority() == 'Y' or #authentication.getPrincipal().getAuthorities()[0] == 'ROLE_ADMIN'}">
 					<li class="sidebar-item">
 						<a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
 						   th:href="@{/noticeList}" href="/noticeList">
@@ -55,12 +55,14 @@
 						<span class="hide-menu">운영 관리</span>
 					</a>
 					<ul aria-expanded="false" class="collapse first-level">
-						<li class="sidebar-item">
-							<a class="sidebar-link" th:href="@{/userList}" href="/userList">
-								<i class="mdi mdi-note-outline"></i>
-								<span class="hide-menu">관리자 관리</span>
-							</a>
-						</li>
+						<th:block th:if="${#authentication.getPrincipal().getAuthorities()[0] == 'ROLE_ADMIN'}">
+							<li class="sidebar-item">
+								<a class="sidebar-link" th:href="@{/userList}" href="/userList">
+									<i class="mdi mdi-note-outline"></i>
+									<span class="hide-menu">관리자 관리</span>
+								</a>
+							</li>
+						</th:block>
 						<li class="sidebar-item">
 							<a class="sidebar-link" th:href="@{/subsidiaryList}"  href="/subsidiaryList">
 								<i class="mdi mdi-note-plus"></i>

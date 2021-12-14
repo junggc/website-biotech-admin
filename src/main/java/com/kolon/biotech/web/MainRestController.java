@@ -72,6 +72,8 @@ public class MainRestController {
         }catch(Exception e){
             dto.setSuccess(false);
             dto.setMessage(messageSourceAccessor.getMessage("deletefail"));
+            log.debug(e.getMessage());
+            e.printStackTrace();
         }
 
         return dto;
@@ -81,12 +83,26 @@ public class MainRestController {
     public ResultJsonPagingDto mainvisualUpOrder(@RequestParam(value="id") Integer id){
         ResultJsonPagingDto dto = new ResultJsonPagingDto();
 
+        try{
+            mainvisualService.upOrder(id);
+            dto.setSuccess(true);
+        }catch(Exception e){
+            dto.setSuccess(false);
+        }
+
         return dto;
     }
 
     @RequestMapping(value="/mainvisualDnOrder")
     public ResultJsonPagingDto mainvisualDnOrder(@RequestParam(value="id") Integer id){
         ResultJsonPagingDto dto = new ResultJsonPagingDto();
+
+        try{
+            mainvisualService.dnOrder(id);
+            dto.setSuccess(true);
+        }catch(Exception e){
+            dto.setSuccess(false);
+        }
 
         return dto;
     }

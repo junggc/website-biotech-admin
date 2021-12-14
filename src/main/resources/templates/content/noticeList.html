@@ -158,11 +158,7 @@
 					});
 
 					if(flag){
-						console.log('delete_lists',delete_lists);
-						for(var y = 0; y<delete_lists.length; y++){
-							console.log('delete_lists[y]',delete_lists[y]);
-							formData.append("deleteList", delete_lists[y]);
-						}
+						formData.append("deleteList", delete_lists);
 
 						$.ajax({
 							type: "POST",

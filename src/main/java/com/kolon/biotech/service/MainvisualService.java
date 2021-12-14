@@ -108,13 +108,8 @@ public class MainvisualService {
 
         if(miFile != null && !miFile.isEmpty()){
 
-            if(_mainvisual != null){
+            if(_mainvisual != null && (_mainvisual.getPcImgRealPath() != null && !"".equals(_mainvisual.getPcImgRealPath()))){
                 File f = new File(_mainvisual.getPcImgRealPath());
-                f.delete();
-            }
-
-            if(_mainvisual != null){
-                File f = new File(_mainvisual.getVideosRealPath());
                 f.delete();
             }
 
@@ -132,22 +127,21 @@ public class MainvisualService {
             mainvisual.setPcImgExt(FilenameUtils.getExtension(miFile.getOriginalFilename()).toLowerCase());
             mainvisual.setPcImgLength(String.valueOf(miFile.getSize()));
 
-            mainvisual.setVideosName("");
-            mainvisual.setVideosPath("");
-            mainvisual.setVideosRealPath("");
-            mainvisual.setVideosExt("");
-            mainvisual.setVideosLength("");
+
+        }else{
+            if(_mainvisual != null){
+                mainvisual.setPcImgName(_mainvisual.getPcImgName());
+                mainvisual.setPcImgPath(_mainvisual.getPcImgPath());
+                mainvisual.setPcImgRealPath(_mainvisual.getPcImgRealPath());
+                mainvisual.setPcImgExt(_mainvisual.getPcImgExt());
+                mainvisual.setPcImgLength(_mainvisual.getPcImgLength());
+            }
 
         }
 
         if(siFile != null && !siFile.isEmpty()){
-            if(_mainvisual != null){
+            if(_mainvisual != null && (_mainvisual.getMoImgRealPath() != null && !"".equals(_mainvisual.getMoImgRealPath()))){
                 File f = new File(_mainvisual.getMoImgRealPath());
-                f.delete();
-            }
-
-            if(_mainvisual != null){
-                File f = new File(_mainvisual.getVideosRealPath());
                 f.delete();
             }
 
@@ -165,27 +159,57 @@ public class MainvisualService {
             mainvisual.setMoImgExt(FilenameUtils.getExtension(siFile.getOriginalFilename()).toLowerCase());
             mainvisual.setMoImgLength(String.valueOf(siFile.getSize()));
 
-            mainvisual.setVideosName("");
-            mainvisual.setVideosPath("");
-            mainvisual.setVideosRealPath("");
-            mainvisual.setVideosExt("");
-            mainvisual.setVideosLength("");
+        }else{
+            if(_mainvisual != null){
+                mainvisual.setMoImgName(_mainvisual.getMoImgName());
+                mainvisual.setMoImgPath(_mainvisual.getMoImgPath());
+                mainvisual.setMoImgRealPath(_mainvisual.getMoImgRealPath());
+                mainvisual.setMoImgExt(_mainvisual.getMoImgExt());
+                mainvisual.setMoImgLength(_mainvisual.getMoImgLength());
+            }
+
+        }
+
+        if(miFile != null && !miFile.isEmpty() && siFile != null && !siFile.isEmpty()){
+            if(_mainvisual != null && (_mainvisual.getVideosRealPath() != null && !"".equals(_mainvisual.getVideosRealPath()))){
+                File f = new File(_mainvisual.getVideosRealPath());
+                f.delete();
+
+                mainvisual.setVideosName("");
+                mainvisual.setVideosPath("");
+                mainvisual.setVideosRealPath("");
+                mainvisual.setVideosExt("");
+                mainvisual.setVideosLength("");
+            }
+
         }
 
         if(mvFile != null && !mvFile.isEmpty()){
-            if(_mainvisual != null){
+            if(_mainvisual != null && (_mainvisual.getVideosRealPath() != null && !"".equals(_mainvisual.getVideosRealPath()))){
                 File f = new File(_mainvisual.getVideosRealPath());
                 f.delete();
             }
 
-            if(_mainvisual != null){
+            if(_mainvisual != null && (_mainvisual.getPcImgRealPath() != null && !"".equals(_mainvisual.getPcImgRealPath()))){
                 File f = new File(_mainvisual.getPcImgRealPath());
                 f.delete();
+
+                mainvisual.setPcImgName("");
+                mainvisual.setPcImgPath("");
+                mainvisual.setPcImgRealPath("");
+                mainvisual.setPcImgExt("");
+                mainvisual.setPcImgLength("");
             }
 
-            if(_mainvisual != null){
+            if(_mainvisual != null && (_mainvisual.getMoImgRealPath() != null && !"".equals(_mainvisual.getMoImgRealPath()))){
                 File f = new File(_mainvisual.getMoImgRealPath());
                 f.delete();
+
+                mainvisual.setMoImgName("");
+                mainvisual.setMoImgPath("");
+                mainvisual.setMoImgRealPath("");
+                mainvisual.setMoImgExt("");
+                mainvisual.setMoImgLength("");
             }
 
             String oriFileName = mvFile.getOriginalFilename();
@@ -202,21 +226,45 @@ public class MainvisualService {
             mainvisual.setVideosExt(FilenameUtils.getExtension(mvFile.getOriginalFilename()).toLowerCase());
             mainvisual.setVideosLength(String.valueOf(mvFile.getSize()));
 
-            mainvisual.setPcImgName("");
-            mainvisual.setPcImgPath("");
-            mainvisual.setPcImgRealPath("");
-            mainvisual.setPcImgExt("");
-            mainvisual.setPcImgLength("");
+        }else{
+            if(_mainvisual != null){
+                mainvisual.setVideosName(_mainvisual.getVideosName());
+                mainvisual.setVideosPath(_mainvisual.getVideosPath());
+                mainvisual.setVideosRealPath(_mainvisual.getVideosRealPath());
+                mainvisual.setVideosExt(_mainvisual.getVideosExt());
+                mainvisual.setVideosLength(_mainvisual.getVideosLength());
+            }
 
-            mainvisual.setMoImgName("");
-            mainvisual.setMoImgPath("");
-            mainvisual.setMoImgRealPath("");
-            mainvisual.setMoImgExt("");
-            mainvisual.setMoImgLength("");
         }
 
+        if(mainvisual.getVideosUrl() != null && !"".equals(mainvisual.getVideosUrl())){
+            if(_mainvisual != null && (_mainvisual.getPcImgRealPath() != null && !"".equals(_mainvisual.getPcImgRealPath()))){
+                File f = new File(_mainvisual.getPcImgRealPath());
+                f.delete();
+
+                mainvisual.setPcImgName("");
+                mainvisual.setPcImgPath("");
+                mainvisual.setPcImgRealPath("");
+                mainvisual.setPcImgExt("");
+                mainvisual.setPcImgLength("");
+            }
+
+            if(_mainvisual != null && (_mainvisual.getMoImgRealPath() != null && !"".equals(_mainvisual.getMoImgRealPath()))){
+                File f = new File(_mainvisual.getMoImgRealPath());
+                f.delete();
+
+                mainvisual.setMoImgName("");
+                mainvisual.setMoImgPath("");
+                mainvisual.setMoImgRealPath("");
+                mainvisual.setMoImgExt("");
+                mainvisual.setMoImgLength("");
+            }
+
+        }
+
+
         if(_mainvisual == null){
-            mainvisual.setOrderSeq(mainvisualRepository.findMaxOrderSeq());
+            mainvisual.setOrderSeq(mainvisualRepository.findMaxOrderSeq()+1);
         }
 
         Mainvisual r_mainvidual = mainvisualRepository.save(mainvisual);
@@ -269,4 +317,17 @@ public class MainvisualService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public void dnOrder(Integer id) throws Exception{
+        //현재 아이디의 orderseq를 구하고 maxorderseq와 비교했을떄 max보다 작은경우만 동작
+        Mainvisual mv = mainvisualRepository.findById(id).get();
+        int mvSeq = mv.getOrderSeq();
+        int min = mainvisualRepository.findMinOrderSeq();
+        if(mvSeq > min){
+            //현재아이디의 ordeerseq+1의 값을 가진 놈을 구함.
+            Mainvisual umv = mainvisualRepository.findByOrderSeq(mvSeq-1);
+            mv.setOrderSeq(umv.getOrderSeq());
+            umv.setOrderSeq(mvSeq);
+        }
+    }
 }

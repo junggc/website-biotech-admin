@@ -54,12 +54,10 @@ public class NoticeRestController {
     }
 
     @PostMapping("/noticeDelete")
-    public ResultJsonPagingDto noticeDelete(@RequestParam(value = "deleteList[]") Integer[] deleteList){
+    public ResultJsonPagingDto noticeDelete(@RequestParam(value = "deleteList") Integer[] deleteList){
+        log.debug("=========noticeDelete============");
         ResultJsonPagingDto dto = new ResultJsonPagingDto();
         try{
-            log.debug("@@@@@@"+deleteList.length);
-            log.debug("@@@@@@"+deleteList[0]);
-            log.debug("@@@@@@"+deleteList[1]);
             noticeService.delete(deleteList);
 
             dto.setSuccess(true);

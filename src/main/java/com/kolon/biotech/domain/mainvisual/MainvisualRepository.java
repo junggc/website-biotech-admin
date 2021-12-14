@@ -8,8 +8,11 @@ import java.util.List;
 public interface MainvisualRepository extends JpaRepository<Mainvisual, Integer> {
 
 
-    @Query("select max(e.orderSeq)+1 as orderSeq from Mainvisual e")
+    @Query("select max(e.orderSeq) as orderSeq from Mainvisual e")
     public int findMaxOrderSeq();
 
     public Mainvisual findByOrderSeq(int orderSeq);
+
+    @Query("select min(e.orderSeq) as orderSeq from Mainvisual e")
+    public int findMinOrderSeq();
 }
