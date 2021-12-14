@@ -17,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.LocaleResolver;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -68,5 +70,24 @@ public class UserRestController {
     @PostMapping(value="/superUserChangePass")
     public ResultJsonPagingDto superUserChangePass(@AuthenticationPrincipal MemberDto memberDto, @ModelAttribute Member member){
         return null;
+    }
+
+    @PostMapping("/userDelete")
+    public ResultJsonPagingDto delete(@RequestParam(value = "deleteList") List<Integer> deleteList){
+        ResultJsonPagingDto dto = new ResultJsonPagingDto();
+        try{
+            userService.delete(deleteList);
+
+            dto.setSuccess(true);
+            dto.setMessage(messageSourceAccessor.getMessage("deleteok"));
+
+        }catch(Exception e){
+            log.error("delete",e.getMessage());
+            dto.setSuccess(false);
+            dto.setMessage(messageSourceAccessor.getMessage("deletefail"));
+
+        }
+
+        return dto;
     }
 }

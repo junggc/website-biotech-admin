@@ -75,7 +75,7 @@
                   columnDefs: [
                     {
                       data: function (data, type) {
-                          return '<label class="customcheckbox"><input type="checkbox" value="'+data.id+'" class="listCheckbox"><span class="checkmark"></span></label>';
+                          return '<label class="customcheckbox"><input type="checkbox" data-dispyn="'+data.dispYn+'" value="'+data.id+'" class="listCheckbox"><span class="checkmark"></span></label>';
                       },
                       targets: 0,
                       orderable: false,
@@ -105,11 +105,17 @@
                             return '<a href="/mainvisualInfo?id='+data.id+'">'+data.title+'</a>';
                         }, targets: 4, orderable: false, visible: true
                     },
-					{data: 'type', targets: 5, orderable: false, visible: true},
+					{data: function(data, type){
+						if(data.type=='I'){
+							return '이미지';
+						}else if(data.type=='M'){
+							return '동영상';
+						}
+					}, targets: 5, orderable: false, visible: true},
                     {data: 'regId', targets: 6, orderable: false, visible: true},
                     {data: 'regDtime', targets: 7, orderable: false, visible: true},
 					{data: function(data, type){
-							return '<i class="me-2 mdi mdi-chevron-double-up" onclick="chup_orderSeq("'+data.id+'");"></i><i class="me-2 mdi mdi-chevron-double-down" onclick="chdn_orderSeq("'+data.id+'");"></i>';
+							return '<i class="me-2 mdi mdi-chevron-double-up" onclick="chup_orderSeq('+data.id+');"></i><i class="me-2 mdi mdi-chevron-double-down" onclick="chdn_orderSeq('+data.id+');"></i>';
 						}, targets: 8, orderable: false, visible: true
 					}
 
@@ -134,15 +140,11 @@
 				$.ajax({
 					type: "POST",
 					url: "/mainvisualUpOrder",
-					data : {id:ida},
-					cache:false,
-					processData: false,
-					contentType: false,
+					data : "id="+ida,
 					sync:true,
 					success: function (data) {
 						console.log('data',data);
-						alert("메인비주얼이 저장되었습니다.");
-						location.href="/mainvisualList";
+						$('#zero_config').DataTable().ajax.reload();
 					},
 					error: function (xhr, status, error) {
 						alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
@@ -152,19 +154,15 @@
 				return false;
 			}
 
-			chdn_orderSeq = function(id){
+			chdn_orderSeq = function(ida){
 				$.ajax({
 					type: "POST",
 					url: "/mainvisualDnOrder",
-					data : {id:ida},
-					cache:false,
-					processData: false,
-					contentType: false,
+					data : "id="+ida,
 					sync:true,
 					success: function (data) {
 						console.log('data',data);
-						alert("메인비주얼이 저장되었습니다.");
-						location.href="/mainvisualList";
+						$('#zero_config').DataTable().ajax.reload();
 					},
 					error: function (xhr, status, error) {
 						alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
@@ -172,6 +170,59 @@
 					}
 				});
 				return false;
+			}
+
+
+			//삭제
+			deletelist = function(){
+
+				//체크된 애들 숫자
+				if($("input:checkbox[name='checkedbox']:checked").length == 0){
+					alert("삭제 대상을 선택해 주세요.");
+					return false;
+				}
+
+				if(confirm("선택한 공지사항을 삭제하시겠습니까?")){
+					var form = $("#is_form")[0];
+					var formData = new FormData(form);
+
+					var flag = true;
+					delete_lists = [];
+
+					$("input:checkbox[name='checkedbox']:checked").each(function(){
+						if($(this).data("dispyn") == 'N'){
+							flag = true;
+							delete_lists.push($(this).val());
+						}else{
+							flag = false;
+							alert("전시중인 비쥬얼은 삭제할 수 없습니다.");
+							return false;
+						}
+					});
+
+					if(flag){
+						formData.append("deleteList", delete_lists);
+
+						$.ajax({
+							type: "POST",
+							url: "/mainvisualDelete",
+							data : formData,
+							cache:false,
+							processData: false,
+							contentType: false,
+							success: function (data) {
+								console.log('data',data);
+								alert(data.message);
+								location.reload();
+							},
+							error: function (xhr, status, error) {
+								alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
+								return false;
+							}
+						});
+					}
+					return false;
+				}
 			}
         });
 

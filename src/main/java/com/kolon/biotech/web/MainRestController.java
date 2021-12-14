@@ -80,7 +80,8 @@ public class MainRestController {
     }
 
     @RequestMapping(value="/mainvisualUpOrder")
-    public ResultJsonPagingDto mainvisualUpOrder(@RequestParam(value="id") Integer id){
+    public ResultJsonPagingDto mainvisualUpOrder(@RequestParam(value="id", required = false) Integer id){
+        log.debug("####mainvisualUpOrder###"+id);
         ResultJsonPagingDto dto = new ResultJsonPagingDto();
 
         try{
@@ -88,13 +89,15 @@ public class MainRestController {
             dto.setSuccess(true);
         }catch(Exception e){
             dto.setSuccess(false);
+            e.printStackTrace();
         }
 
         return dto;
     }
 
     @RequestMapping(value="/mainvisualDnOrder")
-    public ResultJsonPagingDto mainvisualDnOrder(@RequestParam(value="id") Integer id){
+    public ResultJsonPagingDto mainvisualDnOrder(@RequestParam(value="id", required = false) Integer id){
+        log.debug("####mainvisualDnOrder###"+id);
         ResultJsonPagingDto dto = new ResultJsonPagingDto();
 
         try{
@@ -102,6 +105,7 @@ public class MainRestController {
             dto.setSuccess(true);
         }catch(Exception e){
             dto.setSuccess(false);
+            e.printStackTrace();
         }
 
         return dto;

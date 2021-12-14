@@ -74,7 +74,7 @@ public class PrbinfoService {
             for(Integer id : deleteFileList){
 
                 //실제 파일 삭제
-                Prbinfo nfile = prbinfoRepository.findById(id).get();
+//                Prbinfo nfile = prbinfoRepository.findById(id).get();
 //                File f = new File(nfile.getFilePath());
 //                f.delete();
 

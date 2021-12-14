@@ -75,7 +75,7 @@
                   columnDefs: [
                     {
                       data: function (data, type) {
-                          return '<label class="customcheckbox"><input type="checkbox" value="'+data.id+'" class="listCheckbox"><span class="checkmark"></span></label>';
+                          return '<label class="customcheckbox"><input type="checkbox" data-dispyn="'+data.dispYn+'" value="'+data.id+'" class="listCheckbox"><span class="checkmark"></span></label>';
                       },
                       targets: 0,
                       orderable: false,
@@ -128,6 +128,58 @@
             $(".dataTables_filter").html('<button class="btn btn-outline-primary" id="refresh" onclick="location.href=\'/mainpopInfo\';">등록</button><button class="btn btn-outline-danger" id="refresh">삭제</button>');
 			$("#zero_config_paginate").parent("div").addClass("page-wrap");
 			$("#zero_config_paginate").parent("div").siblings("div").addClass("before-page-wrap");
+
+			//삭제
+			deletelist = function(){
+
+				//체크된 애들 숫자
+				if($("input:checkbox[name='checkedbox']:checked").length == 0){
+					alert("삭제 대상을 선택해 주세요.");
+					return false;
+				}
+
+				if(confirm("선택한 공지사항을 삭제하시겠습니까?")){
+					var form = $("#is_form")[0];
+					var formData = new FormData(form);
+
+					var flag = true;
+					delete_lists = [];
+
+					$("input:checkbox[name='checkedbox']:checked").each(function(){
+						if($(this).data("dispyn") == 'N'){
+							flag = true;
+							delete_lists.push($(this).val());
+						}else{
+							flag = false;
+							alert("전시중인 비쥬얼은 삭제할 수 없습니다.");
+							return false;
+						}
+					});
+
+					if(flag){
+						formData.append("deleteList", delete_lists);
+
+						$.ajax({
+							type: "POST",
+							url: "/mainpopDelete",
+							data : formData,
+							cache:false,
+							processData: false,
+							contentType: false,
+							success: function (data) {
+								console.log('data',data);
+								alert(data.message);
+								location.reload();
+							},
+							error: function (xhr, status, error) {
+								alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
+								return false;
+							}
+						});
+					}
+					return false;
+				}
+			}
 
         });
 

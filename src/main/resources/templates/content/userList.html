@@ -144,6 +144,51 @@
 					}
 				});
 			}
+
+			//삭제
+			deletelist = function(){
+
+				//체크된 애들 숫자
+				if($("input:checkbox[name='checkedbox']:checked").length == 0){
+					alert("삭제 대상을 선택해 주세요.");
+					return false;
+				}
+
+				if(confirm("선택한 사용자를 삭제하시겠습니까?")){
+					var form = $("#is_form")[0];
+					var formData = new FormData(form);
+
+					var flag = true;
+					delete_lists = [];
+
+					$("input:checkbox[name='checkedbox']:checked").each(function(){
+						delete_lists.push($(this).val());
+					});
+
+					if(flag){
+						formData.append("deleteList", delete_lists);
+
+						$.ajax({
+							type: "POST",
+							url: "/mainpopDelete",
+							data : formData,
+							cache:false,
+							processData: false,
+							contentType: false,
+							success: function (data) {
+								console.log('data',data);
+								alert(data.message);
+								location.reload();
+							},
+							error: function (xhr, status, error) {
+								alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
+								return false;
+							}
+						});
+					}
+					return false;
+				}
+			}
         });
 
 	</script>
