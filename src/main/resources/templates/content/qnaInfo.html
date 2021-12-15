@@ -184,6 +184,15 @@
             return false;
         }
 
+	function listAction(){
+		location.href='/prbinfoList';
+	}
+
+	function cancelAction(){
+		if(confirm("등록을 취소하시겠습니까?")){
+			location.href='/prbinfoList';
+		}
+	}
 	</script>
 </head>
 
@@ -191,7 +200,7 @@
 	<div class="page-breadcrumb">
 		<div class="row">
 			<div class="col-12 d-flex no-block align-items-center">
-				<h4 class="page-title">공지사항 관리</h4>
+				<h4 class="page-title">문의하기 관리</h4>
 			</div>
 		</div>
 	</div>
@@ -202,161 +211,108 @@
 				<div class="card">
 					<form class="form-horizontal" id="is_form" method="post" enctype="multipart/form-data"
 					      name="is_form"
-					      th:object="${notice}">
+					      th:object="${qna}">
 						<input type="hidden" name="id" th:value="*{id}"/>
 						<div class="card-body">
-							<h4 class="card-title">공지사항 등록</h4>
-							<div class="form-group row">
-								<label class="col-md-1">전시여부 *</label>
-								<div class="col-md-3">
-									<div class="form-check">
-										<input class="form-check-input" id="dispYn1" name="dispYn" required=""
-										       th:checked="dispYn == 'Y'"
-										       th:field="*{dispYn}"
-										       type="radio" value="Y">
-										<label class="form-check-label mb-0" for="dispYn1">전시</label>
-									</div>
-									<div class="form-check">
-										<input class="form-check-input" id="dispYn2" name="dispYn" required=""
-										       th:checked="dispYn == 'N'"
-										       th:field="*{dispYn}"
-										       type="radio" value="N">
-										<label class="form-check-label mb-0" for="dispYn2">미전시</label>
-									</div>
-								</div>
+							<h4 class="card-title">문의하기 수정</h4>
 
-								<label class="col-md-1">게시일 *</label>
-								<div class="col-md-3">
-									<div class="input-group">
-										<input class="form-control" id="datepicker-autoclose" name="dispStartDay"
-										       placeholder="yyyy-mm-dd"
-										       type="text"
-												readOnly="true">
-										<div class="input-group-append">
-											<span class="input-group-text h-100"><i class="mdi mdi-calendar"></i></span>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-2">
-									<select aria-hidden="true"
-									        class="select2 form-select shadow-none select2-hidden-accessible"
-									        data-select2-id="1" id="dispStartTime" name="dispStartTime"
-									        style="width: 100%; height: 36px" tabindex="-1">
-										<option th:selected="*{dispStartTime} == '00'" value="00">00시</option>
-										<option th:selected="*{dispStartTime} == '01'" value="01">01시</option>
-										<option th:selected="*{dispStartTime} == '02'" value="02">02시</option>
-										<option th:selected="*{dispStartTime} == '03'" value="03">03시</option>
-										<option th:selected="*{dispStartTime} == '04'" value="04">04시</option>
-										<option th:selected="*{dispStartTime} == '05'" value="05">05시</option>
-										<option th:selected="*{dispStartTime} == '06'" value="06">06시</option>
-										<option th:selected="*{dispStartTime} == '07'" value="07">07시</option>
-										<option th:selected="*{dispStartTime} == '08'" value="08">08시</option>
-										<option th:selected="*{dispStartTime} == '09'" value="09">09시</option>
-										<option th:selected="*{dispStartTime} == '10'" value="10">10시</option>
-										<option th:selected="*{dispStartTime} == '11'" value="11">11시</option>
-										<option th:selected="*{dispStartTime} == '12'" value="12">12시</option>
-										<option th:selected="*{dispStartTime} == '13'" value="13">13시</option>
-										<option th:selected="*{dispStartTime} == '14'" value="14">14시</option>
-										<option th:selected="*{dispStartTime} == '15'" value="15">15시</option>
-										<option th:selected="*{dispStartTime} == '16'" value="16">16시</option>
-										<option th:selected="*{dispStartTime} == '17'" value="17">17시</option>
-										<option th:selected="*{dispStartTime} == '18'" value="18">18시</option>
-										<option th:selected="*{dispStartTime} == '19'" value="19">19시</option>
-										<option th:selected="*{dispStartTime} == '20'" value="20">20시</option>
-										<option th:selected="*{dispStartTime} == '21'" value="21">21시</option>
-										<option th:selected="*{dispStartTime} == '22'" value="22">22시</option>
-										<option th:selected="*{dispStartTime} == '23'" value="23">23시</option>
-									</select>
-								</div>
-							</div>
 							<div class="form-group row">
-								<label class="col-md-1">국문여부</label>
-								<div class="col-md-9">
-									<div class="form-check">
-										<input class="form-check-input" id="langKoYn1" name="langKoYn" required=""
-										       th:checked="langKoYn == 'Y'"
-										       th:field="*{langKoYn}"
-										       type="radio" value="Y">
-										<label class="form-check-label mb-0" for="langKoYn1">국문</label>
-									</div>
-									<div class="form-check">
-										<input class="form-check-input" id="langKoYn2" name="langKoYn" required=""
-										       th:checked="langKoYn == 'N'"
-										       th:field="*{langKoYn}"
-										       type="radio" value="N">
-										<label class="form-check-label mb-0" for="langKoYn2">영문</label>
-									</div>
+								<label class="col-md-3">문의 구분</label>
+								<div class="col-sm-3" th:text="*{qnaCate}">
+									일반관리자
+								</div>
+								<label class="col-md-3">작성 날짜</label>
+								<div class="col-sm-3" th:text="*{regDtime}">
+
 								</div>
 							</div>
 
 							<div class="form-group row">
-								<label
-										class="col-md-1"
-										for="title"
-								>제목</label
-								>
+								<label class="col-md-3">작성자</label>
+								<div class="col-sm-9" th:text="*{userName}">
+
+								</div>
+								<label class="col-md-3">E-mail</label>
+								<div class="col-sm-9" th:text="*{userEmail}">
+
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-md-3">연락처</label>
+								<div class="col-sm-9" th:text="*{phone}">
+
+								</div>
+								<label class="col-md-3">국가</label>
+								<div class="col-sm-9" >
+
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-md-3">회사</label>
+								<div class="col-sm-9" th:text="*{userCompany}">
+
+								</div>
+								<label class="col-md-3">직책</label>
+								<div class="col-sm-9" th:text="*{userPosition}">
+
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-md-3">문의 내용</label>
+								<div class="col-sm-9">
+									<textarea th:utext="*{userContents}"></textarea>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-md-3">답변 날짜</label>
+								<div class="col-sm-9" th:text="*{answerDate}">
+
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-md-3">답변 제목</label>
 								<div class="col-sm-9">
 									<input
 											class="form-control"
-											id="title"
-											name="title"
+											id="answerTitle"
+											name="answerTitle"
 											placeholder="제목을 입력하세요."
-											th:field="*{title}"
+											th:field="*{answerTitle}"
 											type="text"
 									/>
 								</div>
 							</div>
+
 							<div class="form-group row">
-								<label
-										class="col-md-1"
-										for="content"
-								>내용</label
-								>
+								<label class="col-md-3">답변 내용</label>
 								<div class="col-sm-9">
-<!--									<input-->
-<!--											class="form-control"-->
-<!--											id="content"-->
-<!--											name="content"-->
-<!--											placeholder="내용을 입력하세요."-->
-<!--											th:field="*{content}"-->
-<!--											type="text"-->
-<!--									/>-->
-									<script type="text/javascript">
-										var dext5Editor = new Dext5editor("content");
-									</script>
-									<textarea name="content" id="content" style="display:none" ></textarea>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-md-1">첨부파일</label>
-								<div class="col-md-9">
-									<div class="custom-file">
-										<input class="custom-file-input" id="input_file" multiple
-										       required="" type="file">
-										<br/>
-										<div id="articlefileChange">
-											<div  th:each="filedata, i: ${notice.noticefileList}">
-												<div th:id="'dbfile'+${filedata.id}" th:onclick="'removeContent(' + ${filedata.id} + ');'">
-													<font style="font-size:12px" th:text="${filedata.fileName}"></font>
-													<i class="me-2 mdi mdi-minus"></i>
-												
-											</div>
-										</div>
-										<label class="custom-file-label" for="input_file">10MB 이하의 jpg, gif,
-											png, pdf, doc, hwp, mp4 파일만 첨부 가능합니다.</label>
-									</div>
+									<textarea id="answerContents" name="answerContents" th:utext="*{answerContents}"></textarea>
 								</div>
 							</div>
 
+							<div class="form-group row">
+								<label class="col-md-3">이메일 전송</label>
+								<div class="col-sm-9">
+									webmaster@kolon.com
+								</div>
+							</div>
 
 						</div>
 						<div class="border-top" style="text-align:center;">
 							<div class="card-body">
+								<button class="btn btn-secondary text-white" onclick="listAction();" type="button">
+									목록
+								</button>
 								<button class="btn btn-success text-white" onclick="registerAction();"
 								        type="button">
 									등록
 								</button>
-								<button class="btn btn-danger text-white" type="button">
+								<button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
 									취소
 								</button>
 							</div>
