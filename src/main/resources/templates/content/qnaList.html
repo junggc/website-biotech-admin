@@ -22,9 +22,25 @@
 	        th:src="@{/assets/extra-libs/multicheck/jquery.multicheck.js}"></script>
 	<script href="/assets/extra-libs/DataTables/datatables.min.js"
 	        th:src="@{/assets/extra-libs/DataTables/datatables.min.js}"></script>
+	<script href="/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"
+			th:src="@{/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js}"></script>
 
 	<script>
         $(function () {
+
+			$("#datepicker-autoclose1").datepicker({
+				format:'yyyy-mm-dd',
+				language: 'kr',
+				autoclose: true,
+				todayHighlight: true,
+			});
+
+			$("#datepicker-autoclose2").datepicker({
+				format:'yyyy-mm-dd',
+				language: 'kr',
+				autoclose: true,
+				todayHighlight: true,
+			});
 
             var dataTable1=$("#zero_config").DataTable({
                 ajax : {
@@ -83,19 +99,20 @@
                     },
                     {data: 'id',    targets: 1, orderable: false, visible: true},
 					{data: 'userName',    targets: 2, orderable: false, visible: true},
-					{data: 'division',    targets: 3, orderable: false, visible: true},
+					{data: 'qnaCate',    targets: 3, orderable: false, visible: true},
+					{data: 'userEmail',    targets: 4, orderable: false, visible: true},
 					{data:function(data, type){
-						return '<a href="/qnaInfo?id='+data.id+'">'+data.userTitle+'</a>';
-						}, targets: 4, orderable: false, visible: true
+						return '<a href="/qnaInfo?id='+data.id+'">'+data.userName+'이 문의합니다.</a>';
+						}, targets: 5, orderable: false, visible: true
                     },
-                    {data: 'regDtime', targets: 5, orderable: false, visible: true},
+                    {data: 'regDtime', targets: 6, orderable: false, visible: true},
 					{data: function(data,type){
 						  	if(data.answerDate != null && data.answerDate != ''){
-								  return '답변완료';
+								  return '답변완료 '+'<button type="button" class="btn btn-outline-secondary">답변수정</button>';
 							}else{
-								  return '답변대기'+'<button type="button" class="btn btn-outline-secondary">답변등록</button>';
+								  return '답변대기 '+'<button type="button" class="btn btn-outline-secondary">답변등록</button>';
 							}
-					}, targets: 6, orderable: false, visible: true}
+					}, targets: 7, orderable: true, visible: true}
 
                   ],
                   ordering: false,
@@ -109,7 +126,7 @@
                   paging: true
             });
 
-            $(".dataTables_filter").html('<button class="btn btn-outline-primary" id="refresh" onclick="location.href=\'/qnaInfo\';">등록</button><button class="btn btn-outline-danger" id="refresh">삭제</button>');
+            $(".dataTables_filter").html('<button class="btn btn-outline-danger" id="refresh">삭제</button>');
 			$("#zero_config_paginate").parent("div").addClass("page-wrap");
 			$("#zero_config_paginate").parent("div").siblings("div").addClass("before-page-wrap");
 
@@ -131,9 +148,39 @@
 
 	<div class="container-fluid">
 		<div class="card">
+			<form class="form-horizontal" id="is_form" method="post"name="is_form">
 			<div class="card-body">
 				<h5 class="card-title">문의하기 목록</h5>
+
 				<div class="table-responsive">
+					<table class="table table-bordered">
+						<tr>
+							<td><label class="col-md-3 control-label">검색</label></td>
+							<td><input type="text" class="form-control col-md-6" placeholder=""></td>
+						</tr>
+						<tr>
+							<td><label class="col-md-3 control-label">작성 날짜</label></td>
+							<td>
+								<div class="input-group">
+								<input class="form-control col-md-3" id="datepicker-autoclose1" name="regStartDay"
+									   placeholder="yyyy-mm-dd"
+									   type="text"
+									   readOnly="true">
+
+								<span class="input-group-text h-100"><i class="mdi mdi-calendar"></i></span>
+
+
+								<input class="form-control col-md-3" id="datepicker-autoclose2" name="regEndDay"
+									   placeholder="yyyy-mm-dd"
+									   type="text"
+									   readOnly="true">
+
+								<span class="input-group-text h-100"><i class="mdi mdi-calendar"></i></span>
+								</div>
+							</td>
+						</tr>
+					</table>
+
 					<table
 							class="table table-striped table-bordered"
 							id="zero_config"
@@ -149,9 +196,12 @@
 							<th>번호</th>
 							<th>작성자</th>
 							<th>구분</th>
+							<th>E-mail</th>
 							<th>제목</th>
 							<th>문의일</th>
-							<th>답변상태</th>
+							<th>
+								답변상태
+							</th>
 						</tr>
 						</thead>
 						<tbody>
@@ -161,6 +211,7 @@
 					</table>
 				</div>
 			</div>
+			</form>
 		</div>
 	</div>
 

@@ -76,7 +76,11 @@
 		//좌측 메뉴 활성화
 		$(".sidebar-link").each(function(){
 			if($(this).attr("href").indexOf("noticeList") > 0){
-				$(this).closest('li').addClass("selected");
+				$(this).addClass("active");
+				$(this).closest('li').addClass("active");
+				$(this).closest('li').closest('ul').addClass("in");
+				$(this).closest('li').closest('ul').prev().addClass("active");
+				$(this).closest('li').closest('ul').closest('li').addClass('selected');
 				return false;
 			}
 		});

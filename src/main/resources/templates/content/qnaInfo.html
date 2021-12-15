@@ -174,7 +174,8 @@
               contentType: false,
               success: function (data) {
 				console.log('data',data);
-				alert("파일업로드 성공");
+				alert("답변이 저장되었습니다.");
+				location.reload();
               },
               error: function (xhr, status, error) {
                 alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
@@ -185,12 +186,12 @@
         }
 
 	function listAction(){
-		location.href='/prbinfoList';
+		location.href='/qnaList';
 	}
 
 	function cancelAction(){
 		if(confirm("등록을 취소하시겠습니까?")){
-			location.href='/prbinfoList';
+			location.href='/qnaList';
 		}
 	}
 	</script>
@@ -211,7 +212,7 @@
 				<div class="card">
 					<form class="form-horizontal" id="is_form" method="post" enctype="multipart/form-data"
 					      name="is_form"
-					      th:object="${qna}">
+					      th:object="${obj}">
 						<input type="hidden" name="id" th:value="*{id}"/>
 						<div class="card-body">
 							<h4 class="card-title">문의하기 수정</h4>
@@ -229,33 +230,33 @@
 
 							<div class="form-group row">
 								<label class="col-md-3">작성자</label>
-								<div class="col-sm-9" th:text="*{userName}">
+								<div class="col-sm-3" th:text="*{userName}">
 
 								</div>
 								<label class="col-md-3">E-mail</label>
-								<div class="col-sm-9" th:text="*{userEmail}">
+								<div class="col-sm-3" th:text="*{userEmail}">
 
 								</div>
 							</div>
 
 							<div class="form-group row">
 								<label class="col-md-3">연락처</label>
-								<div class="col-sm-9" th:text="*{phone}">
+								<div class="col-sm-3" th:text="*{phone}">
 
 								</div>
 								<label class="col-md-3">국가</label>
-								<div class="col-sm-9" >
+								<div class="col-sm-3" th:text="*{country}">
 
 								</div>
 							</div>
 
 							<div class="form-group row">
 								<label class="col-md-3">회사</label>
-								<div class="col-sm-9" th:text="*{userCompany}">
+								<div class="col-sm-3" th:text="*{userCompany}">
 
 								</div>
 								<label class="col-md-3">직책</label>
-								<div class="col-sm-9" th:text="*{userPosition}">
+								<div class="col-sm-3" th:text="*{userPosition}">
 
 								</div>
 							</div>
@@ -263,7 +264,7 @@
 							<div class="form-group row">
 								<label class="col-md-3">문의 내용</label>
 								<div class="col-sm-9">
-									<textarea th:utext="*{userContents}"></textarea>
+									<textarea class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{userContents}"></textarea>
 								</div>
 							</div>
 
@@ -291,7 +292,7 @@
 							<div class="form-group row">
 								<label class="col-md-3">답변 내용</label>
 								<div class="col-sm-9">
-									<textarea id="answerContents" name="answerContents" th:utext="*{answerContents}"></textarea>
+									<textarea class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 150px;" id="answerContents" name="answerContents" th:utext="*{answerContents}"></textarea>
 								</div>
 							</div>
 

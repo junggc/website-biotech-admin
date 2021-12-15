@@ -34,10 +34,18 @@
 				</th:block>
 				<th:block th:if="${#authentication.getPrincipal().getNoticeAuthority() == 'Y' or #authentication.getPrincipal().getAuthorities()[0] == 'ROLE_ADMIN'}">
 					<li class="sidebar-item">
-						<a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-						   th:href="@{/noticeList}" href="/noticeList">
-							<i class="mdi mdi-view-dashboard"></i><span class="hide-menu">공지사항관리</span>
+						<a aria-expanded="false" class="sidebar-link has-arrow waves-effect waves-dark"
+						   href="javascript:void(0);">
+							<i class="mdi mdi-chart-bar"></i>
+							<span class="hide-menu">공지사항관리</span>
 						</a>
+						<ul aria-expanded="false" class="collapse first-level">
+							<li class="sidebar-item">
+								<a class="sidebar-link" th:href="@{/noticeList}" href="/noticeList">
+									<i class="mdi mdi-note-outline"></i>
+									<span class="hide-menu">공지사항관리</span></a>
+							</li>
+						</ul>
 					</li>
 				</th:block>
 

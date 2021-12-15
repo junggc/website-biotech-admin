@@ -62,7 +62,99 @@
     <!--            <div layout:fragment="footer"></div>-->
     <!--            <footer th:replace="~{fragments/footer::footerFragment}"></footer>-->
     <footer th:replace="fragments/footer::footerFragment"></footer>
+
 </div>
+
+<div class="user-layerpop" style="display:none;">
+    <div class="inner">
+        <div class="layer-tit">비밀번호 변경</div>
+        <div class="layer-cont">
+            <form action="">
+                <div class="user-pw-tb">
+                    <table>
+                        <caption class="hidden">운영자정보</caption>
+                        <colgroup>
+                            <col width="*" />
+                            <col width="*" />
+                            <col width="*" />
+                            <col width="*" />
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th scope="col" colspan="4">운영자정보</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">운영자명</th>
+                            <td>슈퍼관리자</td>
+                            <th scope="row">운영자ID</th>
+                            <td>kolon</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="user-pw-tb">
+                    <table>
+                        <caption class="hidden">비밀번호 변경</caption>
+                        <colgroup>
+                            <col width="25%" />
+                            <col width="*" />
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th scope="col" colspan="2">비밀번호변경</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">현재 비밀번호</th>
+                            <td>
+                                <input type="password" name="" placeholder="현재 비밀번호를 입력해주세요" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">새로운 비밀번호</th>
+                            <td>
+                                <input type="password" name="" placeholder="새로운 비밀번호를 입력해주세요" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">비밀번호 확인</th>
+                            <td>
+                                <input type="password" name="" placeholder="비밀번호를 확인해주세요." />
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn-area-center">
+                    <input type="submit" value="저장" class="btn-save" />
+                </div>
+            </form>
+        </div>
+        <a href="javascript:;" class="btn-close">닫기</a>
+    </div>
+</div>
+<style>
+    .hidden {visibility:hidden;display:none;opacity:0;}
+    .user-layerpop {position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.3);z-index:2000;}
+    .user-layerpop .inner {width:550px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;}
+    .user-layerpop .inner .layer-tit {padding:15px 30px;font-size:16px;font-weight:bold;border-bottom:1px solid #ddd;}
+    .user-layerpop .inner .layer-cont {padding:15px 30px;font-size:13px;}
+    .user-layerpop .inner .layer-cont .user-pw-tb+.user-pw-tb {margin-top:15px;}
+    .user-layerpop .inner .layer-cont .user-pw-tb table {width:100%;table-layout:fixed;}
+    .user-layerpop .inner .layer-cont .user-pw-tb thead th {padding:10px;text-align:left;background:#efefef;}
+    .user-layerpop .inner .layer-cont .user-pw-tb tbody th {padding:10px;border-left:1px solid #efefef;border-right:1px solid #efefef;border-bottom:1px solid #efefef;}
+    .user-layerpop .inner .layer-cont .user-pw-tb tbody td {padding:10px;border-right:1px solid #efefef;border-bottom:1px solid #efefef;}
+    .user-layerpop .inner .layer-cont .user-pw-tb tbody td input {width:100%;padding:0 10px;height:35px;box-sizing:border-box;border:1px solid #dfdfdf;}
+    .user-layerpop .inner .layer-cont .btn-area-center {text-align:center;padding:20px 0;}
+    .user-layerpop .inner .layer-cont .btn-area-center .btn-save
+    {display:inline-block;width:90px;height:35px;background:#000;font-size:14px;color:#fff;appearance:none;-webkit-appearance:none;border:0;}
+    .user-layerpop .inner .layer-cont .btn-area-center .btn-save:focus {outline:none;}
+    .user-layerpop .inner .btn-close {font-size:0;line-height:0;position:absolute;top:10px;right:30px;height:30px;color:#000;text-decoration:none;}
+    .user-layerpop .inner .btn-close:before {content:"X";display:block;font-size:25px;font-weight:normal;line-height:30px;}
+</style>
 </body>
 
 </html>

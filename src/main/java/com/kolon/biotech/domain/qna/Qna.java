@@ -43,6 +43,9 @@ public class Qna extends BaseTimeEntity {
     @Column(name = "USER_POSITION", nullable = false,length = 300)
     private String userPosition;
 
+    @Column(name="COUNTRY",length = 210)
+    private String country;
+
     @Column(name = "ANSWER_DATE",length = 30)
     private String answerDate;
 
@@ -54,9 +57,6 @@ public class Qna extends BaseTimeEntity {
 
     @Column(name = "SEND_EMAIL",length = 50)
     private String sendEmail;
-
-    @Column(name = "COUNTRY",length = 210)
-    private String country;
 
     @Column(name = "FILE_NAME",length = 300)
     private String fileName;
