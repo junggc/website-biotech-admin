@@ -74,7 +74,7 @@ public class MainpopService {
 
         if(file != null && !file.isEmpty()){
 
-            if(_mainpop != null){
+            if(_mainpop != null && (_mainpop.getPopImgRealPath() != null && !"".equals(_mainpop.getPopImgRealPath()))){
                 File f = new File(_mainpop.getPopImgRealPath());
                 f.delete();
             }

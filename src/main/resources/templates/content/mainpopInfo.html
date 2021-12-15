@@ -57,6 +57,9 @@
 	<script href="/js/jquery-common.js" th:src="@{/js/jquery-common.js}"></script>
 	<script href="/dext5editor/js/dext5editor.js"
 			th:src="@{/dext5editor/js/dext5editor.js}"></script>
+	<style>
+		.form-group.required .control-label:after { content:"*";color:red; }
+	</style>
 	<script>
     $(function () {
           $("#datepicker-autoclose1").datepicker({
@@ -114,7 +117,7 @@
 				dispYn: {required:"전시여부를 선택해주세요."},
 				langKoYn: {required:"언어구분을 선택해주세요."},
 				title: {required:"제목을 입력해주세요."},
-				popImgCheck: {required: "pc이미지를 선택해주세요.",extension2: "pc이미지는 png, jpg만 업로드 가능합니다.",filesize: "pc이미지는 2MB이하만 업로드 가능합니다."},
+				popImgCheck: {required: "팝업이미지를 선택해주세요.",extension2: "팝업이미지는 png, jpg만 업로드 가능합니다.",filesize: "팝업이미지는 2MB이하만 업로드 가능합니다."},
 				widthPoint: {num:"숫자만 입력가능합니다."},
 				heightPoint: {num:"숫자만 입력가능합니다."},
 				dispStartDay: {required:"전시시작일을 입력해주세요."},
@@ -161,22 +164,22 @@
 			var name = f.name;
 			var ext = f.name.split('.').pop().toLowerCase();
 			var size = f.size;
-          var reader = new FileReader();
-          reader.onload = function (e) {
-			content_files = [];
-            content_files.push(f);
-			  $("#popImgCheck").val(name);
-			  $("#popImgCheck").attr('data-ext',ext);
-			  $("#popImgCheck").attr('data-size',size);
-            $('#articlefileChange').append(
-                '<div id="file' + fileNum + '" onclick="fileDelete(\'file' + fileNum + '\')">'
-                + '<img src="' + e.target.result + '" alt="">'
-                + '<i class="me-2 mdi mdi-minus"></i>'
-                + ''
-            );
-            fileNum ++;
-          };
-          reader.readAsDataURL(f);
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				content_files = [];
+				content_files.push(f);
+				  $("#popImgCheck").val(name);
+				  $("#popImgCheck").attr('data-ext',ext);
+				  $("#popImgCheck").attr('data-size',size);
+				$('#articlefileChange').append(
+					'<div id="file' + fileNum + '" width="100" hight="100" onclick="fileDelete(\'file' + fileNum + '\')">'
+					+ '<img src="' + e.target.result + '" alt="">'
+					+ '<i class="me-2 mdi mdi-minus"></i>'
+					+ ''
+				);
+				fileNum ++;
+			};
+			reader.readAsDataURL(f);
         });
 
         //초기화 한다.
@@ -205,52 +208,64 @@
 		$("#popImgCheck").attr('data-ext','');
 		$("#popImgCheck").attr('data-size','');
 
+		content_files = [];
+
 		fileCount --;
 	}
 
     /*
      * 폼 submit 로직
      */
-        function registerAction(){
+	function registerAction(){
 
-			if(!$("#is_form").valid()){
-				return false;
-			}
+		if(!$("#is_form").valid()){
+			return false;
+		}
 
-        var form = $("#is_form")[0];
-        var formData = new FormData(form);
+		var form = $("#is_form")[0];
+		var formData = new FormData(form);
 
-            for (var x = 0; x < content_files.length; x++) {
-				formData.append("file", content_files[x]);
-            }
+		for (var x = 0; x < content_files.length; x++) {
+			formData.append("file", content_files[x]);
+		}
 
-			for(var y = 0; y<delete_files.length; y++){
-				formData.append("deletefilenum", delete_files[y]);
-			}
+		for(var y = 0; y<delete_files.length; y++){
+			formData.append("deletefilenum", delete_files[y]);
+		}
 
 
-       /*
-       * 파일업로드 multiple ajax처리
-       */
-        $.ajax({
-              type: "POST",
-              url: "/mainpopEditProcess",
-              data : formData,
-			  cache:false,
-              processData: false,
-              contentType: false,
-              success: function (data) {
-				console.log('data',data);
-				alert("파일업로드 성공");
-				location.reload();
-              },
-              error: function (xhr, status, error) {
-                alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
-             return false;
-              }
-            });
-            return false;
-        }
+   /*
+   * 파일업로드 multiple ajax처리
+   */
+	$.ajax({
+		  type: "POST",
+		  url: "/mainpopEditProcess",
+		  data : formData,
+		  cache:false,
+		  processData: false,
+		  contentType: false,
+		  success: function (data) {
+			console.log('data',data);
+			alert("메인팝업이 저장되었습니다.");
+			location.reload();
+		  },
+		  error: function (xhr, status, error) {
+			alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
+		 return false;
+		  }
+		});
+		return false;
+	}
+
+	function listAction(){
+		location.href='/mainpopList';
+	}
+
+	function cancelAction(){
+		if(confirm("등록을 취소하시겠습니까?")){
+			location.href='/mainpopList';
+		}
+	}
 
 	</script>
 </head>
@@ -335,6 +350,7 @@
 									<div class="custom-file">
 										<input class="custom-file-input" id="input_file"  type="file">
 										<input type="hidden" name="popImgCheck" id="popImgCheck" value="" th:value="*{popImgName}" th:attr="data-ext=*{popImgExt}" th:attrappend="data-size=*{popImgLength}"/>
+										<label class="custom-file-label" for="input_file">2MB 이하의 jpg, png만 업로드 가능</label>
 										<br/>
 										<div id="articlefileChange">
 											<th:block th:if="*{not #strings.isEmpty(popImgPath)}">
@@ -343,7 +359,6 @@
 													<i class="me-2 mdi mdi-minus"></i>
 												</div>
 											</th:block>
-											<label class="custom-file-label" for="input_file">2MB 이하의 jpg, png만 업로드 가능</label>
 										</div>
 									</div>
 								</div>
@@ -510,11 +525,15 @@
 
 						<div class="border-top" style="text-align:center;">
 							<div class="card-body">
+								<button class="btn btn-secondary text-white" onclick="listAction();"
+										type="button">
+									목록
+								</button>
 								<button class="btn btn-success text-white" onclick="registerAction();"
 								        type="button">
 									등록
 								</button>
-								<button class="btn btn-danger text-white" type="button">
+								<button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
 									취소
 								</button>
 							</div>

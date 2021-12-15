@@ -508,6 +508,12 @@
 			location.href='/noticeList';
 	}
 
+	function cancelAction(){
+		if(confirm("등록을 취소하시겠습니까?")){
+			location.href='/mainpopList';
+		}
+	}
+
 	</script>
 </head>
 
@@ -786,7 +792,7 @@
 								        type="button">
 									등록
 								</button>
-								<button class="btn btn-danger text-white" type="button">
+								<button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
 									취소
 								</button>
 							</div>

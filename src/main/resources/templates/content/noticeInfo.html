@@ -244,6 +244,15 @@
             return false;
         }
 
+	function listAction(){
+		location.href='/noticeList';
+	}
+
+	function cancelAction(){
+		if(confirm("등록을 취소하시겠습니까?")){
+			location.href='/noticeList';
+		}
+	}
 	</script>
 </head>
 
@@ -410,11 +419,15 @@
 						</div>
 						<div class="border-top" style="text-align:center;">
 							<div class="card-body">
+								<button class="btn btn-secondary text-white" onclick="listAction();"
+										type="button">
+									목록
+								</button>
 								<button class="btn btn-success text-white" onclick="registerAction();"
 								        type="button">
 									등록
 								</button>
-								<button class="btn btn-danger text-white" type="button">
+								<button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
 									취소
 								</button>
 							</div>

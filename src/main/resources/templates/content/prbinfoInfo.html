@@ -29,6 +29,9 @@
 			th:href="@{/assets/libs/quill/dist/quill.snow.css}"
 			type="text/css"
 	/>
+	<style>
+		.form-group.required .control-label:after { content:"*";color:red; }
+	</style>
 	<!-- This Page JS -->
 	<script href="/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"
 	        th:src="@{/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
@@ -123,7 +126,7 @@
               contentType: false,
               success: function (data) {
 				console.log('data',data);
-				alert("파일업로드 성공");
+				alert("개인정보 처리방침이 저장되었습니다.");
 				  location.reload();
               },
               error: function (xhr, status, error) {
@@ -133,6 +136,16 @@
             });
             return false;
         }
+
+	function listAction(){
+		location.href='/prbinfoList';
+	}
+
+	function cancelAction(){
+		if(confirm("등록을 취소하시겠습니까?")){
+			location.href='/prbinfoList';
+		}
+	}
 
 	</script>
 </head>
@@ -180,11 +193,15 @@
 						</div>
 						<div class="border-top" style="text-align:center;">
 							<div class="card-body">
+								<button class="btn btn-secondary text-white" onclick="listAction();"
+										type="button">
+									목록
+								</button>
 								<button class="btn btn-success text-white" onclick="registerAction();"
 								        type="button">
 									등록
 								</button>
-								<button class="btn btn-danger text-white" type="button">
+								<button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
 									취소
 								</button>
 							</div>

@@ -29,6 +29,9 @@
 			th:href="@{/assets/libs/quill/dist/quill.snow.css}"
 			type="text/css"
 	/>
+	<style>
+		.form-group.required .control-label:after { content:"*";color:red; }
+	</style>
 	<!-- This Page JS -->
 	<script href="/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"
 	        th:src="@{/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>

@@ -29,7 +29,9 @@
             th:href="@{/assets/libs/quill/dist/quill.snow.css}"
             type="text/css"
     />
-
+    <style>
+        .form-group.required .control-label:after { content:"*";color:red; }
+    </style>
     <!-- This Page JS -->
     <script href="/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"
             th:src="@{/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
@@ -181,6 +183,15 @@
         }
     });
 
+    function listAction(){
+        location.href='/userList';
+    }
+
+    function cancelAction(){
+        if(confirm("등록을 취소하시겠습니까?")){
+            location.href='/userList';
+        }
+    }
     </script>
 </head>
 
@@ -384,11 +395,15 @@
                         </div>
                         <div class="border-top" style="text-align:center;">
                             <div class="card-body">
+                                <button class="btn btn-secondary text-white" onclick="listAction();"
+                                        type="button">
+                                    목록
+                                </button>
                                 <button class="btn btn-success text-white" onclick="$('#is_form').submit();"
                                         type="button">
                                     등록
                                 </button>
-                                <button class="btn btn-danger text-white" type="button">
+                                <button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
                                     취소
                                 </button>
                             </div>
