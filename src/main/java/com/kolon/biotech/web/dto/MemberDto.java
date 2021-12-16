@@ -9,7 +9,10 @@ import java.util.Collection;
 
 @Data
 public class MemberDto implements UserDetails {
+    private static final long serialVersionUID = 1L;
+
     private String username;
+    private String loginId;
     private String password;
     private boolean isEnabled;
     private boolean isAccountNonExpired;

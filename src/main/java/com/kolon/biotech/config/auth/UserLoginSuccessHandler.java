@@ -1,9 +1,13 @@
 package com.kolon.biotech.config.auth;
 
+import com.kolon.biotech.domain.history.History;
 import com.kolon.biotech.domain.user.Member;
 import com.kolon.biotech.domain.user.MemberRepository;
+import com.kolon.biotech.service.HistoryService;
+import com.kolon.biotech.web.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,6 +38,9 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
     private final MemberRepository memberRepository;
 
+    @Autowired
+    private HistoryService historyService;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.debug("====onAuthenticationSuccess====");
@@ -48,13 +55,46 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
         LocalDateTime pwdDate = findAccount.getPasswordChangeDate() != null ? findAccount.getPasswordChangeDate() : findAccount.getRegDtime();
         if(ChronoUnit.DAYS.between(pwdDate,LocalDateTime.now()) >= 90){
             findAccount.setBlocked("true");
+
+
+            History history = History.builder().userId(findAccount.getLoginId())
+                    .jobContent("비밀번호 변경 90일이 경과하여 계정이 잠겼습니다.마스터관리자에 문의바랍니다.")
+                    .jobFlag("J")
+                    .requestDate(LocalDateTime.now())
+                    .jobUrl(request.getRequestURI()).requestIp(request.getRemoteAddr())
+                    .userName(findAccount.getName()).build();
+
+            historyService.setWriteStroe(history);
+
+
+
             throw new LockedException("비밀번호 변경 90일이 경과하여 계정이 잠겼습니다.\\n마스터관리자에 문의바랍니다.");
         }
 
         if(findAccount.getFailCount() >= 5){
             // 아래 예외로 인해 로그인 실패가 발생하고, 로그인 실패 핸들러 호출됨
+
+            History history = History.builder().userId(findAccount.getLoginId())
+                    .jobContent("계정이 잠겼습니다.마스터관리자에 문의바랍니다.")
+                    .jobFlag("J")
+                    .requestDate(LocalDateTime.now())
+                    .jobUrl(request.getRequestURI()).requestIp(request.getRemoteAddr())
+                    .userName(findAccount.getName()).build();
+
+            historyService.setWriteStroe(history);
+
             throw new LockedException("계정이 잠겼습니다.\\n마스터관리자에 문의바랍니다.");
         }else{
+
+            History history = History.builder().userId(findAccount.getLoginId())
+                    .jobContent("로그인 하였습니다.")
+                    .jobFlag("J")
+                    .requestDate(LocalDateTime.now())
+                    .jobUrl(request.getRequestURI()).requestIp(request.getRemoteAddr())
+                    .userName(findAccount.getName()).build();
+
+            historyService.setWriteStroe(history);
+
             findAccount.setFailCount(0);
             findAccount.setLoginDate(LocalDateTime.now());
         }

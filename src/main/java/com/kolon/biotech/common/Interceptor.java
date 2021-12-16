@@ -4,15 +4,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kolon.biotech.config.auth.XssRequest;
 import com.kolon.biotech.domain.history.History;
 import com.kolon.biotech.service.HistoryService;
+import com.kolon.biotech.web.dto.MemberDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -30,64 +35,49 @@ public class Interceptor implements HandlerInterceptor {
     ) throws Exception {
         log.info("[MYTEST] preHandle");
 
-//        History history = null;
-//        if(request.getRequestURI().contains("/noticeList")){
-//            history = new History();
-//            history.setUserId(request.getSession().getAttribute("loginId").toString());
-//            history.setJobContent("공지사항관리에 접속했습니다.");
-//            history.setId(Integer.valueOf(request.getSession().getAttribute("id").toString()));
-//            history.setJobUrl(request.getRequestURI());
-//            history.setUserName(request.getSession().getAttribute("username").toString());
-//            history.setRequestIp(request.getRemoteAddr());
-//        }else if(request.getRequestURI().contains("/mainvisualList")){
-//            history = new History();
-//            history.setUserId(request.getSession().getAttribute("loginId").toString());
-//            history.setJobContent("메인비주얼관리에 접속했습니다.");
-//            history.setId(Integer.valueOf(request.getSession().getAttribute("id").toString()));
-//            history.setJobUrl(request.getRequestURI());
-//            history.setUserName(request.getSession().getAttribute("username").toString());
-//            history.setRequestIp(request.getRemoteAddr());
-//        }else if(request.getRequestURI().contains("/mainpopList")){
-//            history = new History();
-//            history.setUserId(request.getSession().getAttribute("loginId").toString());
-//            history.setJobContent("메인팝업관리에 접속했습니다.");
-//            history.setId(Integer.valueOf(request.getSession().getAttribute("id").toString()));
-//            history.setJobUrl(request.getRequestURI());
-//            history.setUserName(request.getSession().getAttribute("username").toString());
-//            history.setRequestIp(request.getRemoteAddr());
-//        }else if(request.getRequestURI().contains("/qnaList")){
-//            history = new History();
-//            history.setUserId(request.getSession().getAttribute("loginId").toString());
-//            history.setJobContent("문의하기관리에 접속했습니다.");
-//            history.setId(Integer.valueOf(request.getSession().getAttribute("id").toString()));
-//            history.setJobUrl(request.getRequestURI());
-//            history.setUserName(request.getSession().getAttribute("username").toString());
-//            history.setRequestIp(request.getRemoteAddr());
-//        }else if(request.getRequestURI().contains("/userList")){
-//            history = new History();
-//            history.setUserId(request.getSession().getAttribute("loginId").toString());
-//            history.setJobContent("관리자관리에 접속했습니다.");
-//            history.setId(Integer.valueOf(request.getSession().getAttribute("id").toString()));
-//            history.setJobUrl(request.getRequestURI());
-//            history.setUserName(request.getSession().getAttribute("username").toString());
-//            history.setRequestIp(request.getRemoteAddr());
-//        }else if(request.getRequestURI().contains("/subsidiaryList")){
-//            history = new History();
-//            history.setUserId(request.getSession().getAttribute("loginId").toString());
-//            history.setJobContent("계열사관리에 접속했습니다.");
-//            history.setId(Integer.valueOf(request.getSession().getAttribute("id").toString()));
-//            history.setJobUrl(request.getRequestURI());
-//            history.setUserName(request.getSession().getAttribute("username").toString());
-//            history.setRequestIp(request.getRemoteAddr());
-//        }else if(request.getRequestURI().contains("/prbinfoList")){
-//            history = new History();
-//            history.setUserId(request.getSession().getAttribute("loginId").toString());
-//            history.setJobContent("개인정보처리방침관리에 접속했습니다.");
-//            history.setId(Integer.valueOf(request.getSession().getAttribute("id").toString()));
-//            history.setJobUrl(request.getRequestURI());
-//            history.setUserName(request.getSession().getAttribute("username").toString());
-//            history.setRequestIp(request.getRemoteAddr());
-//        }
+        boolean t = false;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication != null && authentication.getPrincipal() instanceof MemberDto){
+            MemberDto memberDto = (MemberDto) authentication.getPrincipal();
+            log.debug("#@####@###"+memberDto.getUsername());
+
+            String jobContent = "";
+            if("/noticeList".equals(request.getRequestURI())){
+                jobContent = "공지사항관리에 접속했습니다.";
+                t = true;
+            }else if("/mainvisualList".equals(request.getRequestURI())){
+                jobContent = "메인비주얼관리에 접속했습니다.";
+                t = true;
+            }else if("/mainpopList".equals(request.getRequestURI())){
+                jobContent = "메인팝업관리에 접속했습니다.";
+                t = true;
+            }else if("/qnaList".equals(request.getRequestURI())){
+                jobContent = "문의하기관리에 접속했습니다.";
+                t = true;
+            }else if("/userList".equals(request.getRequestURI())){
+                jobContent = "관리자관리에 접속했습니다.";
+                t = true;
+            }else if("/subsidiaryList".equals(request.getRequestURI())){
+                jobContent = "계열사관리에 접속했습니다.";
+                t = true;
+            }else if("/prbinfoList".equals(request.getRequestURI())){
+                jobContent = "개인정보처리방침관리에 접속했습니다.";
+                t = true;
+            }
+
+            if(t){
+                History history = History.builder().userId(memberDto.getLoginId())
+                        .jobContent(jobContent)
+                        .jobFlag("J")
+                        .jobUrl(request.getRequestURI()).requestIp(request.getRemoteAddr())
+                        .requestDate(LocalDateTime.now())
+                        .userName(memberDto.getUsername()).build();
+
+                historyService.setWriteStroe(history);
+            }
+
+
+        }
 
         return true;
     }

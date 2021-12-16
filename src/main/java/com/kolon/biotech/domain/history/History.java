@@ -1,14 +1,12 @@
 package com.kolon.biotech.domain.history;
 
 import com.kolon.biotech.domain.BaseTimeEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -41,6 +39,19 @@ public class History extends BaseTimeEntity {
     private String requestIp;
 
     @Column(name = "REQUEST_DATE")
-    private String requestDate;
+    private LocalDateTime requestDate;
 
+    @Column(name = "JOB_FLAG")
+    private String jobFlag;
+
+    @Builder
+    public History(String userId, String jobContent, String jobUrl, String userName, String requestIp, String jobFlag, LocalDateTime requestDate){
+        this.userId = userId;
+        this.jobContent = jobContent;
+        this.jobUrl = jobUrl;
+        this.userName = userName;
+        this.requestIp = requestIp;
+        this.jobFlag = jobFlag;
+        this.requestDate = requestDate;
+    }
 }

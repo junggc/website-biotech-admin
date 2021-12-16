@@ -199,7 +199,8 @@ public class UserService implements UserDetailsService {
         authorities.add(new SimpleGrantedAuthority(user.getAuth()));
 
         MemberDto memberDto = new MemberDto();
-        memberDto.setUsername(user.getLoginId());
+        memberDto.setLoginId(user.getLoginId());
+        memberDto.setUsername(user.getName());
         memberDto.setPassword(user.getPassword());
         memberDto.setMainAuthority(user.getMainAuthority());
         memberDto.setNoticeAuthority(user.getNoticeAuthority());

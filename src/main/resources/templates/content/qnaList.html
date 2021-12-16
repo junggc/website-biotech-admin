@@ -108,9 +108,9 @@
                     {data: 'regDtime', targets: 6, orderable: false, visible: true},
 					{data: function(data,type){
 						  	if(data.answerDate != null && data.answerDate != ''){
-								  return '답변완료 '+'<button type="button" class="btn btn-outline-secondary">답변수정</button>';
+								  return '답변완료 '+'<button type="button" class="btn btn-outline-secondary" onclick="location.href=/qnaInfo?id='+data.id+'">답변수정</button>';
 							}else{
-								  return '답변대기 '+'<button type="button" class="btn btn-outline-secondary">답변등록</button>';
+								  return '답변대기 '+'<button type="button" class="btn btn-outline-secondary" onclick="location.href=/qnaInfo?id='+data.id+'">답변등록</button>';
 							}
 					}, targets: 7, orderable: true, visible: true}
 
@@ -123,7 +123,8 @@
                   processing: true,
                   serverSide: true,
                   pageLength: 10,
-                  paging: true
+                  paging: true,
+				  bStateSave: true
             });
 
             $(".dataTables_filter").html('<button class="btn btn-outline-danger" id="refresh">삭제</button>');
@@ -158,25 +159,27 @@
 							<div class="col-sm-12">
 								<table class="table table-bordered">
 									<tr>
-										<td><label class="col-md-6 control-label">검색</label></td>
-										<td><input type="text" class="form-control col-md-6" placeholder=""></td>
+										<td style="vertical-align:middle"><label style="margin:0;">검색</label></td>
+										<td><input type="text" name="searchContent" id="searchContent" class="form-control col-md-6" placeholder=""></td>
 									</tr>
 									<tr>
-										<td><label class="col-md-9 control-label">작성 날짜</label></td>
+										<td style="vertical-align:middle"><label style="margin:0;">작성 날짜</label></td>
 										<td>
 											<div class="input-group">
-												<input class="form-control col-md-3" id="datepicker-autoclose1" name="regStartDay"
+												<input class="form-control col-md-3" id="datepicker-autoclose1" name="searchStartDt"
 													   placeholder="yyyy-mm-dd"
 													   type="text"
+													   th:value="${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}"
 													   readOnly="true">
 
 												<span class="input-group-text h-100"><i class="mdi mdi-calendar"></i></span>
 
-												<span style="">-</span>
+												<span style="display:inline-block;padding:0 7px;line-height:36px;">-</span>
 
-												<input class="form-control col-md-3" id="datepicker-autoclose2" name="regEndDay"
+												<input class="form-control col-md-3" id="datepicker-autoclose2" name="searchEndDt"
 													   placeholder="yyyy-mm-dd"
 													   type="text"
+													   th:value="${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}"
 													   readOnly="true">
 
 												<span class="input-group-text h-100"><i class="mdi mdi-calendar"></i></span>
@@ -184,7 +187,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td colspan="2">
+										<td colspan="2" style="text-align: center;">
 											<button class="btn btn-success text-white" type="button">
 												조회
 											</button>
@@ -197,13 +200,6 @@
 							</div>
 						</div>
 					</div>
-
-					<button class="btn btn-success text-white" type="button">
-						조회
-					</button>
-					<button class="btn btn-secondary text-white" type="button">
-						초기화
-					</button>
 
 
 
@@ -226,7 +222,7 @@
 							<th>제목</th>
 							<th>문의일</th>
 							<th>
-								<select><option>답변상태</option></select>
+								<select name="searchAnsStat" id="searchAnsStat"><option>답변상태</option></select>
 							</th>
 						</tr>
 						</thead>
