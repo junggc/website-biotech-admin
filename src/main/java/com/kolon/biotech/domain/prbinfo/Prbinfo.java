@@ -20,7 +20,5 @@ public class Prbinfo extends BaseTimeEntity {
     @Column(name = "CONTENT", columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "USE_YN", length = 1)
-    private String useYn;
 
 }
