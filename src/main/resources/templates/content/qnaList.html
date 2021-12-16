@@ -172,6 +172,7 @@
 
 												<span class="input-group-text h-100"><i class="mdi mdi-calendar"></i></span>
 
+												<span style="">-</span>
 
 												<input class="form-control col-md-3" id="datepicker-autoclose2" name="regEndDay"
 													   placeholder="yyyy-mm-dd"
@@ -182,10 +183,27 @@
 											</div>
 										</td>
 									</tr>
+									<tr>
+										<td colspan="2">
+											<button class="btn btn-success text-white" type="button">
+												조회
+											</button>
+											<button class="btn btn-secondary text-white" type="button">
+												초기화
+											</button>
+										</td>
+									</tr>
 								</table>
 							</div>
 						</div>
 					</div>
+
+					<button class="btn btn-success text-white" type="button">
+						조회
+					</button>
+					<button class="btn btn-secondary text-white" type="button">
+						초기화
+					</button>
 
 
 
@@ -208,7 +226,7 @@
 							<th>제목</th>
 							<th>문의일</th>
 							<th>
-								답변상태
+								<select><option>답변상태</option></select>
 							</th>
 						</tr>
 						</thead>

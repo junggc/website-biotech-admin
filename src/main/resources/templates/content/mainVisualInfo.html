@@ -671,7 +671,7 @@
 										<br/>
 										<div id="moarticlefileChange">
 											<th:block th:if="*{moImgPath != null}">
-												<div th:id="'modbfile1'" th:onclick="removeContent([[*{moImgRealPath}]])">
+												<div th:id="'modbfile1'" th:onclick="moremoveContent([[*{moImgRealPath}]])">
 													<img th:src="*{moImgPath}" width="100" height="100"/>
 													<i class="me-2 mdi mdi-minus"></i>
 												</div>
@@ -758,7 +758,7 @@
 										<br/>
 										<div id="mvarticlefileChange">
 											<th:block th:if="*{videosPath != null}">
-												<div th:id="'mvdbfile1'"  th:onclick="removeContent([[*{videosRealPath}]])">
+												<div th:id="'mvdbfile1'"  th:onclick="mvremoveContent([[*{videosRealPath}]])">
 													<font style="font-size:12px" th:text="*{videosName}"></font>
 													<i class="me-2 mdi mdi-minus"></i>
 													
