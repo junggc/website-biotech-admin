@@ -167,7 +167,7 @@
        */
         $.ajax({
               type: "POST",
-              url: "/noticeEditProcess",
+              url: "/qnaEditProcess",
               data : formData,
 			  cache:false,
               processData: false,
@@ -214,6 +214,20 @@
 					      name="is_form"
 					      th:object="${obj}">
 						<input type="hidden" name="id" th:value="*{id}"/>
+						<input type="hidden" name="qnaCate" th:value="*{qnaCate}"/>
+						<input type="hidden" name="userName" th:value="*{userName}"/>
+						<input type="hidden" name="phone" th:value="*{phone}"/>
+						<input type="hidden" name="userEmail" th:value="*{userEmail}"/>
+						<input type="hidden" name="userCompany" th:value="*{userCompany}"/>
+						<input type="hidden" name="userContents" th:value="*{userContents}"/>
+						<input type="hidden" name="userPosition" th:value="*{userPosition}"/>
+						<input type="hidden" name="country" th:value="*{country}"/>
+						<input type="hidden" name="sendEmail" th:value="*{sendEmail}"/>
+						<input type="hidden" name="fileName" th:value="*{fileName}"/>
+						<input type="hidden" name="fileExt" th:value="*{fileExt}"/>
+						<input type="hidden" name="fileLength" th:value="*{fileLength}"/>
+						<input type="hidden" name="uriPath" th:value="*{uriPath}"/>
+						<input type="hidden" name="filePath" th:value="*{filePath}"/>
 						<div class="card-body">
 							<h4 class="card-title">문의하기 수정</h4>
 
@@ -264,7 +278,7 @@
 							<div class="form-group row">
 								<label class="col-md-3">문의 내용</label>
 								<div class="col-sm-9">
-									<textarea class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{userContents}"></textarea>
+									<textarea class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{userContents}" readonly="true"></textarea>
 								</div>
 							</div>
 
@@ -275,8 +289,8 @@
 								</div>
 							</div>
 
-							<div class="form-group row">
-								<label class="col-md-3">답변 제목</label>
+							<div class="form-group required row">
+								<label class="col-md-3 control-label">답변 제목</label>
 								<div class="col-sm-9">
 									<input
 											class="form-control"
@@ -289,8 +303,8 @@
 								</div>
 							</div>
 
-							<div class="form-group row">
-								<label class="col-md-3">답변 내용</label>
+							<div class="form-group required row">
+								<label class="col-md-3 control-label">답변 내용</label>
 								<div class="col-sm-9">
 									<textarea class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 150px;" id="answerContents" name="answerContents" th:utext="*{answerContents}"></textarea>
 								</div>

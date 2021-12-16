@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -46,8 +47,8 @@ public class Qna extends BaseTimeEntity {
     @Column(name="COUNTRY",length = 210)
     private String country;
 
-    @Column(name = "ANSWER_DATE",length = 30)
-    private String answerDate;
+    @Column(name = "ANSWER_DATE")
+    private LocalDateTime answerDate;
 
     @Column(name = "ANSWER_TITLE",length = 900)
     private String answerTitle;

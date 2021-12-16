@@ -54,6 +54,9 @@
                     beforeSend : function() {
                     },
                     data: function (p) {
+						p.searchText = $("#searchText").val();
+						p.searchStartDate = $("#datepicker-autoclose1").val();
+						p.searchEndDate = $("#datepicker-autoclose2").val();
                         p.page = $("#zero_config").DataTable().page.info().page+1;
                         p.size = $("#zero_config").DataTable().page.len();
                     },
@@ -91,18 +94,22 @@
                   columnDefs: [
                     {
                       data: function (data, type) {
-                          return '<label class="customcheckbox"><input type="checkbox" value="'+data.id+'" class="listCheckbox"><span class="checkmark"></span></label>';
+                          return '<label class="customcheckbox"><input type="checkbox" name="checkedbox"  value="'+data.id+'" class="listCheckbox"><span class="checkmark"></span></label>';
                       },
                       targets: 0,
                       orderable: false,
                       visible: true
                     },
                     {data: 'id',    targets: 1, orderable: false, visible: true},
-					{data: 'userName',    targets: 2, orderable: false, visible: true},
+					{data: function(data, type){
+						return nameMasking(data.userName);
+						},    targets: 2, orderable: false, visible: true},
 					{data: 'qnaCate',    targets: 3, orderable: false, visible: true},
-					{data: 'userEmail',    targets: 4, orderable: false, visible: true},
+					{data: function(data, type){
+							return emailMasking(data.userEmail);
+						},    targets: 4, orderable: false, visible: true},
 					{data:function(data, type){
-						return '<a href="/qnaInfo?id='+data.id+'">'+data.userName+'이 문의합니다.</a>';
+						return '<a href="/qnaInfo?id='+data.id+'">'+nameMasking(data.userName)+'이 문의합니다.</a>';
 						}, targets: 5, orderable: false, visible: true
                     },
                     {data: 'regDtime', targets: 6, orderable: false, visible: true},
@@ -130,6 +137,47 @@
             $(".dataTables_filter").html('<button class="btn btn-outline-danger" id="refresh">삭제</button>');
 			$("#zero_config_paginate").parent("div").addClass("page-wrap");
 			$("#zero_config_paginate").parent("div").siblings("div").addClass("before-page-wrap");
+
+			search = function(){
+				dataTable1.draw();
+			}
+
+			reset = function(){
+				$("#searchText").val('');
+				$("#datepicker-autoclose1").val(/*[[${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}]]*/);
+				$("#datepicker-autoclose2").val(/*[[${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}]]*/);
+			}
+
+			emailMasking = function(str){
+				var emailid = str.split('@');
+				var bmail = "";
+				for(var i=0; i<emailid[0].length; i++){
+					if(i==0){
+						bmail+=emailid[0].charAt(i);
+					}else if(i==(emailid[0].length-1)){
+						bmail+=emailid[0].charAt(i);
+					}else{
+						bmail+='*';
+					}
+				}
+				//console.log(bmail+"@"+emailid[1]);
+				return bmail+"@"+emailid[1];
+			}
+
+			nameMasking = function(str){
+				var bmail = "";
+				for(var i=0; i<str.length; i++){
+					if(i==0){
+						bmail+=str.charAt(i);
+					}else if(i==(str.length-1)){
+						bmail+=str.charAt(i);
+					}else{
+						bmail+='*';
+					}
+				}
+
+				return bmail;
+			}
 
         });
 
@@ -160,13 +208,13 @@
 								<table class="table table-bordered">
 									<tr>
 										<td style="vertical-align:middle"><label style="margin:0;">검색</label></td>
-										<td><input type="text" name="searchContent" id="searchContent" class="form-control col-md-6" placeholder=""></td>
+										<td><input type="text" name="searchText" id="searchText" class="form-control col-md-6" placeholder="작성자,내용"></td>
 									</tr>
 									<tr>
 										<td style="vertical-align:middle"><label style="margin:0;">작성 날짜</label></td>
 										<td>
 											<div class="input-group">
-												<input class="form-control col-md-3" id="datepicker-autoclose1" name="searchStartDt"
+												<input class="form-control col-md-3" id="datepicker-autoclose1" name="searchStartDate"
 													   placeholder="yyyy-mm-dd"
 													   type="text"
 													   th:value="${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}"
@@ -176,7 +224,7 @@
 
 												<span style="display:inline-block;padding:0 7px;line-height:36px;">-</span>
 
-												<input class="form-control col-md-3" id="datepicker-autoclose2" name="searchEndDt"
+												<input class="form-control col-md-3" id="datepicker-autoclose2" name="searchEndDate"
 													   placeholder="yyyy-mm-dd"
 													   type="text"
 													   th:value="${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}"
@@ -188,10 +236,10 @@
 									</tr>
 									<tr>
 										<td colspan="2" style="text-align: center;">
-											<button class="btn btn-success text-white" type="button">
+											<button class="btn btn-success text-white" onclick="search();" type="button">
 												조회
 											</button>
-											<button class="btn btn-secondary text-white" type="button">
+											<button class="btn btn-secondary text-white" onclick="reset();"  type="button">
 												초기화
 											</button>
 										</td>

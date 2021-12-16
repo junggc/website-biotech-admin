@@ -4,6 +4,7 @@ import com.kolon.biotech.domain.qna.Qna;
 import com.kolon.biotech.domain.subsidiary.Subsidiary;
 import com.kolon.biotech.service.QnaService;
 import com.kolon.biotech.web.dto.ResultJsonPagingDto;
+import com.kolon.biotech.web.dto.SearchDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +46,9 @@ public class QnaRestController {
     }
 
     @PostMapping(value="/qnaListAjax")
-    public Page<Qna> listAjax(@PageableDefault Pageable pageable, Model model){
-        log.debug("=========userListAjax============");
-        Page<Qna> list = qnaService.getList(pageable);
+    public Page<Qna> listAjax(@PageableDefault Pageable pageable,@ModelAttribute SearchDto searchDto, Model model){
+        log.debug("=========qnaListAjax============");
+        Page<Qna> list = qnaService.getList(searchDto,pageable);
 
         return list;
     }

@@ -1,8 +1,13 @@
 package com.kolon.biotech.service;
 
+import com.kolon.biotech.domain.mailinfo.Mailinfo;
+import com.kolon.biotech.domain.mailinfo.MailinfoRepository;
 import com.kolon.biotech.domain.prbinfo.Prbinfo;
 import com.kolon.biotech.domain.qna.Qna;
 import com.kolon.biotech.domain.qna.QnaRepository;
+import com.kolon.biotech.util.MailUtil;
+import com.kolon.biotech.web.dto.MailDto;
+import com.kolon.biotech.web.dto.SearchDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -22,6 +27,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -33,11 +40,20 @@ public class QnaService {
     @Autowired
     private QnaRepository qnaRepository;
 
+    @Autowired
+    private MailinfoRepository mailinfoRepository;
+
     @Value("${resources.uri_path}")
     private String uriPath;
 
     @Value("${resources.location}")
     private String targetRootLocation;
+
+    @Value("${server.profile}")
+    private String serverProfile;
+
+    @Autowired
+    private MailUtil mailUtil;
 
     public Qna getInfo(Integer id){
         Qna obj;
@@ -51,59 +67,44 @@ public class QnaService {
         return obj;
     }
 
-    public Page<Qna> getList(Pageable pageable){
+    public Page<Qna> getList(SearchDto searchDto, Pageable pageable){
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() -1);
         pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC,"id"));
-        return qnaRepository.findAll(pageable);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        LocalDateTime startDate = LocalDateTime.parse(searchDto.getSearchStartDate().replaceAll("-","")+"000000",formatter);
+        LocalDateTime endDate = LocalDateTime.parse(searchDto.getSearchEndDate().replaceAll("-","")+"000000",formatter);
+        Page<Qna> list = null;
+        if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
+            list = qnaRepository.findAllByRegDtimeBetweenAndUserNameLikeOrUserContentsLike(startDate,endDate,searchDto.getSearchText(),pageable);
+        }else{
+            list = qnaRepository.findAllByRegDtimeBetweenOrderByRegDtimeDesc(startDate, endDate,pageable);
+        }
+
+        return list;
     }
 
     @Transactional
-    public Qna setWriteStroe(Qna obj, MultipartFile[] files, List<Integer> deleteFileList) throws IOException {
+    public Qna setWriteStroe(Qna obj, MultipartFile[] files, List<Integer> deleteFileList) throws Exception {
         log.debug("===================setWriteStroeNotice============================");
         log.debug("########"+obj.getId()+"#########");
+        obj.setAnswerDate(LocalDateTime.now());
         Qna r_obj = qnaRepository.save(obj);
 
-        if(files != null && files.length > 0){
+        //메일보내기
+        Mailinfo mailinfo = mailinfoRepository.findByJob("REP".toUpperCase());
 
-            int i=0;
-            for(MultipartFile file : files){
-                log.debug("######"+file.getOriginalFilename()+"######");
-                String oriFileName = file.getOriginalFilename();
-                String newFilename = new SimpleDateFormat("yyyyMMddHHmmss.SSS").format(new Date()) + "." + FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase();;
-                String path = "/notice";
-                String filePath = targetRootLocation + path;
+        MailDto mailDto = new MailDto();
+        mailDto.setFromAddress(mailinfo.getAddress());
+        mailDto.setToAddress(r_obj.getUserEmail());
 
-                Path fileLocation = Paths.get(filePath);
-                if (!Files.isDirectory(fileLocation)) {
-                    Files.createDirectories(fileLocation);
-                }
+        mailDto.setServerProfile(serverProfile);
+        mailDto.setTitle(r_obj.getAnswerTitle());
+        mailDto.setSubject(r_obj.getAnswerTitle());
+        mailDto.setMessage(r_obj.getAnswerContents());
+        mailDto.setRegDtime(r_obj.getAnswerDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
-                Files.copy(file.getInputStream(), fileLocation.resolve(newFilename));
-
-//                File f = new File(filePath+"/"+newFilename);
-//
-//                file.transferTo(f);
-
-
-
-
-            }
-        }
-
-        //파일 삭제
-        if(deleteFileList != null && !deleteFileList.isEmpty()){
-            for(Integer id : deleteFileList){
-
-                //실제 파일 삭제
-                Qna nfile = qnaRepository.findById(id).get();
-//                File f = new File(nfile.getFilePath());
-//                f.delete();
-
-                qnaRepository.deleteById(id);
-            }
-
-        }
-
+        mailUtil.sendMailInFile(mailDto);
 
         return r_obj;
 
@@ -118,8 +119,10 @@ public class QnaService {
 
                 //실제 파일 삭제
                 Qna nfile = qnaRepository.findById(id).get();
-                File f = new File(nfile.getFilePath());
-                f.delete();
+                if(nfile.getFilePath() != null && !"".equals(nfile.getFilePath())){
+                    File f = new File(nfile.getFilePath());
+                    f.delete();
+                }
 
                 qnaRepository.deleteById(id);
             }
