@@ -9,8 +9,11 @@
 		<nav class="sidebar-nav">
 			<ul class="pt-4" id="sidebarnav">
 <!--				<span th:text="${#authentication.getPrincipal()}"></span>-->
-<!--				<span th:text="${#authentication.getPrincipal().getAuthorities()[0] == 'ROLE_ADMIN'}"></span>-->
-				<th:block th:if="${#authentication.getPrincipal().getMainAuthority() == 'Y' or #authentication.getPrincipal().getAuthorities()[0] == 'ROLE_ADMIN'}">
+<!--				<span th:text="${#authentication.getPrincipal().getAuthorities()[0]}"></span>-->
+<!--				<span th:text="${#strings.equals(#authentication.getPrincipal().getAuthorities()[0], 'ROLE_ADMIN')}"></span>-->
+<!--				<span th:text="${#authentication.getPrincipal().getMainAuthority() == 'Y'}"></span>-->
+
+				<th:block th:if="${#authentication.getPrincipal().getMainAuthority() == 'Y' or #strings.equals(#authentication.getPrincipal().getAuthorities()[0], 'ROLE_ADMIN')}">
 					<li class="sidebar-item">
 						<a aria-expanded="false" class="sidebar-link has-arrow waves-effect waves-dark"
 						   href="javascript:void(0);">
@@ -32,7 +35,7 @@
 						</ul>
 					</li>
 				</th:block>
-				<th:block th:if="${#authentication.getPrincipal().getNoticeAuthority() == 'Y' or #authentication.getPrincipal().getAuthorities()[0] == 'ROLE_ADMIN'}">
+				<th:block th:if="${#authentication.getPrincipal().getNoticeAuthority() == 'Y' or #strings.equals(#authentication.getPrincipal().getAuthorities()[0], 'ROLE_ADMIN')}">
 					<li class="sidebar-item">
 						<a aria-expanded="false" class="sidebar-link has-arrow waves-effect waves-dark"
 						   href="javascript:void(0);">
@@ -63,7 +66,7 @@
 						<span class="hide-menu">운영 관리</span>
 					</a>
 					<ul aria-expanded="false" class="collapse first-level">
-						<th:block th:if="${#authentication.getPrincipal().getAuthorities()[0] == 'ROLE_ADMIN'}">
+						<th:block th:if="${#strings.equals(#authentication.getPrincipal().getAuthorities()[0], 'ROLE_ADMIN')}">
 							<li class="sidebar-item">
 								<a class="sidebar-link" th:href="@{/userList}" href="/userList">
 									<i class="mdi mdi-note-outline"></i>
