@@ -55,6 +55,7 @@ public class QnaService {
     @Autowired
     private MailUtil mailUtil;
 
+    @Transactional(rollbackFor = Exception.class)
     public Qna getInfo(Integer id){
         Qna obj;
         if(id!=null && id != 0){
@@ -67,13 +68,14 @@ public class QnaService {
         return obj;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public Page<Qna> getList(SearchDto searchDto, Pageable pageable){
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() -1);
         pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC,"id"));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         LocalDateTime startDate = LocalDateTime.parse(searchDto.getSearchStartDate().replaceAll("-","")+"000000",formatter);
-        LocalDateTime endDate = LocalDateTime.parse(searchDto.getSearchEndDate().replaceAll("-","")+"000000",formatter);
+        LocalDateTime endDate = LocalDateTime.parse(searchDto.getSearchEndDate().replaceAll("-","")+"235959",formatter);
         Page<Qna> list = null;
         if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
             list = qnaRepository.findAllByRegDtimeBetweenAndUserNameLikeOrUserContentsLike(startDate,endDate,searchDto.getSearchText(),pageable);
@@ -84,25 +86,35 @@ public class QnaService {
         return list;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Qna setWriteStroe(Qna obj, MultipartFile[] files, List<Integer> deleteFileList) throws Exception {
         log.debug("===================setWriteStroeNotice============================");
         log.debug("########"+obj.getId()+"#########");
         obj.setAnswerDate(LocalDateTime.now());
         Qna r_obj = qnaRepository.save(obj);
 
+        Qna _qna = qnaRepository.findById(obj.getId()).get();
         //메일보내기
         Mailinfo mailinfo = mailinfoRepository.findByJob("REP".toUpperCase());
 
         MailDto mailDto = new MailDto();
         mailDto.setFromAddress(mailinfo.getAddress());
-        mailDto.setToAddress(r_obj.getUserEmail());
+        mailDto.setToAddress(_qna.getUserEmail());
+        mailDto.setUserName(_qna.getUserName());
 
         mailDto.setServerProfile(serverProfile);
-        mailDto.setTitle(r_obj.getAnswerTitle());
-        mailDto.setSubject(r_obj.getAnswerTitle());
-        mailDto.setMessage(r_obj.getAnswerContents());
-        mailDto.setRegDtime(r_obj.getAnswerDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        mailDto.setTitle("문의드립니다.");
+        mailDto.setMessage(_qna.getUserContents());
+        //mailDto.setRegDtime(_qna.getRegDtime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        mailDto.setRegDtime(_qna.getUpdDtime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+        mailDto.setSubject(mailinfo.getSubject());
+        mailDto.setAnswerTitle(_qna.getAnswerTitle());
+        mailDto.setAnswerContents(_qna.getAnswerContents());
+        mailDto.setAnswerDate(_qna.getAnswerDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+        String nlString = System.getProperty("line.separator").toString();
+        mailDto.setNlString(nlString);
 
         mailUtil.sendMailInFile(mailDto);
 

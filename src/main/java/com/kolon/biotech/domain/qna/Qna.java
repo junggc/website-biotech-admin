@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "QNA")
-@DynamicInsert
-@DynamicUpdate
 public class Qna extends BaseTimeEntity {
 
     @Id
