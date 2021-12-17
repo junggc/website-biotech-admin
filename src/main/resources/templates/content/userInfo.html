@@ -57,7 +57,7 @@
     <script href="/assets/libs/jquery-validation/dist/additional-methods.js"
             th:src="@{/assets/libs/jquery-validation/dist/additional-methods.js}"></script>
     <script href="/js/jquery-common.js" th:src="@{/js/jquery-common.js}"></script>
-    <script>
+    <script th:inline="javascript">
     $(function () {
         $(".select2").select2();
 
@@ -89,7 +89,7 @@
             rules: {
                 loginId: {
                     required: true ,
-                    regex: /^[a-z|A-Z|0-9|\s]*$/
+                    regex: /^[a-z0-9\d_-]{4,14}$/
                 }
                 ,samecheck:{
                     sameidcheck: true
@@ -97,21 +97,36 @@
                 ,name:{
                     required: true
                 }
+                /*[# th:if="${member.id == null}"]*/
                 ,password:{
-                    required: true
+                    required: true,
+                    regex : /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?^=-])[A-Za-z\d$@$!%*#?^=-]{8,25}$/
                 }
                 ,password1:{
                     required: true
                     ,equalTo: "#password"
                 }
+                /*[/]*/
+                /*[# th:if="${member.id != null}"]*/
+                ,password:{
+                    regex : /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?^=-])[A-Za-z\d$@$!%*#?^=-]{8,25}$/
+                }
+                ,mPassword:{
+                    required : function(element){
+                        return $("#passwd").val() != '' ? true : false;
+                    }
+                }
+                /*[/]*/
                 ,emailId:{
                     required: true
                 }
                 ,emailDomain:{
-                    required: true
+                    required: true,
+                    regex : /^([a-z0-9-]+\.)+[a-z0-9]{2,4}$/
                 }
                 ,pnum:{
-                    required: true
+                    required: true,
+                    regex : /^01([0|1|6|7|8|9])-(\d{3,4})-(\d{4})$/
                 }
                 ,rank:{
                     required: true
@@ -123,7 +138,7 @@
             messages : {
                 loginId : {
                     required: "로그인 아이디는 필수입니다." ,
-                    regex: "영어 숫자만 입력가능합니다."
+                    regex: "아이디는 영문소문자, 숫자와 특수문자(_-)만 사용 가능합니다."
                 }
                 ,samecheck:{
                     sameidcheck: "아이디 중복체크를 해주세요."
@@ -131,21 +146,34 @@
                 ,name:{
                     required: "이름을 입력해주세요."
                 }
+                /*[# th:if="${member.id == null}"]*/
                 ,password:{
-                    required: "비밀번호를 입력해주세요."
+                    required: "비밀번호를 입력해주세요.",
+                    regex: "비밀번호는 영문/숫자/특수문자(!@#$%^*+=-)를 모두 사용해야합니다."
                 }
                 ,password1:{
                     required: "비밀번호확인을 입력해주세요."
                     ,equalTo: "비밀번호와 일치하지 않습니다."
                 }
+                /*[/]*/
+                /*[# th:if="${member.id != null}"]*/
+                ,password:{
+                    regex: "비밀번호는 영문/숫자/특수문자(!@#$%^*+=-)를 모두 사용해야합니다."
+                }
+                ,mPassword:{
+                    required : "마스터 비밀번호를 입력해주세요."
+                }
+                /*[/]*/
                 ,emailId:{
                     required: "이메일아이디를 입력해주세요."
                 }
                 ,emailDomain:{
-                    required: "이메일도메인을 입력해주세요."
+                    required: "이메일도메인을 입력해주세요.",
+                    regex : "유효한 도메인을 입력해주세요."
                 }
                 ,pnum:{
-                    required: "연락처를 입력해주세요."
+                    required: "연락처를 입력해주세요.",
+                    regex : "연락처를 확인하세요."
                 }
                 ,rank:{
                     required: "직급을 입력해주세요."
@@ -252,9 +280,9 @@
                                     />
                                 </div>
                             </div>
-                            <div class="form-group required row">
+                            <div class="form-group row" th:classappend="*{id} != null ? '' : 'required'">
                                 <label
-                                        class="col-md-3 control-label"
+                                        class="col-md-3 " th:classappend="*{id} != null ? '' : 'control-label'"
                                         for="passwd"
                                 >비밀번호</label
                                 >
@@ -264,27 +292,47 @@
                                             id="passwd"
                                             name="password"
                                             placeholder="비밀번호 입력하세요."
-                                            th:field="*{password}"
                                             type="password"
                                     />
                                 </div>
                             </div>
-                            <div class="form-group required row">
-                                <label
-                                        class="col-md-3 control-label"
-                                        for="passwd"
-                                >비밀번호 재입력</label
-                                >
-                                <div class="col-sm-9">
-                                    <input
-                                            class="form-control"
-                                            id="passwd1"
-                                            name="password1"
-                                            placeholder="비밀번호 재입력하세요."
-                                            type="password"
-                                    />
+                            <th:block th:if="*{id == null}">
+                                <div class="form-group required row">
+                                    <label
+                                            class="col-md-3 control-label"
+                                            for="passwd"
+                                    >비밀번호 재입력</label
+                                    >
+                                    <div class="col-sm-9">
+                                        <input
+                                                class="form-control"
+                                                id="passwd1"
+                                                name="password1"
+                                                placeholder="비밀번호 재입력하세요."
+                                                type="password"
+                                        />
+                                    </div>
                                 </div>
-                            </div>
+                            </th:block>
+                            <th:block th:if="*{id != null}">
+                                <div class="form-group row">
+                                    <label
+                                            class="col-md-3"
+                                            for="mpasswd"
+                                    >마스터 비밀번호</label
+                                    >
+                                    <div class="col-sm-9">
+                                        <input
+                                                class="form-control"
+                                                id="mpasswd"
+                                                name="mPassword"
+                                                placeholder="마스터 비밀번호를 입력하세요."
+                                                type="password"
+                                        />
+                                    </div>
+                                </div>
+                            </th:block>
+
                             <div class="form-group required row">
                                 <label
                                         class="col-md-3 control-label"
@@ -389,6 +437,12 @@
                                                th:field="*{noticeAuthority}" th:value="Y"
                                                type="checkbox">
                                         <label class="form-check-label mb-0" for="noticeAuthority">공지사항관리</label>
+                                    </div>
+                                    <div class="form-check mr-sm-2">
+                                        <input class="form-check-input" id="logAuthority" name="logAuthority"
+                                               th:field="*{logAuthority}" th:value="Y"
+                                               type="checkbox">
+                                        <label class="form-check-label mb-0" for="noticeAuthority">로그관리</label>
                                     </div>
                                 </div>
                             </div>
