@@ -25,7 +25,9 @@
 	<script href="/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"
 			th:src="@{/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js}"></script>
 
-	<script>
+	<script href="/js/js-common.js" th:src="@{/js/js-common.js}"></script>
+
+	<script th:inline="javascript">
         $(function () {
 
 			$("#datepicker-autoclose1").datepicker({
@@ -112,7 +114,10 @@
 						return '<a href="/qnaInfo?id='+data.id+'">'+nameMasking(data.userName)+'이 문의합니다.</a>';
 						}, targets: 5, orderable: false, visible: true
                     },
-                    {data: 'regDtime', targets: 6, orderable: false, visible: true},
+                    {data: function(data, type){
+						var date = new Date(data.regDtime);
+							return toStringByFormatting(date,'-');
+						}, targets: 6, orderable: false, visible: true},
 					{data: function(data,type){
 						  	if(data.answerDate != null && data.answerDate != ''){
 								  return '답변완료 '+'<button type="button" class="btn btn-outline-secondary" onclick="location.href=/qnaInfo?id='+data.id+'">답변수정</button>';

@@ -83,7 +83,6 @@ public class UserController {
 
     @RequestMapping(value="/logoutSuccess")
     public String logoutSuccess(@AuthenticationPrincipal MemberDto memberDto){
-        log.debug("######memberDto="+memberDto.getUsername()+":"+memberDto.getLoginDate());
         return "redirect:/login";
     }
 }

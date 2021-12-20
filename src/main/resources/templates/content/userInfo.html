@@ -87,14 +87,16 @@
 
         $("#is_form").validate({
             rules: {
+                /*[# th:if="${member.id == null}"]*/
                 loginId: {
                     required: true ,
                     regex: /^[a-z0-9\d_-]{4,14}$/
                 }
                 ,samecheck:{
                     sameidcheck: true
-                }
-                ,name:{
+                },
+                /*[/]*/
+                name:{
                     required: true
                 }
                 /*[# th:if="${member.id == null}"]*/
@@ -136,14 +138,16 @@
                 }
             },
             messages : {
+                /*[# th:if="${member.id == null}"]*/
                 loginId : {
                     required: "로그인 아이디는 필수입니다." ,
                     regex: "아이디는 영문소문자, 숫자와 특수문자(_-)만 사용 가능합니다."
                 }
                 ,samecheck:{
                     sameidcheck: "아이디 중복체크를 해주세요."
-                }
-                ,name:{
+                },
+                /*[/]*/
+                name:{
                     required: "이름을 입력해주세요."
                 }
                 /*[# th:if="${member.id == null}"]*/
@@ -253,6 +257,7 @@
                                 <label class="col-md-3 control-label"
                                        for="loginId">Login ID</label>
                                 <div class="col-sm-9">
+                                    <th:block th:if="${member.id == null}">
                                     <input
                                             class="form-control"
                                             id="loginId"
@@ -261,6 +266,8 @@
                                             th:errorclass="is-invalid"
                                             th:field="*{loginId}" type="text"
                                     />
+                                    </th:block>
+                                    <th:block th:if="${member.id != null}" th:text="${member.loginId}"></th:block>
                                 </div>
                             </div>
                             <div class="form-group required row">
