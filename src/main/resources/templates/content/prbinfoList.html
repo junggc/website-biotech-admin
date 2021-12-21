@@ -23,6 +23,8 @@
 	<script href="/assets/extra-libs/DataTables/datatables.min.js"
 	        th:src="@{/assets/extra-libs/DataTables/datatables.min.js}"></script>
 
+	<script href="/js/js-common.js" th:src="@{/js/js-common.js}"></script>
+
 	<script>
         $(function () {
 
@@ -87,7 +89,10 @@
                             return '<a href="/prbinfoInfo?id='+data.id+'">'+'개인정보처리방침'+'</a>';
                         }, targets: 2, orderable: false, visible: true
                     },
-                    {data: 'regDtime', targets: 3, orderable: false, visible: true}
+                    {data: function(data, type){
+							var date = new Date(data.regDtime);
+							return toStringByFormatting(date,'-');
+						}, targets: 3, orderable: false, visible: true}
 
                   ],
                   ordering: false,

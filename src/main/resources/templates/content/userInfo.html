@@ -266,6 +266,7 @@
                                             th:errorclass="is-invalid"
                                             th:field="*{loginId}" type="text"
                                     />
+                                    <button type="button" name="samecheck" class="btn btn-info">아이디중복체크</button>
                                     </th:block>
                                     <th:block th:if="${member.id != null}" th:text="${member.loginId}"></th:block>
                                 </div>

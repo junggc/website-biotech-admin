@@ -23,6 +23,8 @@
 	<script href="/assets/extra-libs/DataTables/datatables.min.js"
 	        th:src="@{/assets/extra-libs/DataTables/datatables.min.js}"></script>
 
+	<script href="/js/js-common.js" th:src="@{/js/js-common.js}"></script>
+
 	<script>
         $(function () {
 
@@ -110,7 +112,10 @@
 							return data.dispEndDay+' '+data.dispEndTime;
 						}, targets: 6, orderable: false, visible: true},
                     {data: 'regId', targets: 7, orderable: false, visible: true},
-                    {data: 'regDtime', targets: 8, orderable: false, visible: true}
+                    {data: function(data, type){
+							var date = new Date(data.regDtime);
+							return toStringByFormatting(date,'-');
+						}, targets: 8, orderable: false, visible: true}
 
                   ],
 

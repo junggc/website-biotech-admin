@@ -88,13 +88,13 @@
 						</li>
 						<th:block th:if="${#authentication.getPrincipal().getLogAuthority() == 'Y' or #strings.equals(#authentication.getPrincipal().getAuthorities()[0], 'ROLE_ADMIN')}">
 							<li class="sidebar-item">
-								<a class="sidebar-link" th:href="@{/prbinfoList}" href="/prbinfoList">
+								<a class="sidebar-link" th:href="@{/grantHistory}" href="/grantHistory">
 									<i class="mdi mdi-note-plus"></i>
 									<span class="hide-menu">권한부여 로그 관리</span>
 								</a>
 							</li>
 							<li class="sidebar-item">
-								<a class="sidebar-link" th:href="@{/prbinfoList}" href="/prbinfoList">
+								<a class="sidebar-link" th:href="@{/jobHistory}" href="/jobHistory">
 									<i class="mdi mdi-note-plus"></i>
 									<span class="hide-menu">작업 로그 관리</span>
 								</a>
