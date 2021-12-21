@@ -111,7 +111,7 @@
                 /*[/]*/
                 /*[# th:if="${member.id != null}"]*/
                 ,password:{
-                    regex : /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?^=-])[A-Za-z\d$@$!%*#?^=-]{8,25}$/
+                    passChange : true
                 }
                 ,mPassword:{
                     required : function(element){
@@ -153,7 +153,7 @@
                 /*[# th:if="${member.id == null}"]*/
                 ,password:{
                     required: "비밀번호를 입력해주세요.",
-                    regex: "비밀번호는 영문/숫자/특수문자(!@#$%^*+=-)를 모두 사용해야합니다."
+                    regex: "비밀번호(8-25자)는 영문/숫자/특수문자(!@#$%^*+=-)를 모두 사용해야합니다."
                 }
                 ,password1:{
                     required: "비밀번호확인을 입력해주세요."
@@ -162,7 +162,7 @@
                 /*[/]*/
                 /*[# th:if="${member.id != null}"]*/
                 ,password:{
-                    regex: "비밀번호는 영문/숫자/특수문자(!@#$%^*+=-)를 모두 사용해야합니다."
+                    passChange: "비밀번호(8-25자)는 영문/숫자/특수문자(!@#$%^*+=-)를 모두 사용해야합니다."
                 }
                 ,mPassword:{
                     required : "마스터 비밀번호를 입력해주세요."
@@ -240,7 +240,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <form class="form-horizontal" id="is_form" method="post" name="is_form" th:action="@{/createUser}"
+                    <form class="form-horizontal" id="is_form" method="post" name="is_form" th:action="${member.id} == null ? @{/createUser} : @{/updateUser}"
                           th:object="${member}">
                         <input id="id" name="id" th:value="*{id}" type="hidden">
                         <input id="samecheck" name="samecheck" value="" type="hidden">
@@ -253,8 +253,8 @@
                                     일반관리자
                                 </div>
                             </div>
-                            <div class="form-group required row">
-                                <label class="col-md-3 control-label"
+                            <div class="form-group row" th:classappend="${member.id == null ? 'required' : ''}">
+                                <label class="col-md-3 " th:classappend="${member.id == null ? 'control-label' : ''}"
                                        for="loginId">Login ID</label>
                                 <div class="col-sm-9">
                                     <th:block th:if="${member.id == null}">

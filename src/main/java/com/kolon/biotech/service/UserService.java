@@ -1,5 +1,6 @@
 package com.kolon.biotech.service;
 
+import com.kolon.biotech.domain.history.History;
 import com.kolon.biotech.domain.subsidiary.Subsidiary;
 import com.kolon.biotech.domain.user.MemberRepository;
 import com.kolon.biotech.domain.user.Role;
@@ -23,6 +24,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -33,8 +35,11 @@ public class UserService implements UserDetailsService {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private HistoryService historyService;
+
     @Transactional
-    public Member joinUser(Member memberDto) {
+    public Member joinUser(Member memberDto, MemberDto suser, HttpServletRequest request) throws Exception {
         // 비밀번호 암호화
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
@@ -44,7 +49,211 @@ public class UserService implements UserDetailsService {
         //비밀번호 설정
         memberDto.setPasswordChangeDate(LocalDateTime.now());
 
-        return memberRepository.save(memberDto);
+        Member _member = memberRepository.save(memberDto);
+
+        History history = History.builder().userId(suser.getLoginId())
+                .jobContent("관리자가 "+_member.getLoginId()+"을 신규생성 하였습니다.")
+                .jobFlag("G")
+                .requestDate(LocalDateTime.now())
+                .jobUrl(request.getRequestURI())
+                .requestIp(request.getRemoteAddr())
+                .build();
+        historyService.setWriteStroe(history);
+
+        return _member;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public ResultJsonPagingDto updateUser(Member memberDto, MemberDto suser, HttpServletRequest request) throws Exception {
+
+        //결과 값
+        ResultJsonPagingDto _resultMap = new ResultJsonPagingDto();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        //이력
+        History history = null;
+        //패스워드를 입력받았으면
+        //직전 패스워드 검사
+        Member r_member = memberRepository.findById(memberDto.getId()).orElseThrow(()->{
+            return new IllegalArgumentException("회원정보 조회 실패");
+        });
+
+        if(memberDto.getPassword() != null && !"".equals(memberDto.getPassword())){
+            //직전 패스워드 검사
+            log.debug("##########관리자 id값 >>>"+ suser.getId());
+            Member r_smember = memberRepository.findById(suser.getId()).orElseThrow(()->{
+                return new IllegalArgumentException("회원정보 조회 실패");
+            });
+
+            String mpass = passwordEncoder.encode(memberDto.getMPassword());
+            log.debug("############"+memberDto.getMPassword());
+            log.debug("############"+mpass);
+            log.debug("############"+r_smember.getPassword());
+            log.debug("############"+passwordEncoder.matches(mpass,r_smember.getPassword()));
+            if(passwordEncoder.matches(mpass,r_smember.getPassword())){
+                //직전 비밀번호 검사
+                if(passwordEncoder.matches(memberDto.getPassword(),r_member.getPassword())){
+                    _resultMap.setSuccess(false);
+                    _resultMap.setMessage("동일한 비밀번호로 변경할 수 없습니다.");
+
+                    history = History.builder().userId(suser.getLoginId())
+                            .userName(suser.getUsername())
+                            .jobContent("동일한 비밀번호로 변경할 수 없습니다.")
+                            .jobFlag("G")
+                            .requestDate(LocalDateTime.now())
+                            .jobUrl(request.getRequestURI())
+                            .requestIp(request.getRemoteAddr())
+                            .build();
+                    historyService.setWriteStroe(history);
+
+                    return _resultMap;
+                }else{
+                    r_member.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+                    r_member.setPasswordChangeDate(LocalDateTime.now());
+                    _resultMap.setSuccess(true);
+                    _resultMap.setMessage("비밀번호 변경이 완료되었습니다.");
+
+                    history = History.builder().userId(suser.getLoginId())
+                            .userName(suser.getUsername())
+                            .jobContent("관리자가 "+r_member.getLoginId()+"의 비밀번호를 변경하였습니다.")
+                            .jobFlag("G")
+                            .requestDate(LocalDateTime.now())
+                            .jobUrl(request.getRequestURI())
+                            .requestIp(request.getRemoteAddr())
+                            .build();
+                    historyService.setWriteStroe(history);
+
+                }
+            }else{
+                _resultMap.setSuccess(false);
+                _resultMap.setMessage("마스터 비밀번호를 확인해주세요.");
+
+                history = History.builder().userId(suser.getLoginId())
+                        .userName(suser.getUsername())
+                        .jobContent("마스터 비밀번호를 확인해주세요.")
+                        .jobFlag("G")
+                        .requestDate(LocalDateTime.now())
+                        .jobUrl(request.getRequestURI())
+                        .requestIp(request.getRemoteAddr())
+                        .build();
+                historyService.setWriteStroe(history);
+
+                return _resultMap;
+            }
+        }
+
+        //회원정보 변경
+        if(!memberDto.getName().equals(r_member.getName())){
+            r_member.setName(memberDto.getName());
+        }
+        if(!memberDto.getEmailId().equals(r_member.getEmailId())){
+            r_member.setEmailId(memberDto.getEmailId());
+        }
+        if(!memberDto.getEmailDomain().equals(r_member.getEmailDomain())){
+            r_member.setEmailDomain(memberDto.getEmailDomain());
+        }
+        if(!memberDto.getPnum().equals(r_member.getPnum())){
+            r_member.setPnum(memberDto.getPnum());
+        }
+        if(!memberDto.getRank().equals(r_member.getRank())){
+            r_member.setRank(memberDto.getRank());
+        }
+        if(!memberDto.getUseYn().equals(r_member.getUseYn())){
+            r_member.setUseYn(memberDto.getUseYn());
+        }
+
+        history = History.builder().userId(suser.getLoginId())
+                .userName(suser.getUsername())
+                .jobContent("관리자가 "+r_member.getLoginId()+"의 정보를 변경하였습니다.")
+                .jobFlag("G")
+                .requestDate(LocalDateTime.now())
+                .jobUrl(request.getRequestURI())
+                .requestIp(request.getRemoteAddr())
+                .build();
+        historyService.setWriteStroe(history);
+
+        if(!memberDto.getMainAuthority().equals(r_member.getMainAuthority())){
+            r_member.setMainAuthority(memberDto.getMainAuthority());
+
+            if("Y".equals(memberDto.getMainAuthority())){
+                history = History.builder().userId(suser.getLoginId())
+                        .userName(suser.getUsername())
+                        .jobContent("관리자가 "+r_member.getLoginId()+"의 메인관리권한을 부여하였습니다.")
+                        .jobFlag("G")
+                        .requestDate(LocalDateTime.now())
+                        .jobUrl(request.getRequestURI())
+                        .requestIp(request.getRemoteAddr())
+                        .build();
+            }else{
+                history = History.builder().userId(suser.getLoginId())
+                        .userName(suser.getUsername())
+                        .jobContent("관리자가 "+r_member.getLoginId()+"의 메인관리권한을 회수하였습니다.")
+                        .jobFlag("G")
+                        .requestDate(LocalDateTime.now())
+                        .jobUrl(request.getRequestURI())
+                        .requestIp(request.getRemoteAddr())
+                        .build();
+            }
+
+            historyService.setWriteStroe(history);
+        }
+
+        if(!memberDto.getNoticeAuthority().equals(r_member.getNoticeAuthority())){
+            r_member.setNoticeAuthority(memberDto.getNoticeAuthority());
+
+            if("Y".equals(memberDto.getNoticeAuthority())){
+                history = History.builder().userId(suser.getLoginId())
+                        .userName(suser.getUsername())
+                        .jobContent("관리자가 "+r_member.getLoginId()+"의 공지사항관리권한을 부여하였습니다.")
+                        .jobFlag("G")
+                        .requestDate(LocalDateTime.now())
+                        .jobUrl(request.getRequestURI())
+                        .requestIp(request.getRemoteAddr())
+                        .build();
+            }else{
+                history = History.builder().userId(suser.getLoginId())
+                        .userName(suser.getUsername())
+                        .jobContent("관리자가 "+r_member.getLoginId()+"의 공지사항관리권한을 회수하였습니다.")
+                        .jobFlag("G")
+                        .requestDate(LocalDateTime.now())
+                        .jobUrl(request.getRequestURI())
+                        .requestIp(request.getRemoteAddr())
+                        .build();
+            }
+
+            historyService.setWriteStroe(history);
+        }
+
+        if(!memberDto.getLogAuthority().equals(r_member.getLogAuthority())){
+            r_member.setLogAuthority(memberDto.getLogAuthority());
+
+            if("Y".equals(memberDto.getLogAuthority())){
+                history = History.builder().userId(suser.getLoginId())
+                        .userName(suser.getUsername())
+                        .jobContent("관리자가 "+r_member.getLoginId()+"의 로그관리권한을 부여하였습니다.")
+                        .jobFlag("G")
+                        .requestDate(LocalDateTime.now())
+                        .jobUrl(request.getRequestURI())
+                        .requestIp(request.getRemoteAddr())
+                        .build();
+            }else{
+                history = History.builder().userId(suser.getLoginId())
+                        .userName(suser.getUsername())
+                        .jobContent("관리자가 "+r_member.getLoginId()+"의 로그관리권한을 회수하였습니다.")
+                        .jobFlag("G")
+                        .requestDate(LocalDateTime.now())
+                        .jobUrl(request.getRequestURI())
+                        .requestIp(request.getRemoteAddr())
+                        .build();
+            }
+
+            historyService.setWriteStroe(history);
+        }
+
+        _resultMap.setSuccess(true);
+        _resultMap.setMessage("정보변경이 완료되었습니다.");
+
+        return _resultMap;
     }
 
     public Member getUser(Member memberDto){
@@ -87,8 +296,8 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    @Transactional
-    public ResultJsonPagingDto userChangePass(MemberDto memberDto, Member member){
+    @Transactional(rollbackFor = Exception.class)
+    public ResultJsonPagingDto userChangePass(MemberDto memberDto, Member member, HttpServletRequest request) throws Exception{
         //결과 값
         ResultJsonPagingDto _resultMap = new ResultJsonPagingDto();
         //직전 패스워드 검사
@@ -106,15 +315,25 @@ public class UserService implements UserDetailsService {
             r_member.setPassword(newpassword);
             r_member.setPasswordChangeDate(LocalDateTime.now());
 
+            History history = History.builder().userId(r_member.getLoginId())
+                    .jobContent("비밀번호를 변경하였습니다.")
+                    .jobFlag("G")
+                    .requestDate(LocalDateTime.now())
+                    .jobUrl(request.getRequestURI())
+                    .requestIp(request.getRemoteAddr())
+                    .build();
+            historyService.setWriteStroe(history);
+
             _resultMap.setSuccess(true);
-            _resultMap.setMessage("비밀번호 변경이 완료되었습니다.\\n 변경된 비밀번호로 다시 로그인하세요.");
+            //_resultMap.setMessage("비밀번호 변경이 완료되었습니다.\\n 변경된 비밀번호로 다시 로그인하세요.");
+            _resultMap.setMessage("비밀번호 변경이 완료되었습니다.");
         }
 
         return _resultMap;
     }
 
-    @Transactional
-    public ResultJsonPagingDto superUserChangePass(MemberDto memberDto, Member member){
+    @Transactional(rollbackFor = Exception.class)
+    public ResultJsonPagingDto superUserChangePass(MemberDto memberDto, Member member) throws Exception{
         //결과 값
         ResultJsonPagingDto _resultMap = new ResultJsonPagingDto();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -148,8 +367,8 @@ public class UserService implements UserDetailsService {
         return _resultMap;
     }
 
-    @Transactional
-    public ResultJsonPagingDto userLoginReset(Integer id){
+    @Transactional(rollbackFor = Exception.class)
+    public ResultJsonPagingDto userLoginReset(Integer id, MemberDto suser, HttpServletRequest request) throws Exception {
 
         ResultJsonPagingDto _resultMap = new ResultJsonPagingDto();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -165,6 +384,15 @@ public class UserService implements UserDetailsService {
 
         _resultMap.setSuccess(true);
         _resultMap.setMessage("초기화에 성공하였습니다.");
+
+        History history = History.builder().userId(suser.getLoginId())
+                .jobContent("관리자가 "+r_member.getLoginId()+"을 초기화 하였습니다.")
+                .jobFlag("G")
+                .requestDate(LocalDateTime.now())
+                .jobUrl(request.getRequestURI())
+                .requestIp(request.getRemoteAddr())
+                .build();
+        historyService.setWriteStroe(history);
 
         return _resultMap;
     }
@@ -199,11 +427,13 @@ public class UserService implements UserDetailsService {
         authorities.add(new SimpleGrantedAuthority(user.getAuth()));
 
         MemberDto memberDto = new MemberDto();
+        memberDto.setId(user.getId());
         memberDto.setLoginId(user.getLoginId());
         memberDto.setUsername(user.getName());
         memberDto.setPassword(user.getPassword());
         memberDto.setMainAuthority(user.getMainAuthority());
         memberDto.setNoticeAuthority(user.getNoticeAuthority());
+        memberDto.setLogAuthority(user.getLogAuthority());
         memberDto.setAuthorities(authorities);
         memberDto.setEnabled(true);
         memberDto.setAccountNonLocked(true);

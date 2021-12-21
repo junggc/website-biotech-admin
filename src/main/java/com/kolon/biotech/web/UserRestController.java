@@ -17,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.LocaleResolver;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Slf4j
@@ -57,19 +59,22 @@ public class UserRestController {
     }
 
     @PostMapping(value="/userLoginReset")
-    public Member userLoginReset(@RequestParam(value="id") Integer id){
-
-        return null;
+    public ResultJsonPagingDto userLoginReset(@RequestParam(value="id") Integer id,@AuthenticationPrincipal MemberDto memberDto, HttpServletRequest request, HttpServletResponse response) throws Exception{
+        log.debug("=========userLoginReset============");
+        ResultJsonPagingDto resultJsonPagingDto = userService.userLoginReset(id, memberDto, request);
+        return resultJsonPagingDto;
     }
 
     @PostMapping(value="/userChangePass")
-    public ResultJsonPagingDto userChangePass(@AuthenticationPrincipal MemberDto memberDto,@ModelAttribute Member member){
-        return null;
+    public ResultJsonPagingDto userChangePass(@AuthenticationPrincipal MemberDto memberDto,@ModelAttribute Member member, HttpServletRequest request, HttpServletResponse response) throws Exception{
+        ResultJsonPagingDto resultJsonPagingDto = userService.userChangePass(memberDto, member, request);
+        return resultJsonPagingDto;
     }
 
     @PostMapping(value="/superUserChangePass")
-    public ResultJsonPagingDto superUserChangePass(@AuthenticationPrincipal MemberDto memberDto, @ModelAttribute Member member){
-        return null;
+    public ResultJsonPagingDto superUserChangePass(@AuthenticationPrincipal MemberDto memberDto, @ModelAttribute Member member) throws Exception{
+        ResultJsonPagingDto resultJsonPagingDto = userService.superUserChangePass(memberDto, member);
+        return resultJsonPagingDto;
     }
 
     @PostMapping("/userDelete")

@@ -15,6 +15,9 @@
 			rel="stylesheet"
 			th:href="@{/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css}"
 	/>
+	<style>
+		.table th, .table td { max-width: 200px; min-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+	</style>
 	<!-- this page js -->
 	<script href="/assets/extra-libs/multicheck/datatable-checkbox-init.js"
 	        th:src="@{/assets/extra-libs/multicheck/datatable-checkbox-init.js}"></script>
@@ -120,9 +123,9 @@
 						}, targets: 6, orderable: false, visible: true},
 					{data: function(data,type){
 						  	if(data.answerDate != null && data.answerDate != ''){
-								  return '답변완료 '+'<button type="button" class="btn btn-outline-secondary" onclick="location.href=/qnaInfo?id='+data.id+'">답변수정</button>';
+								  return '답변완료 '+'<button type="button" class="btn btn-outline-secondary" onclick="moveInfo('+data.id+');">답변수정</button>';
 							}else{
-								  return '답변대기 '+'<button type="button" class="btn btn-outline-secondary" onclick="location.href=/qnaInfo?id='+data.id+'">답변등록</button>';
+								  return '답변대기 '+'<button type="button" class="btn btn-outline-secondary" onclick="moveInfo('+data.id+');">답변등록</button>';
 							}
 					}, targets: 7, orderable: true, visible: true}
 
@@ -151,6 +154,10 @@
 				$("#searchText").val('');
 				$("#datepicker-autoclose1").val(/*[[${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}]]*/);
 				$("#datepicker-autoclose2").val(/*[[${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}]]*/);
+			}
+
+			moveInfo = function(id){
+				location.href="/qnaInfo?id="+id;
 			}
 
 			emailMasking = function(str){
@@ -202,7 +209,7 @@
 
 	<div class="container-fluid">
 		<div class="card">
-			<form class="form-horizontal" id="is_form" method="post"name="is_form">
+			<form class="form-horizontal" id="is_form" method="post"name="is_form"  onsubmit="return false;">
 			<div class="card-body">
 				<h5 class="card-title">문의하기 목록</h5>
 

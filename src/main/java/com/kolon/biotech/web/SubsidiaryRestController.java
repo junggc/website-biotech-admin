@@ -73,6 +73,8 @@ public class SubsidiaryRestController {
 
     @PostMapping("/subsidiaryOrderChange")
     public ResultJsonPagingDto orderChange(@RequestParam(value = "id") Integer id, @RequestParam(value="updown") String updown){
+        log.debug("#############subsidiaryOrderChange#####################");
+        log.debug("#########id="+id+"##########updn="+updown);
         ResultJsonPagingDto dto = new ResultJsonPagingDto();
         try{
             subsidiaryService.updateOrderSeq(id,updown);

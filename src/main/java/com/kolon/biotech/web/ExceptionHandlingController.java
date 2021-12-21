@@ -25,6 +25,7 @@ public class ExceptionHandlingController implements ErrorController {
         if(status != null){
             int statusCode = Integer.valueOf(status.toString());
 
+            log.debug("#########errorCode = " + statusCode);
             if(statusCode == HttpStatus.NOT_FOUND.value()) {
                 return "error/error_404";
             } else if(statusCode == HttpStatus.BAD_REQUEST.value()){

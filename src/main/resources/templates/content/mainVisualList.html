@@ -149,7 +149,7 @@
 					sync:true,
 					success: function (data) {
 						console.log('data',data);
-						$('#zero_config').DataTable().ajax.reload();
+						$('#zero_config').DataTable().ajax.reload(null, false);
 					},
 					error: function (xhr, status, error) {
 						alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
@@ -167,7 +167,7 @@
 					sync:true,
 					success: function (data) {
 						console.log('data',data);
-						$('#zero_config').DataTable().ajax.reload();
+						$('#zero_config').DataTable().ajax.reload(null, false);
 					},
 					error: function (xhr, status, error) {
 						alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");

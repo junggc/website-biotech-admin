@@ -36,6 +36,10 @@
         return this.optional(element)||value == 'true';
     }, "Please enter a valid sameidcheck.");
 
+    $.validator.addMethod("passChange", function(value, element) {
+        return this.optional(element)||/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?^=-])[A-Za-z\d$@$!%*#?^=-]{8,25}$/.test(value);
+    }, "Please enter a valid sameidcheck.");
+
     $.validator.setDefaults({
         onkeyup: false,
         onclick: false,

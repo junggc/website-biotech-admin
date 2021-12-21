@@ -105,7 +105,7 @@
                         }, targets: 6, orderable: false, visible: true
                     },
 					{data: function(data, type){
-						  return '<i class="me-2 mdi mdi-chevron-double-up"></i><i class="me-2 mdi mdi-chevron-double-down"></i>';
+						  return '<i class="me-2 mdi mdi-chevron-double-up" onclick="ch_orderSeq('+data.id+',\'up\')"></i><i class="me-2 mdi mdi-chevron-double-down" onclick="ch_orderSeq('+data.id+',\'down\')"></i>';
 						  }, targets: 7, orderable: false, visible: true
 					}
 
@@ -144,6 +144,26 @@
 					}
 				});
 			}
+
+			//순서변경
+			ch_orderSeq = function(ida,udn){
+				$.ajax({
+					type: "POST",
+					url: "/subsidiaryOrderChange",
+					data : "id="+ida+"&updown="+udn,
+					sync:true,
+					success: function (data) {
+						console.log('data',data);
+						$('#zero_config').DataTable().ajax.reload(null, false);
+					},
+					error: function (xhr, status, error) {
+						alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
+						return false;
+					}
+				});
+				return false;
+			}
+
 
 			//삭제
 			deletelist = function(){

@@ -64,8 +64,15 @@ public class UserController {
 
     //회원가입 처리
     @PostMapping("/createUser")
-    public String createUser(@ModelAttribute Member user,@AuthenticationPrincipal MemberDto memberDto){
-        userService.joinUser(user);
+    public String createUser(@ModelAttribute Member user,@AuthenticationPrincipal MemberDto memberDto, HttpServletRequest request, HttpServletResponse response) throws Exception{
+        userService.joinUser(user, memberDto, request);
+        return "redirect:/userList";
+    }
+
+    //회원정보 수정 처리
+    @PostMapping(value="/updateUser")
+    public String updateUser(@ModelAttribute Member user,@AuthenticationPrincipal MemberDto memberDto, HttpServletRequest request, HttpServletResponse response) throws Exception{
+        userService.updateUser(user, memberDto, request);
         return "redirect:/userList";
     }
 
