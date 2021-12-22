@@ -117,7 +117,7 @@
                     {data: 'regId', targets: 6, orderable: false, visible: true},
                     {data: function(data, type){
 							var date = new Date(data.regDtime);
-							return toStringByFormatting(date,'-');
+							return toStringByFormattingHm(date,'-');
 						}, targets: 7, orderable: false, visible: true},
 					{data: function(data, type){
 							return '<i class="me-2 mdi mdi-chevron-double-up" onclick="chup_orderSeq('+data.id+');"></i><i class="me-2 mdi mdi-chevron-double-down" onclick="chdn_orderSeq('+data.id+');"></i>';

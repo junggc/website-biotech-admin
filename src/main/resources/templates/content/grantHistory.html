@@ -27,6 +27,10 @@
 
 	<script href="/js/js-common.js" th:src="@{/js/js-common.js}"></script>
 
+	<script href="/js/xlsx.core.min.js" th:src="@{/js/xlsx.core.min.js}"></script>
+	<script href="/js/FileSaver.min.js" th:src="@{/js/FileSaver.min.js}"></script>
+	<script href="/js/tableexport.js" th:src="@{/js/tableexport.js}"></script>
+
 	<script th:inline="javascript">
         $(function () {
 
@@ -107,7 +111,7 @@
 					{data: 'jobContent',    targets: 1, orderable: false, visible: true},
 					{data: function(data, type){
 							var date = new Date(data.requestDate);
-							return toStringByFormatting(date,'-');
+							return toStringByFormattingHm(date,'-');
 						},    targets: 2, orderable: false, visible: true}
 
 
@@ -140,26 +144,47 @@
 
 			exceldown = function(){
 				console.log(2222222222222);
-				$.fn.DataTable.Api.register('buttons.exportData()',function(options){
-					console.log(123123123);
-					var arr=[];
-					$.ajax({
-						url:'/historyListExcel',
-						type:'post',
-						success:function(result){
-							console.log('result',result);
-							for(var key in result){
-								arr.push(Object.keys(result[key]).map(function(k){ return result[key][k]}));
-							}
-						},
-						async:false
-					});
-					return {body:arr,header:$("#zero_config thead tr th").map(function(){return this.innerHTML;}).get()}
-				});
+				exportExcel();
 			}
         });
 
+		function s2ab(s) {
+			var buf = new ArrayBuffer(s.length); //convert s to arrayBuffer
+			var view = new Uint8Array(buf);  //create uint8array as viewer
+			for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; //convert to octet
+			return buf;
+		}
+		function exportExcel(){
+			// step 1. workbook 생성
+			var wb = XLSX.utils.book_new();
 
+			// step 2. 시트 만들기
+			var newWorksheet = excelHandler.getWorksheet();
+
+			// step 3. workbook에 새로만든 워크시트에 이름을 주고 붙인다.
+			XLSX.utils.book_append_sheet(wb, newWorksheet, excelHandler.getSheetName());
+
+			// step 4. 엑셀 파일 만들기
+			var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
+
+			// step 5. 엑셀 파일 내보내기
+			saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), excelHandler.getExcelFileName());
+		}
+
+		var excelHandler = {
+			getExcelFileName : function(){
+				return 'table-test.xlsx';
+			},
+			getSheetName : function(){
+				return 'Table Test Sheet';
+			},
+			getExcelData : function(){
+				return document.getElementById('zero_config');
+			},
+			getWorksheet : function(){
+				return XLSX.utils.table_to_sheet(this.getExcelData());
+			}
+		}
 	</script>
 </head>
 

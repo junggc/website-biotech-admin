@@ -119,7 +119,7 @@
                     },
                     {data: function(data, type){
 						var date = new Date(data.regDtime);
-							return toStringByFormatting(date,'-');
+							return toStringByFormattingHm(date,'-');
 						}, targets: 6, orderable: false, visible: true},
 					{data: function(data,type){
 						  	if(data.answerDate != null && data.answerDate != ''){
