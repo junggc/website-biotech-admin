@@ -124,7 +124,7 @@
 				  bStateSave: true
             });
 
-            $(".dataTables_filter").html('<button class="btn btn-outline-danger" id="refresh">삭제</button>');
+            $(".dataTables_filter").html('<button class="btn btn-outline-primary excelBtn" id="refresh" onclick="exceldown();">엑셀</button>');
 			$("#zero_config_paginate").parent("div").addClass("page-wrap");
 			$("#zero_config_paginate").parent("div").siblings("div").addClass("before-page-wrap");
 
@@ -138,6 +138,25 @@
 				$("#datepicker-autoclose2").val(/*[[${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}]]*/);
 			}
 
+			exceldown = function(){
+				console.log(2222222222222);
+				$.fn.DataTable.Api.register('buttons.exportData()',function(options){
+					console.log(123123123);
+					var arr=[];
+					$.ajax({
+						url:'/historyListExcel',
+						type:'post',
+						success:function(result){
+							console.log('result',result);
+							for(var key in result){
+								arr.push(Object.keys(result[key]).map(function(k){ return result[key][k]}));
+							}
+						},
+						async:false
+					});
+					return {body:arr,header:$("#zero_config thead tr th").map(function(){return this.innerHTML;}).get()}
+				});
+			}
         });
 
 

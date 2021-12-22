@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.LocaleResolver;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -34,6 +36,13 @@ public class HistoryRestController {
     public Page<History> listAjax(@ModelAttribute SearchDto searchDto, @PageableDefault Pageable pageable, Model model) throws Exception{
         log.debug("=========historyListAjax============");
         Page<History> list = historyService.getList(searchDto, pageable);
+
+        return list;
+    }
+
+    @PostMapping(value="/historyListExcel")
+    public List<History> listExcel(@ModelAttribute SearchDto searchDto, Model model) throws Exception{
+        List<History> list = historyService.getList(searchDto);
 
         return list;
     }

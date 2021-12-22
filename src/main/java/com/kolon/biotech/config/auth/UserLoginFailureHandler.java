@@ -62,7 +62,7 @@ public class UserLoginFailureHandler implements AuthenticationFailureHandler {
                     if("true".equals(findMember.getBlocked())){
 
                         History history = History.builder().userId(findMember.getLoginId())
-                                .jobContent("계정이 잠겼습니다.마스터관리자에 문의바랍니다.")
+                                .jobContent("계정이 잠겼습니다.")
                                 .jobFlag("J")
                                 .requestDate(LocalDateTime.now())
                                 .jobUrl(request.getRequestURI()).requestIp(request.getRemoteAddr())
@@ -72,7 +72,7 @@ public class UserLoginFailureHandler implements AuthenticationFailureHandler {
 
 
                         request.setAttribute("isLocked", true);
-                        request.setAttribute("isLockedMsg", "계정이 잠겼습니다. 관리자에 문의바랍니다.");
+                        request.setAttribute("isLockedMsg", "계정이 잠겼습니다.\\n마스터 관리자에게 문의하세요.");
                     }else{
                         log.debug("###################findMember.getBlocked()1="+findMember.getBlocked());
                         findMember.setFailCount((findMember.getFailCount() == null ? 0 : findMember.getFailCount()) +1);
@@ -80,7 +80,7 @@ public class UserLoginFailureHandler implements AuthenticationFailureHandler {
                         log.debug("###################findMember.getFailCount()2="+findMember.getFailCount());
                         if (findMember.getFailCount() >= 5) {
                             History history = History.builder().userId(findMember.getLoginId())
-                                    .jobContent("5회 실패하여 계정이 잠겼습니다. 관리자에 문의바랍니다.")
+                                    .jobContent("5회 실패하여 계정이 잠겼습니다.")
                                     .jobFlag("J")
                                     .requestDate(LocalDateTime.now())
                                     .jobUrl(request.getRequestURI()).requestIp(request.getRemoteAddr())
@@ -89,13 +89,13 @@ public class UserLoginFailureHandler implements AuthenticationFailureHandler {
 
                             findMember.setBlocked("true");
                             request.setAttribute("isLocked", true);
-                            request.setAttribute("isLockedMsg", "5회 실패하여 계정이 잠겼습니다. 관리자에 문의바랍니다.");
+                            request.setAttribute("isLockedMsg", "5회 실패하여 계정이 잠겼습니다.\\n마스터 관리자에게 문의하세요.");
                             log.debug("###################findMember.getFailCount()3="+findMember.getFailCount());
 
                         } else {
 
                             History history = History.builder().userId(findMember.getLoginId())
-                                    .jobContent("아이디 비밀번호 확인바랍니다.")
+                                    .jobContent("로그인 정보가 일치하지 않습니다.")
                                     .jobFlag("J")
                                     .requestDate(LocalDateTime.now())
                                     .jobUrl(request.getRequestURI()).requestIp(request.getRemoteAddr())
@@ -103,7 +103,7 @@ public class UserLoginFailureHandler implements AuthenticationFailureHandler {
                             historyService.setWriteStroe(history);
 
                             request.setAttribute("isLocked", true);
-                            request.setAttribute("isLockedMsg", "아이디 비밀번호 확인바랍니다.");
+                            request.setAttribute("isLockedMsg", "로그인 정보가 일치하지 않습니다.");
                             log.debug("###################findMember.getFailCount()4="+findMember.getFailCount());
                         }
                     }
@@ -126,7 +126,7 @@ public class UserLoginFailureHandler implements AuthenticationFailureHandler {
         }else if(exception instanceof LockedException){ // LoginSuccessHandler에서 LockedException발생시 넘어 온 경우
             log.debug("############"+"사용자 못찾음2222222221111111111");
             History history = History.builder().userId(request.getParameter("loginId"))
-                    .jobContent("요청하신 사용자를 찾을 수 없습니다.")
+                    .jobContent(exception.getMessage())
                     .jobFlag("J")
                     .requestDate(LocalDateTime.now())
                     .jobUrl(request.getRequestURI()).requestIp(request.getRemoteAddr()).build();
@@ -138,7 +138,7 @@ public class UserLoginFailureHandler implements AuthenticationFailureHandler {
         }else if(exception instanceof UsernameNotFoundException){
 
             History history = History.builder().userId(request.getParameter("loginId"))
-                    .jobContent("요청하신 사용자를 찾을 수 없습니다.")
+                    .jobContent(exception.getMessage())
                     .jobFlag("J")
                     .requestDate(LocalDateTime.now())
                     .jobUrl(request.getRequestURI()).requestIp(request.getRemoteAddr()).build();
@@ -147,6 +147,10 @@ public class UserLoginFailureHandler implements AuthenticationFailureHandler {
             System.out.println("사용자 못찾음");
             log.debug("############"+"사용자 못찾음");
             System.out.println(exception.getMessage());
+
+            request.setAttribute("isLocked", true);
+            request.setAttribute("isLockedMsg", exception.getMessage());
+
         }else if(exception instanceof Exception){
             if("No value present".equals(exception.getMessage())){
 
@@ -159,6 +163,9 @@ public class UserLoginFailureHandler implements AuthenticationFailureHandler {
 
                 System.out.println("사용자 못찾음2222");
                 log.debug("############"+"사용자 못찾음222222222");
+
+                request.setAttribute("isLocked", true);
+                request.setAttribute("isLockedMsg", "요청하신 사용자를 찾을 수 없습니다.");
             }
         }else{
             log.debug("############"+"사용자 못찾음2222222221111111111elseselse");

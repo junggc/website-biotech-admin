@@ -69,7 +69,7 @@ public class UserLoginExpiredStrategy implements SessionInformationExpiredStrate
                 MemberDto memberDto= (MemberDto)event.getSessionInformation().getPrincipal();
 
                 History history = History.builder().userId(memberDto.getLoginId())
-                        .jobContent("중복 로그인으로 로그아웃 처리되었습니다. 다시 로그인 후 이용해주세요.")
+                        .jobContent("중복 로그인으로 로그아웃 처리되었습니다.")
                         .jobFlag("J")
                         .requestDate(LocalDateTime.now())
                         .jobUrl(request.getRequestURI()).requestIp(request.getRemoteAddr()).build();

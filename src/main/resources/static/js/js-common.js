@@ -3,7 +3,7 @@ function leftPad(value) {
     if (value >= 10) {
         return value;
     }
-    return '0${value}';
+    return '0'+value;
 }
 
 function toStringByFormatting(source, delimiter = '-') {

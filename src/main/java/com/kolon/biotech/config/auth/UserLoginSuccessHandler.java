@@ -58,7 +58,7 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
 
 
             History history = History.builder().userId(findAccount.getLoginId())
-                    .jobContent("비밀번호 변경 90일이 경과하여 계정이 잠겼습니다.마스터관리자에 문의바랍니다.")
+                    .jobContent("비밀번호가 3개월이 지나 로그인 할 수 없습니다.")
                     .jobFlag("J")
                     .requestDate(LocalDateTime.now())
                     .jobUrl(request.getRequestURI()).requestIp(request.getRemoteAddr())
@@ -68,14 +68,14 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
 
 
 
-            throw new LockedException("비밀번호 변경 90일이 경과하여 계정이 잠겼습니다.\\n마스터관리자에 문의바랍니다.");
+            throw new LockedException("비밀번호가 3개월이 지나 로그인 할 수 없습니다.\\n마스터 관리자에게 문의하세요.");
         }
 
         if(findAccount.getFailCount() >= 5){
             // 아래 예외로 인해 로그인 실패가 발생하고, 로그인 실패 핸들러 호출됨
 
             History history = History.builder().userId(findAccount.getLoginId())
-                    .jobContent("계정이 잠겼습니다.마스터관리자에 문의바랍니다.")
+                    .jobContent("계정이 잠겼습니다.")
                     .jobFlag("J")
                     .requestDate(LocalDateTime.now())
                     .jobUrl(request.getRequestURI()).requestIp(request.getRemoteAddr())
@@ -83,7 +83,7 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
 
             historyService.setWriteStroe(history);
 
-            throw new LockedException("계정이 잠겼습니다.\\n마스터관리자에 문의바랍니다.");
+            throw new LockedException("계정이 잠겼습니다.\\n마스터 관리자에게 문의하세요.");
         }else{
 
             History history = History.builder().userId(findAccount.getLoginId())

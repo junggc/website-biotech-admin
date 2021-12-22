@@ -53,7 +53,7 @@ public class UserService implements UserDetailsService {
 
         History history = History.builder().userId(suser.getLoginId())
                 .jobContent("관리자가 "+_member.getLoginId()+"을 신규생성 하였습니다.")
-                .jobFlag("G")
+                .jobFlag("J")
                 .requestDate(LocalDateTime.now())
                 .jobUrl(request.getRequestURI())
                 .requestIp(request.getRemoteAddr())
@@ -99,7 +99,7 @@ public class UserService implements UserDetailsService {
                     history = History.builder().userId(suser.getLoginId())
                             .userName(suser.getUsername())
                             .jobContent("동일한 비밀번호로 변경할 수 없습니다.")
-                            .jobFlag("G")
+                            .jobFlag("J")
                             .requestDate(LocalDateTime.now())
                             .jobUrl(request.getRequestURI())
                             .requestIp(request.getRemoteAddr())
@@ -116,7 +116,7 @@ public class UserService implements UserDetailsService {
                     history = History.builder().userId(suser.getLoginId())
                             .userName(suser.getUsername())
                             .jobContent("관리자가 "+r_member.getLoginId()+"의 비밀번호를 변경하였습니다.")
-                            .jobFlag("G")
+                            .jobFlag("J")
                             .requestDate(LocalDateTime.now())
                             .jobUrl(request.getRequestURI())
                             .requestIp(request.getRemoteAddr())
@@ -131,7 +131,7 @@ public class UserService implements UserDetailsService {
                 history = History.builder().userId(suser.getLoginId())
                         .userName(suser.getUsername())
                         .jobContent("마스터 비밀번호를 확인해주세요.")
-                        .jobFlag("G")
+                        .jobFlag("J")
                         .requestDate(LocalDateTime.now())
                         .jobUrl(request.getRequestURI())
                         .requestIp(request.getRemoteAddr())
@@ -165,7 +165,7 @@ public class UserService implements UserDetailsService {
         history = History.builder().userId(suser.getLoginId())
                 .userName(suser.getUsername())
                 .jobContent("관리자가 "+r_member.getLoginId()+"의 정보를 변경하였습니다.")
-                .jobFlag("G")
+                .jobFlag("J")
                 .requestDate(LocalDateTime.now())
                 .jobUrl(request.getRequestURI())
                 .requestIp(request.getRemoteAddr())
@@ -310,6 +310,16 @@ public class UserService implements UserDetailsService {
         if(passwordEncoder.matches(member.getPassword(),r_member.getPassword())){
             _resultMap.setSuccess(false);
             _resultMap.setMessage("동일한 비밀번호로 변경할 수 없습니다.");
+
+            History history = History.builder().userId(r_member.getLoginId())
+                    .jobContent("동일한 비밀번호로 변경할 수 없습니다.")
+                    .jobFlag("J")
+                    .requestDate(LocalDateTime.now())
+                    .jobUrl(request.getRequestURI())
+                    .requestIp(request.getRemoteAddr())
+                    .build();
+            historyService.setWriteStroe(history);
+
         }else{
             String newpassword = passwordEncoder.encode(member.getPassword());
             r_member.setPassword(newpassword);
@@ -317,7 +327,7 @@ public class UserService implements UserDetailsService {
 
             History history = History.builder().userId(r_member.getLoginId())
                     .jobContent("비밀번호를 변경하였습니다.")
-                    .jobFlag("G")
+                    .jobFlag("J")
                     .requestDate(LocalDateTime.now())
                     .jobUrl(request.getRequestURI())
                     .requestIp(request.getRemoteAddr())
@@ -387,7 +397,7 @@ public class UserService implements UserDetailsService {
 
         History history = History.builder().userId(suser.getLoginId())
                 .jobContent("관리자가 "+r_member.getLoginId()+"을 초기화 하였습니다.")
-                .jobFlag("G")
+                .jobFlag("J")
                 .requestDate(LocalDateTime.now())
                 .jobUrl(request.getRequestURI())
                 .requestIp(request.getRemoteAddr())

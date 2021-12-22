@@ -63,4 +63,26 @@ public class HistoryService {
         return list;
     }
 
+    @Transactional(readOnly = true)
+    public List<History> getList(SearchDto searchDto) throws Exception{
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        LocalDateTime startDate = LocalDateTime.parse(searchDto.getSearchStartDate().replaceAll("-","")+"000000",formatter);
+        LocalDateTime endDate = LocalDateTime.parse(searchDto.getSearchEndDate().replaceAll("-","")+"235959",formatter);
+
+        List<History> list = null;
+
+        if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
+            if("J".equals(searchDto.getJobFlag())){
+                list = historyRepository.qpfindAllByJobFlagAndRequestDateBetweenAndJobContentLikeOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate, searchDto.getSearchText());
+            }else{
+                list = historyRepository.qpfindAllByJobFlagAndRequestDateBetweenAndUserIdLikeOrUserNameLikeOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate, searchDto.getSearchText());
+            }
+        }else{
+            list = historyRepository.findAllByJobFlagAndRequestDateBetweenOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate);
+        }
+
+        return list;
+    }
+
 }
