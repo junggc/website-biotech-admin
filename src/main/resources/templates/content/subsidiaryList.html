@@ -27,7 +27,7 @@
 
 	<script>
         $(function () {
-
+			$("#zero_config").DataTable().destroy();
             var dataTable1=$("#zero_config").DataTable({
                 ajax : {
                     url: "/subsidiaryListAjax",
@@ -87,13 +87,13 @@
 					{
 						  data:function(data, type){
 							  return '<a href="/subsidiaryInfo?id='+data.id+'">'+data.name+'</a>';
-						  }, targets: 3, orderable: false, visible: true
+						  }, targets: 2, orderable: false, visible: true
 					},
-					{data: 'url',    targets: 4, orderable: false, visible: true},
+					{data: 'url',    targets: 3, orderable: false, visible: true},
 					{data: function(data, type){
 							var date = new Date(data.regDtime);
 							return toStringByFormatting(date,'-');
-						},    targets: 5, orderable: false, visible: true},
+						},    targets: 4, orderable: false, visible: true},
 					{
                         data:function(data, type){
                             if(data.useYn == 'Y'){
@@ -101,11 +101,11 @@
                             }else{
                                 return '미사용';
                             }
-                        }, targets: 6, orderable: false, visible: true
+                        }, targets: 5, orderable: false, visible: true
                     },
 					{data: function(data, type){
 						  return '<i class="me-2 mdi mdi-chevron-double-up" onclick="ch_orderSeq('+data.id+',\'up\')"></i><i class="me-2 mdi mdi-chevron-double-down" onclick="ch_orderSeq('+data.id+',\'down\')"></i>';
-						  }, targets: 7, orderable: false, visible: true
+						  }, targets: 6, orderable: false, visible: true
 					}
 
                   ],
@@ -137,26 +137,6 @@
 			});
 			$("#zero_config_paginate").parent("div").addClass("page-wrap");
 			$("#zero_config_paginate").parent("div").siblings("div").addClass("before-page-wrap");
-			dispOrderChange = function(updown, id){
-				$.ajax({
-					dataType : 'json'
-					, type : 'POST'
-					, async : false
-					, beforeSend : function (jqXHR, settings) {
-
-					}
-					, url : '/'
-					, data : {'id':id, 'updown':updown}
-					, success : function (changes) {
-						//debugger;
-						alert("리셋성공");
-						$("#zero_config").DataTable().ajax.reload();
-					}
-					, complete : function (changes) {
-
-					}
-				});
-			}
 
 			//순서변경
 			ch_orderSeq = function(ida,udn){
