@@ -57,7 +57,12 @@ public class HistoryService {
                 list = historyRepository.qfindAllByJobFlagAndRequestDateBetweenAndUserIdLikeOrUserNameLikeOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate, searchDto.getSearchText(), pageable);
             }
         }else{
-            list = historyRepository.findAllByJobFlagAndRequestDateBetweenOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate, pageable);
+            if("J".equals(searchDto.getJobFlag())){
+                list = historyRepository.findAllByRequestDateBetweenOrderByRegDtimeDesc(startDate, endDate, pageable);
+            }else{
+                list = historyRepository.findAllByJobFlagAndRequestDateBetweenOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate, pageable);
+            }
+
         }
 
         return list;
@@ -79,7 +84,11 @@ public class HistoryService {
                 list = historyRepository.qpfindAllByJobFlagAndRequestDateBetweenAndUserIdLikeOrUserNameLikeOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate, searchDto.getSearchText());
             }
         }else{
-            list = historyRepository.findAllByJobFlagAndRequestDateBetweenOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate);
+            if("J".equals(searchDto.getJobFlag())){
+                list = historyRepository.findAllByRequestDateBetweenOrderByRegDtimeDesc(startDate,endDate);
+            }else{
+                list = historyRepository.findAllByJobFlagAndRequestDateBetweenOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate);
+            }
         }
 
         return list;

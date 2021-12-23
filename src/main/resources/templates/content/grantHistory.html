@@ -143,7 +143,6 @@
 			}
 
 			exceldown = function(){
-				console.log(2222222222222);
 				exportExcel();
 			}
         });
@@ -179,12 +178,49 @@
 				return 'Table Test Sheet';
 			},
 			getExcelData : function(){
-				return document.getElementById('zero_config');
+
+				var obj = {
+					'jobFlag':"G"
+					,'searchText':$("#searchText").val()
+					,'searchStartDate':$("#datepicker-autoclose1").val()
+					,'searchEndDate':$("#datepicker-autoclose2").val()
+				}
+
+				var objlist = [];
+				$.ajax({
+					dataType : 'json'
+					, type : 'POST'
+					, async : false
+					, beforeSend : function (jqXHR, settings) {
+
+					}
+					, url : '/historyListExcel'
+					, data : obj
+					, success : function (changes) {
+						//debugger;
+						var i = 0;
+						for(i=0; i<changes.length; i++){
+							var robj = changes[i];
+							objlist.push({
+								'번호':robj.id
+								,'작업내용':robj.jobContent
+								,'작업일시':toStringByFormattingHm(new Date(robj.requestDate),'-')
+							});
+						}
+
+					}
+					, complete : function (changes) {
+
+					}
+				});
+				return objlist;
 			},
 			getWorksheet : function(){
-				return XLSX.utils.table_to_sheet(this.getExcelData());
+				//return XLSX.utils.table_to_sheet(this.getExcelData());
+				return XLSX.utils.json_to_sheet(this.getExcelData());
 			}
 		}
+
 	</script>
 </head>
 
