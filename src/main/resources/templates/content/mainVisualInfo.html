@@ -188,8 +188,8 @@
 				langKoYn: {required:"언어구분을 선택해주세요."},
 				title: {required:"제목을 입력해주세요."},
 				type: {required: "유형를 선택해주세요."},
-				pcImgCheck: {required: "pc이미지를 선택해주세요.",extension2: "pc이미지는 png만 업로드 가능합니다.",filesize: "pc이미지는 2MB이하만 업로드 가능합니다."},
-				moImgCheck: {required: "모바일이미지를 선택해주세요.",extension2: "모바일이미지는 png만 업로드 가능합니다.",filesize: "모바일이미지는 2MB이하만 업로드 가능합니다."},
+				pcImgCheck: {required: "pc이미지를 선택해주세요.",extension2: "pc이미지는 jpg,png만 업로드 가능합니다.",filesize: "pc이미지는 2MB이하만 업로드 가능합니다."},
+				moImgCheck: {required: "모바일이미지를 선택해주세요.",extension2: "모바일이미지는 jpg,png만 업로드 가능합니다.",filesize: "모바일이미지는 2MB이하만 업로드 가능합니다."},
 				videosWay: {required: "동영상선택을 선택해주세요."},
 				videosUrl: {required: "동영상 연결 url을 입력해주세요."},
 				mvFileCheck: {required: "동영상을 선택해주세요.",extension2: "동영상은 mp4만 업로드 가능합니다.", filesize: "동영상은 10MB이하만 업로드 가능합니다."},
@@ -586,6 +586,7 @@
 											class="form-control"
 											id="title"
 											name="title"
+											maxlength="100"
 											placeholder="제목을 입력하세요."
 											th:field="*{title}"
 											type="text"
@@ -753,7 +754,7 @@
 								<div class="col-md-9">
 									<div class="custom-file">
 										<input class="custom-file-input" id="mvinput_file" type="file">
-										<label class="custom-file-label" for="moinput_file">5MB 이하의 MP4 파일만만 첨부 가능합니다.</label>
+										<label class="custom-file-label" for="moinput_file">10MB 이하의 MP4 파일만만 첨부 가능합니다.</label>
 										<input type="hidden" name="mvFileCheck" id="mvFileCheck" value="" th:value="*{videosName}" th:attr="data-ext=*{videosExt}" th:attrappend="data-size=*{videosLength}"/>
 										<br/>
 										<div id="mvarticlefileChange">
@@ -771,13 +772,13 @@
 							<div class="form-group row">
 								<label for="topSubTxt" class="col-sm-3">메인비주얼 상단 서브 텍스트</label>
 								<div class="col-sm-9">
-									<textarea id="topSubTxt" name="topSubTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{topSubTxt}"></textarea>
+									<textarea maxlength="100" id="topSubTxt" name="topSubTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{topSubTxt}"></textarea>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label for="bottomMainTxt" class="col-sm-3">메인비주얼 하단 서브 텍스트</label>
 								<div class="col-sm-9">
-									<textarea id="bottomMainTxt" name="bottomMainTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{bottomMainTxt}"></textarea>
+									<textarea maxlength="100" id="bottomMainTxt" name="bottomMainTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{bottomMainTxt}"></textarea>
 								</div>
 							</div>
 

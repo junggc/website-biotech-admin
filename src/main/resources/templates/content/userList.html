@@ -68,9 +68,9 @@
 						} else if (jqXHR.status == 403) {
 							alert("세션이 만료가 되었습니다. 로그인 페이지로 이동합니다.");
 							location.href = "/login";
-						} else if (jqXHR.status == 405) {
-							alert("세션이 종료 되었습니다. 로그인 페이지로 이동합니다.");
-							location.href = "/login";
+						} else {
+
+							location.href = "/error/error_500.html";
 						}
                     }
                 },
@@ -164,24 +164,28 @@
 
 			loginReset = function(id){
 				console.log('id',id);
-				$.ajax({
-					dataType : 'json'
-					, type : 'POST'
-					, async : false
-					, beforeSend : function (jqXHR, settings) {
+				if(confirm("로그인 실패 5회 초과로 잠겨있는 계정입니다.\n" +
+						"잠김을 해제하시겠습니까?")){
+					$.ajax({
+						dataType : 'json'
+						, type : 'POST'
+						, async : false
+						, beforeSend : function (jqXHR, settings) {
 
-					}
-					, url : '/userLoginReset'
-					, data : {'id':id}
-					, success : function (changes) {
-						//debugger;
-						alert("리셋성공");
-						$("#zero_config").DataTable().ajax.reload();
-					}
-					, complete : function (changes) {
+						}
+						, url : '/userLoginReset'
+						, data : {'id':id}
+						, success : function (changes) {
+							//debugger;
+							alert("잠김설정이 해제되었습니다.");
+							$("#zero_config").DataTable().ajax.reload();
+						}
+						, complete : function (changes) {
 
-					}
-				});
+						}
+					});
+				}
+
 			}
 
 			//삭제

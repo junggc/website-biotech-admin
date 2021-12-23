@@ -16,9 +16,9 @@
 			th:href="@{/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css}"
 	/>
 
-	<style>
-		.table th, .table td { max-width: 200px; min-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-	</style>
+<!--	<style>-->
+<!--		.table th, .table td { max-width: 200px; min-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }-->
+<!--	</style>-->
 	<!-- this page js -->
 	<script href="/assets/extra-libs/multicheck/datatable-checkbox-init.js"
 	        th:src="@{/assets/extra-libs/multicheck/datatable-checkbox-init.js}"></script>
@@ -157,10 +157,8 @@
 				var sdate = new Date($("#datepicker-autoclose1").val());
 				var edate = new Date($("#datepicker-autoclose2").val());
 
-				console.log('sdate',sdate);
-				console.log('edate',edate);
 				if(sdate>edate){
-					alert("시작날짜가 더큼");
+					alert("시작일자, 종료일자를 확인해주세요.");
 					return false;
 				}
 				dataTable1.draw();
@@ -183,9 +181,11 @@
 				for(var i=0; i<emailid[0].length; i++){
 					if(i==0){
 						bmail+=emailid[0].charAt(i);
+					}else if((emailid[0].length-1) == 1){
+						bmail+='*';
 					}else if(i==(emailid[0].length-1)){
 						bmail+=emailid[0].charAt(i);
-					}else{
+					}else if(i <5){
 						bmail+='*';
 					}
 				}
@@ -198,9 +198,11 @@
 				for(var i=0; i<str.length; i++){
 					if(i==0){
 						bmail+=str.charAt(i);
+					}else if((str.length-1) == 1){
+						bmail+='*';
 					}else if(i==(str.length-1)){
 						bmail+=str.charAt(i);
-					}else{
+					}else if(i <5){
 						bmail+='*';
 					}
 				}

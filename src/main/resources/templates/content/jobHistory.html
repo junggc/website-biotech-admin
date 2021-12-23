@@ -92,9 +92,9 @@
 						} else if (jqXHR.status == 403) {
 							alert("세션이 만료가 되었습니다. 로그인 페이지로 이동합니다.");
 							location.href = "/login";
-						} else if (jqXHR.status == 405) {
-							alert("세션이 종료 되었습니다. 로그인 페이지로 이동합니다.");
-							location.href = "/login";
+						} else {
+
+							location.href = "/error/error_500.html";
 						}
                     }
                 },
@@ -136,17 +136,23 @@
 			$("#zero_config_paginate").parent("div").siblings("div").addClass("before-page-wrap");
 
 			search = function(){
+				var sdate = new Date($("#datepicker-autoclose1").val());
+				var edate = new Date($("#datepicker-autoclose2").val());
+
+				if(sdate>edate){
+					alert("시작일자, 종료일자를 확인해주세요.");
+					return false;
+				}
 				dataTable1.draw();
 			}
 
-			reset = function(){
+			reset1 = function(){
 				$("#searchText").val('');
 				$("#datepicker-autoclose1").val(/*[[${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}]]*/);
 				$("#datepicker-autoclose2").val(/*[[${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}]]*/);
 			}
 
 			exceldown = function(){
-				console.log(2222222222222);
 				exportExcel();
 			}
         });
@@ -287,7 +293,7 @@
 											<button class="btn btn-success text-white" onclick="search();" type="button">
 												조회
 											</button>
-											<button class="btn btn-secondary text-white" onclick="reset();"  type="button">
+											<button class="btn btn-secondary text-white" onclick="reset1();"  type="button">
 												초기화
 											</button>
 										</td>
