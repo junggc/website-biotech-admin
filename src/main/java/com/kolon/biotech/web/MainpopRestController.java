@@ -44,9 +44,9 @@ public class MainpopRestController {
     }
 
     @PostMapping(value="/mainpopListAjax")
-    public Page<Mainpop> mainpopListAjax(@PageableDefault Pageable pageable, Model model){
+    public Page<Mainpop> mainpopListAjax(@ModelAttribute Mainpop mainpop, @PageableDefault Pageable pageable, Model model){
         log.debug("=========userListAjax============");
-        Page<Mainpop> list = mainpopService.getList(pageable);
+        Page<Mainpop> list = mainpopService.getList(mainpop, pageable);
 
         return list;
     }
@@ -60,6 +60,7 @@ public class MainpopRestController {
             dto.setSuccess(true);
             dto.setMessage(messageSourceAccessor.getMessage("deleteok"));
         }catch(Exception e){
+            e.printStackTrace();
             dto.setSuccess(true);
             dto.setMessage(messageSourceAccessor.getMessage("deletefail"));
         }

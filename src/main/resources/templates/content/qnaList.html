@@ -16,21 +16,10 @@
 			th:href="@{/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css}"
 	/>
 
-	<link
-			href="/assets/libs/select2/dist/css/select2.min.css"
-			rel="stylesheet"
-			th:href="@{/assets/libs/select2/dist/css/select2.min.css}"
-			type="text/css"
-	/>
-
 	<style>
 		.table th, .table td { max-width: 200px; min-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 	</style>
 	<!-- this page js -->
-	<script href="/assets/libs/select2/dist/js/select2.full.min.js"
-			th:src="@{/assets/libs/select2/dist/js/select2.full.min.js}"></script>
-	<script href="/assets/libs/select2/dist/js/select2.min.js"
-			th:src="@{/assets/libs/select2/dist/js/select2.min.js}"></script>
 	<script href="/assets/extra-libs/multicheck/datatable-checkbox-init.js"
 	        th:src="@{/assets/extra-libs/multicheck/datatable-checkbox-init.js}"></script>
 	<script href="/assets/extra-libs/multicheck/jquery.multicheck.js"
@@ -44,21 +33,24 @@
 
 	<script th:inline="javascript">
         $(function () {
-			$(".select2").select2();
 
-			$("#datepicker-autoclose1").datepicker({
+			var $sdate = $("#datepicker-autoclose1").datepicker({
 				format:'yyyy-mm-dd',
 				language: 'kr',
 				autoclose: true,
 				todayHighlight: true,
 			});
 
-			$("#datepicker-autoclose2").datepicker({
+			$sdate.datepicker('setDate','-1M');
+
+			var $edate = $("#datepicker-autoclose2").datepicker({
 				format:'yyyy-mm-dd',
 				language: 'kr',
 				autoclose: true,
 				todayHighlight: true,
 			});
+
+			$edate.datepicker('setDate',new Date());
 
             var dataTable1=$("#zero_config").DataTable({
                 ajax : {
@@ -104,9 +96,9 @@
 						} else if (jqXHR.status == 403) {
 							alert("세션이 만료가 되었습니다. 로그인 페이지로 이동합니다.");
 							location.href = "/login";
-						} else if (jqXHR.status == 405) {
-							alert("세션이 종료 되었습니다. 로그인 페이지로 이동합니다.");
-							location.href = "/login";
+						} else {
+
+							location.href = "/error/error_500.html";
 						}
                     }
                 },
@@ -162,13 +154,23 @@
 			$("#zero_config_paginate").parent("div").siblings("div").addClass("before-page-wrap");
 
 			search = function(){
+				var sdate = new Date($("#datepicker-autoclose1").val());
+				var edate = new Date($("#datepicker-autoclose2").val());
+
+				console.log('sdate',sdate);
+				console.log('edate',edate);
+				if(sdate>edate){
+					alert("시작날짜가 더큼");
+					return false;
+				}
 				dataTable1.draw();
 			}
 
-			reset = function(){
+			reset1 = function(){
+				$("#searchAnsStat").val('');
 				$("#searchText").val('');
-				$("#datepicker-autoclose1").val(/*[[${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}]]*/);
-				$("#datepicker-autoclose2").val(/*[[${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}]]*/);
+				$sdate.datepicker('setDate','-1M');
+				$edate.datepicker('setDate',new Date());
 			}
 
 			moveInfo = function(id){
@@ -234,20 +236,23 @@
 							<div class="col-sm-12">
 								<table class="table table-bordered">
 									<tr>
+										<td style="vertical-align:middle"><label style="margin:0;">답변여부</label></td>
+										<td>
+											<select name="searchAnsStat" id="searchAnsStat"
+													aria-hidden="true"
+													class="select2 form-select shadow-none select2-hidden-accessible form-control col-md-3"
+													data-select2-id="1"
+													style="width: 15%; height: 35px" tabindex="-1" height="35px">
+												<option value="">전체</option>
+												<option value="N">답변대기</option>
+												<option value="Y">답변완료</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
 										<td style="vertical-align:middle"><label style="margin:0;">검색</label></td>
 										<td>
-											<div class="input-group">
-												<select name="searchAnsStat" id="searchAnsStat"
-														aria-hidden="true"
-														class="select2 form-select shadow-none select2-hidden-accessible form-control col-md-3"
-														data-select2-id="1"
-														style="width: 15%; height: 35px" tabindex="-1" height="35px">
-													<option value="">전체</option>
-													<option value="N">답변대기</option>
-													<option value="Y">답변완료</option>
-												</select>
-												<input type="text" name="searchText" id="searchText" class="form-control col-md-6" placeholder="작성자,내용">
-											</div>
+											<input type="text" name="searchText" id="searchText" class="form-control col-md-6" placeholder="작성자,내용">
 										</td>
 									</tr>
 									<tr>
@@ -257,7 +262,6 @@
 												<input class="form-control col-md-3" id="datepicker-autoclose1" name="searchStartDate"
 													   placeholder="yyyy-mm-dd"
 													   type="text"
-													   th:value="${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}"
 													   readOnly="true">
 
 												<span class="input-group-text h-100"><i class="mdi mdi-calendar"></i></span>
@@ -267,7 +271,6 @@
 												<input class="form-control col-md-3" id="datepicker-autoclose2" name="searchEndDate"
 													   placeholder="yyyy-mm-dd"
 													   type="text"
-													   th:value="${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}"
 													   readOnly="true">
 
 												<span class="input-group-text h-100"><i class="mdi mdi-calendar"></i></span>
@@ -279,7 +282,7 @@
 											<button class="btn btn-success text-white" onclick="search();" type="button">
 												조회
 											</button>
-											<button class="btn btn-secondary text-white" onclick="reset();"  type="button">
+											<button class="btn btn-secondary text-white" onclick="reset1();"  type="button">
 												초기화
 											</button>
 										</td>

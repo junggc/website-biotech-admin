@@ -55,10 +55,18 @@ public class MainvisualService {
         return mainvisual;
     }
 
-    public Page<Mainvisual> getMainvisualList(Pageable pageable){
+    public Page<Mainvisual> getMainvisualList(Mainvisual mainvisual, Pageable pageable){
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() -1);
         pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC,"id"));
-        return mainvisualRepository.findAllByOrderByOrderSeqDesc(pageable);
+
+        Page<Mainvisual> list = null;
+        if(mainvisual.getDispYn() != null && !"".equals(mainvisual.getDispYn())){
+            list = mainvisualRepository.findAllByDispYnOrderByOrderSeqDesc(mainvisual.getDispYn(), pageable);
+        }else{
+            list = mainvisualRepository.findAllByOrderByOrderSeqDesc(pageable);
+        }
+
+        return list;
     }
 
     @Transactional

@@ -50,10 +50,19 @@ public class MainpopService {
         return mainpop;
     }
 
-    public Page<Mainpop> getList(Pageable pageable){
+    public Page<Mainpop> getList(Mainpop mainpop, Pageable pageable){
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() -1);
         pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC,"id"));
-        return mainPopRepository.findAll(pageable);
+
+        Page<Mainpop> list = null;
+
+        if(mainpop.getDispYn() != null && !"".equals(mainpop.getDispYn())){
+            list = mainPopRepository.findAllByDispYnOrderByIdDesc(mainpop.getDispYn(), pageable);
+        }else{
+            list = mainPopRepository.findAllByOrderByIdDesc(pageable);
+        }
+
+        return list;
     }
 
     @Transactional
@@ -121,8 +130,10 @@ public class MainpopService {
 
                 //실제파일 삭제
                 Mainpop mainpop = mainPopRepository.findById(id).get();
-                File f = new File(mainpop.getPopImgRealPath());
-                f.delete();
+                if(mainpop.getPopImgRealPath() != null && !"".equals(mainpop.getPopImgRealPath())){
+                    File f = new File(mainpop.getPopImgRealPath());
+                    f.delete();
+                }
 
                 mainPopRepository.deleteById(id);
             }

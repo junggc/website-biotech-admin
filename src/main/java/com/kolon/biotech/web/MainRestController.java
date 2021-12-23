@@ -33,8 +33,8 @@ public class MainRestController {
     private MainvisualService mainvisualService;
 
     @PostMapping("mainVisualListAjax")
-    public Page<Mainvisual> mainVisualListAjax(@PageableDefault Pageable pageable, Model model){
-        Page<Mainvisual> mainVisual = mainvisualService.getMainvisualList(pageable);
+    public Page<Mainvisual> mainVisualListAjax(@ModelAttribute Mainvisual mainvisual, @PageableDefault Pageable pageable, Model model){
+        Page<Mainvisual> mainVisual = mainvisualService.getMainvisualList(mainvisual, pageable);
         return mainVisual;
     }
 

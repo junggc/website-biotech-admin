@@ -40,6 +40,7 @@
                     beforeSend : function() {
                     },
                     data: function (p) {
+						p.dispYn = $("#dispYn").val();
                         p.page = $("#zero_config").DataTable().page.info().page+1;
                         p.size = $("#zero_config").DataTable().page.len();
                     },
@@ -243,7 +244,16 @@
 					return false;
 				}
 			}
-        });
+
+			reset = function(){
+				$("#dispYn").val('');
+			}
+
+			search = function(){
+				dataTable1.draw();
+			}
+
+		});
 
 
 	</script>
@@ -264,6 +274,40 @@
 			<div class="card-body">
 				<h5 class="card-title">메인비주얼 목록</h5>
 				<div class="table-responsive">
+
+					<div class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+						<div class="row">
+							<div class="col-sm-12">
+								<table class="table table-bordered">
+									<tr>
+										<td style="vertical-align:middle"><label style="margin:0;">전시여부</label></td>
+										<td>
+											<select name="dispYn" id="dispYn"
+													aria-hidden="true"
+													class="select2 form-select shadow-none select2-hidden-accessible form-control col-md-3"
+													data-select2-id="1"
+													style="width: 15%; height: 35px" tabindex="-1" height="35px">
+												<option value="">전체</option>
+												<option value="Y">전시</option>
+												<option value="N">미전시</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2" style="text-align: center;">
+											<button class="btn btn-success text-white" onclick="search();" type="button">
+												조회
+											</button>
+											<button class="btn btn-secondary text-white" onclick="reset();"  type="button">
+												초기화
+											</button>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+
 					<table
 							class="table table-striped table-bordered"
 							id="zero_config"

@@ -63,7 +63,7 @@
 
                if(!$('#passwrdform').valid()) return false;
 
-               var param = $('#passwrdform').serializeObject();
+               var param = $('#passwrdform').serialize();
                var url="/userChangePass";
                $.ajax({
                    dataType : 'json'
@@ -72,7 +72,7 @@
                    , beforeSend : function (jqXHR, settings) {
                    }
                    , url : url //for ASP.NET, java
-                   , data : { obj: JSON.stringify(param), list: JSON.stringify(changes) }
+                   , data : param
                    , success : function (changes) {
                        //debugger;
                        alert(changes.message);
@@ -186,6 +186,14 @@
                         </tr>
                         </tbody>
                     </table>
+                </div>
+                <div class="user-pw-tb">
+                    <b>비밀번호 정책</b><br/>
+                    <p>안전한 사용을 위하여, 3개월마다 비밀번호를 변경합니다. 새 비밀번호를 입력해 주세요.</p>
+                    <p>
+                        - 8자~25자 이내로, '영문/숫자/특수문자(!@#$%^*+=-)' 를 모두 사용하여 조합하셔야 합니다.<br/>
+                        - 최근(5회)에 사용한 비밀번호는 새 비밀번호로 설정할 수 없습니다
+                    </p>
                 </div>
                 <div class="btn-area-center">
                     <input type="button" value="저장" class="btn-save" onclick="changePwd();" />

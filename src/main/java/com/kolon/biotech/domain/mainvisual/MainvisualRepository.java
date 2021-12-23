@@ -21,4 +21,6 @@ public interface MainvisualRepository extends JpaRepository<Mainvisual, Integer>
     public int findMinOrderSeq();
 
     Page<Mainvisual> findAllByOrderByOrderSeqDesc(Pageable pageable);
+
+    Page<Mainvisual> findAllByDispYnOrderByOrderSeqDesc(String dispYn, Pageable pageable);
 }
