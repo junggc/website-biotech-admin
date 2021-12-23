@@ -106,7 +106,7 @@
                 }
                 ,password1:{
                     required: true
-                    ,equalTo: "#password"
+                    ,equalTo: "#passwd"
                 }
                 /*[/]*/
                 /*[# th:if="${member.id != null}"]*/
@@ -153,7 +153,7 @@
                 /*[# th:if="${member.id == null}"]*/
                 ,password:{
                     required: "비밀번호를 입력해주세요.",
-                    regex: "비밀번호(8-25자)는 영문/숫자/특수문자(!@#$%^*+=-)를 모두 사용해야합니다."
+                    regex: "비밀번호는  8자~25자 이내로, 영문/숫자/특수문자를 조합해서 사용해야 합니다."
                 }
                 ,password1:{
                     required: "비밀번호확인을 입력해주세요."

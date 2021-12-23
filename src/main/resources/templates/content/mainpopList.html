@@ -77,7 +77,7 @@
                   columnDefs: [
                     {
                       data: function (data, type) {
-                          return '<label class="customcheckbox"><input type="checkbox" data-dispyn="'+data.dispYn+'" value="'+data.id+'" class="listCheckbox"><span class="checkmark"></span></label>';
+                          return '<label class="customcheckbox"><input type="checkbox" name="checkedbox" data-dispyn="'+data.dispYn+'" value="'+data.id+'" class="listCheckbox"><span class="checkmark"></span></label>';
                       },
                       targets: 0,
                       orderable: false,
@@ -130,7 +130,21 @@
                   paging: true
             });
 
-            $(".dataTables_filter").html('<button class="btn btn-outline-primary" id="refresh" onclick="location.href=\'/mainpopInfo\';">등록</button><button class="btn btn-outline-danger" id="refresh">삭제</button>');
+            $(".dataTables_filter").html('<button class="btn btn-outline-primary" id="refresh" onclick="location.href=\'/mainpopInfo\';">등록</button><button class="btn btn-outline-danger" id="refresh" onclick="deletelist();">삭제</button>');
+
+			$("#mainCheckbox").on("click",function(){
+				if ($(this).is(":checked") == true) {
+					$("input:checkbox[name='checkedbox']").each(function () {
+						$(this).attr("checked",true);
+						$(this).checked = true;
+					});
+				} else {
+					$("input:checkbox[name='checkedbox']").each(function () {
+						$(this).removeAttr("checked");
+						$(this).checked = false;
+					});
+				}
+			});
 			$("#zero_config_paginate").parent("div").addClass("page-wrap");
 			$("#zero_config_paginate").parent("div").siblings("div").addClass("before-page-wrap");
 
@@ -143,7 +157,7 @@
 					return false;
 				}
 
-				if(confirm("선택한 공지사항을 삭제하시겠습니까?")){
+				if(confirm("선택한 메인팝업을 삭제하시겠습니까?")){
 					var form = $("#is_form")[0];
 					var formData = new FormData(form);
 
@@ -156,7 +170,7 @@
 							delete_lists.push($(this).val());
 						}else{
 							flag = false;
-							alert("전시중인 비쥬얼은 삭제할 수 없습니다.");
+							alert("전시중인 메인팝업은 삭제할 수 없습니다.");
 							return false;
 						}
 					});

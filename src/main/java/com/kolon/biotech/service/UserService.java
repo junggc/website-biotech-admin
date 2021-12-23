@@ -302,37 +302,53 @@ public class UserService implements UserDetailsService {
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        if(passwordEncoder.matches(member.getPassword(),r_member.getPassword())){
-            _resultMap.setSuccess(false);
-            _resultMap.setMessage("동일한 비밀번호로 변경할 수 없습니다.");
+        if(passwordEncoder.matches(member.getMPassword(),r_member.getPassword())){
+            if(passwordEncoder.matches(member.getPassword(),r_member.getPassword())){
+                _resultMap.setSuccess(false);
+                _resultMap.setMessage("동일한 비밀번호로 변경할 수 없습니다.");
 
-            History history = History.builder().userId(r_member.getLoginId())
-                    .jobContent("동일한 비밀번호로 변경할 수 없습니다.")
-                    .jobFlag("J")
-                    .requestDate(LocalDateTime.now())
-                    .jobUrl(request.getRequestURI())
-                    .requestIp(request.getRemoteAddr())
-                    .build();
-            historyService.setWriteStroe(history);
+                History history = History.builder().userId(r_member.getLoginId())
+                        .jobContent("동일한 비밀번호로 변경할 수 없습니다.")
+                        .jobFlag("J")
+                        .requestDate(LocalDateTime.now())
+                        .jobUrl(request.getRequestURI())
+                        .requestIp(request.getRemoteAddr())
+                        .build();
+                historyService.setWriteStroe(history);
 
+            }else{
+                String newpassword = passwordEncoder.encode(member.getPassword());
+                r_member.setPassword(newpassword);
+                r_member.setPasswordChangeDate(LocalDateTime.now());
+
+                History history = History.builder().userId(r_member.getLoginId())
+                        .jobContent("비밀번호를 변경하였습니다.")
+                        .jobFlag("J")
+                        .requestDate(LocalDateTime.now())
+                        .jobUrl(request.getRequestURI())
+                        .requestIp(request.getRemoteAddr())
+                        .build();
+                historyService.setWriteStroe(history);
+
+                _resultMap.setSuccess(true);
+                //_resultMap.setMessage("비밀번호 변경이 완료되었습니다.\\n 변경된 비밀번호로 다시 로그인하세요.");
+                _resultMap.setMessage("비밀번호 변경이 완료되었습니다.");
+            }
         }else{
-            String newpassword = passwordEncoder.encode(member.getPassword());
-            r_member.setPassword(newpassword);
-            r_member.setPasswordChangeDate(LocalDateTime.now());
+            _resultMap.setSuccess(false);
+            _resultMap.setMessage("비밀번호가 다릅니다.");
 
             History history = History.builder().userId(r_member.getLoginId())
-                    .jobContent("비밀번호를 변경하였습니다.")
+                    .jobContent("비밀번호가 다릅니다.")
                     .jobFlag("J")
                     .requestDate(LocalDateTime.now())
                     .jobUrl(request.getRequestURI())
                     .requestIp(request.getRemoteAddr())
                     .build();
             historyService.setWriteStroe(history);
-
-            _resultMap.setSuccess(true);
-            //_resultMap.setMessage("비밀번호 변경이 완료되었습니다.\\n 변경된 비밀번호로 다시 로그인하세요.");
-            _resultMap.setMessage("비밀번호 변경이 완료되었습니다.");
         }
+
+
 
         return _resultMap;
     }

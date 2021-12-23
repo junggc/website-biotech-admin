@@ -45,9 +45,12 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.debug("====onAuthenticationSuccess====");
         // 로그인 5회 실패 전 로그인 성공할경우 실패 횟수 리셋을 위해 엔티티 조회
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails)principal;
-        String currentUser = userDetails.getUsername();
+//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        UserDetails userDetails = (UserDetails)principal;
+//        String currentUser = userDetails.getUsername();
+//
+        MemberDto memberDto = (MemberDto)authentication.getPrincipal();
+        String currentUser = memberDto.getLoginId();
 
         Member findAccount = memberRepository.findByLoginId(currentUser).get();
         //90일 경과

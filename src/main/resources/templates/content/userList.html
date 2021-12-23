@@ -66,7 +66,7 @@
                   columnDefs: [
                     {
                       data: function (data, type) {
-                          return '<label class="customcheckbox"><input type="checkbox" value="'+data.id+'" class="listCheckbox"><span class="checkmark"></span></label>';
+                          return '<label class="customcheckbox"><input type="checkbox" name="checkedbox" value="'+data.id+'" class="listCheckbox"><span class="checkmark"></span></label>';
                       },
                       targets: 0,
                       orderable: false,
@@ -133,7 +133,21 @@
             });
 
 
-            $(".dataTables_filter").html('<button class="btn btn-outline-primary" id="refresh" onclick="location.href=\'/userInfo\';">등록</button><button class="btn btn-outline-danger" id="refresh">삭제</button>');
+            $(".dataTables_filter").html('<button class="btn btn-outline-primary" id="refresh" onclick="location.href=\'/userInfo\';">등록</button><button class="btn btn-outline-danger" id="refresh" onclick="deletelist();">삭제</button>');
+
+			$("#mainCheckbox").on("click",function(){
+				if ($(this).is(":checked") == true) {
+					$("input:checkbox[name='checkedbox']").each(function () {
+						$(this).attr("checked",true);
+						$(this).checked = true;
+					});
+				} else {
+					$("input:checkbox[name='checkedbox']").each(function () {
+						$(this).removeAttr("checked");
+						$(this).checked = false;
+					});
+				}
+			});
 			$("#zero_config_paginate").parent("div").addClass("page-wrap");
 			$("#zero_config_paginate").parent("div").siblings("div").addClass("before-page-wrap");
 
@@ -184,7 +198,7 @@
 
 						$.ajax({
 							type: "POST",
-							url: "/mainpopDelete",
+							url: "/userDelete",
 							data : formData,
 							cache:false,
 							processData: false,

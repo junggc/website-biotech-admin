@@ -31,6 +31,65 @@
     <!--Custom JavaScript -->
     <script href="/dist/js/custom.min.js" th:src="@{/dist/js/custom.min.js}"></script>
 
+    <script href="/assets/libs/jquery-validation/dist/jquery.validate.min.js"
+            th:src="@{/assets/libs/jquery-validation/dist/jquery.validate.min.js}"></script>
+    <script href="/assets/libs/jquery-validation/dist/additional-methods.js"
+            th:src="@{/assets/libs/jquery-validation/dist/additional-methods.js}"></script>
+    <script href="/js/jquery-common.js" th:src="@{/js/jquery-common.js}"></script>
+
+    <script>
+        $(function () {
+            $("#passwrdform").validate({
+                rules: {
+                    mPassword:{required: true}
+                    ,password:{required: true,regex : /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?^=-])[A-Za-z\d$@$!%*#?^=-]{8,25}$/}
+                    ,cnewPassword:{required: true,equalTo: "#password"}
+                }
+                , messages : {
+                    mPassword:{required: "현재 비밀번호를 입력해주세요."}
+                    ,password:{required: "새로운 비밀번호를 입력해주세요.",regex : "비밀번호는  8자~25자 이내로, 영문/숫자/특수문자를 조합해서 사용해야 합니다."}
+                    ,cnewPassword:{required: "비밀번호 확인을 입력해주세요.",equalTo: "비밀번호가 다릅니다."}
+                }
+            });
+
+            changeclose = function(){
+                $("mPassword").val('');
+                $("#password").val('');
+                $("#cnewPassword").val('');
+                $(".user-layerpop").hide();
+            }
+
+           changePwd = function(){
+
+               if(!$('#passwrdform').valid()) return false;
+
+               var param = $('#passwrdform').serializeObject();
+               var url="/userChangePass";
+               $.ajax({
+                   dataType : 'json'
+                   , type : 'POST'
+                   , async : true
+                   , beforeSend : function (jqXHR, settings) {
+                   }
+                   , url : url //for ASP.NET, java
+                   , data : { obj: JSON.stringify(param), list: JSON.stringify(changes) }
+                   , success : function (changes) {
+                       //debugger;
+                       alert(changes.message);
+                       if(changes.success == true){
+                           $("mPassword").val('');
+                           $("#password").val('');
+                           $("#cnewPassword").val('');
+                           $(".user-layerpop").hide();
+                       }
+                   }
+                   , complete : function (changes) {
+                   }
+               });
+
+           }
+        });
+    </script>
 
 </head>
 
@@ -69,7 +128,7 @@
     <div class="inner">
         <div class="layer-tit">비밀번호 변경</div>
         <div class="layer-cont">
-            <form action="">
+            <form action="" id="passwrdform" onsubmit="return false;">
                 <div class="user-pw-tb">
                     <table>
                         <caption class="hidden">운영자정보</caption>
@@ -87,9 +146,9 @@
                         <tbody>
                         <tr>
                             <th scope="row">운영자명</th>
-                            <td>슈퍼관리자</td>
+                            <td th:text="${#authentication.getPrincipal().getUsername()}">슈퍼관리자</td>
                             <th scope="row">운영자ID</th>
-                            <td>kolon</td>
+                            <td th:text="${#authentication.getPrincipal().getLoginId()}">kolon</td>
                         </tr>
                         </tbody>
                     </table>
@@ -110,30 +169,30 @@
                         <tr>
                             <th scope="row">현재 비밀번호</th>
                             <td>
-                                <input type="password" name="" placeholder="현재 비밀번호를 입력해주세요" />
+                                <input type="password" name="mPassword" id="mPassword" placeholder="현재 비밀번호를 입력해주세요" />
                             </td>
                         </tr>
                         <tr>
                             <th scope="row">새로운 비밀번호</th>
                             <td>
-                                <input type="password" name="" placeholder="새로운 비밀번호를 입력해주세요" />
+                                <input type="password" name="password" id="password" placeholder="새로운 비밀번호를 입력해주세요" />
                             </td>
                         </tr>
                         <tr>
                             <th scope="row">비밀번호 확인</th>
                             <td>
-                                <input type="password" name="" placeholder="비밀번호를 확인해주세요." />
+                                <input type="password" name="cnewPassword" id="cnewPassword" placeholder="비밀번호를 확인해주세요." />
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="btn-area-center">
-                    <input type="submit" value="저장" class="btn-save" />
+                    <input type="button" value="저장" class="btn-save" onclick="changePwd();" />
                 </div>
             </form>
         </div>
-        <a href="javascript:;" class="btn-close">닫기</a>
+        <a href="javascript:changeclose();" class="btn-close">닫기</a>
     </div>
 </div>
 <style>
