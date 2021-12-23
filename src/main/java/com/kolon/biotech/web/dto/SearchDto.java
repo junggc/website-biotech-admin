@@ -11,4 +11,5 @@ public class SearchDto {
     private String page;
     private String size;
     private String id;
+    private String searchAnsStat;
 }

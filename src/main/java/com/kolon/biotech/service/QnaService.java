@@ -77,11 +77,30 @@ public class QnaService {
         LocalDateTime startDate = LocalDateTime.parse(searchDto.getSearchStartDate().replaceAll("-","")+"000000",formatter);
         LocalDateTime endDate = LocalDateTime.parse(searchDto.getSearchEndDate().replaceAll("-","")+"235959",formatter);
         Page<Qna> list = null;
-        if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
-            list = qnaRepository.findAllByRegDtimeBetweenAndUserNameLikeOrUserContentsLike(startDate,endDate,searchDto.getSearchText(),pageable);
+
+        if(searchDto.getSearchAnsStat() != null && "".equals(searchDto.getSearchAnsStat())){
+            if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
+                list = qnaRepository.findAllByRegDtimeBetweenAndUserNameLikeOrUserContentsLike(startDate,endDate,searchDto.getSearchText(),pageable);
+            }else{
+                list = qnaRepository.findAllByRegDtimeBetweenOrderByRegDtimeDesc(startDate, endDate,pageable);
+            }
         }else{
-            list = qnaRepository.findAllByRegDtimeBetweenOrderByRegDtimeDesc(startDate, endDate,pageable);
+            if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
+                if("Y".equals(searchDto.getSearchAnsStat())){
+                    list = qnaRepository.findAllByAnsStateYAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike(startDate,endDate,searchDto.getSearchText(),pageable);
+                }else{
+                    list = qnaRepository.findAllByAnsStateNAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike(startDate,endDate,searchDto.getSearchText(),pageable);
+                }
+            }else{
+                if("Y".equals(searchDto.getSearchAnsStat())){
+                    list = qnaRepository.findAllByAnsStateYAndRegDtimeBetweenOrderByRegDtimeDesc(startDate, endDate,pageable);
+                }else{
+                    list = qnaRepository.findAllByAnsStateNAndRegDtimeBetweenOrderByRegDtimeDesc(startDate, endDate,pageable);
+                }
+
+            }
         }
+
 
         return list;
     }

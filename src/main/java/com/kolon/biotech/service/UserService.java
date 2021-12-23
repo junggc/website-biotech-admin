@@ -85,12 +85,7 @@ public class UserService implements UserDetailsService {
                 return new IllegalArgumentException("회원정보 조회 실패");
             });
 
-            String mpass = passwordEncoder.encode(memberDto.getMPassword());
-            log.debug("############"+memberDto.getMPassword());
-            log.debug("############"+mpass);
-            log.debug("############"+r_smember.getPassword());
-            log.debug("############"+passwordEncoder.matches(mpass,r_smember.getPassword()));
-            if(passwordEncoder.matches(mpass,r_smember.getPassword())){
+            if(passwordEncoder.matches(memberDto.getMPassword(),r_smember.getPassword())){
                 //직전 비밀번호 검사
                 if(passwordEncoder.matches(memberDto.getPassword(),r_member.getPassword())){
                     _resultMap.setSuccess(false);
