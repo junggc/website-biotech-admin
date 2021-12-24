@@ -32,6 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserLoginSuccessHandler successHandler;
     private final UserLoginFailureHandler failureHandler;
     private final UserService userService; // 3
+    private final UserLogoutSuccessHandler logoutSuccessHandler;
+    private final UserLogoutHandler logoutHandler;
 
     private final UserLoginExpiredStrategy userLoginExpiredStrategy;
 
@@ -65,8 +67,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(failureHandler)
                 .and()
                 .logout() // 8
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/logoutSuccess") // 로그아웃 성공시 리다이렉트 주소
+                .logoutUrl("/logout")
+                .addLogoutHandler(logoutHandler)
+                //.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                //.logoutSuccessUrl("/logoutSuccess") // 로그아웃 성공시 리다이렉트 주소
+                .logoutSuccessHandler(logoutSuccessHandler)
                 .invalidateHttpSession(true)// 세션 날리기
                 .deleteCookies("JSESSIONID") /*쿠키 제거*/
                 .clearAuthentication(true) /*권한정보 제거*/
