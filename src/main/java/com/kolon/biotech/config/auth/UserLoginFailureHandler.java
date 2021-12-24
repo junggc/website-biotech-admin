@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -60,7 +61,9 @@ public class UserLoginFailureHandler implements AuthenticationFailureHandler {
 
                     Member findMember = memberWrapper.get();
                     log.debug("###################findMember.getBlocked()="+findMember.getBlocked());
-                    if("true".equals(findMember.getBlocked())){
+
+                    LocalDateTime pwdDate = findMember.getPasswordChangeDate() != null ? findMember.getPasswordChangeDate() : findMember.getRegDtime();
+                    if("true".equals(findMember.getBlocked()) && ChronoUnit.DAYS.between(pwdDate,LocalDateTime.now()) < 90){
 
                         History history = History.builder().userId(findMember.getLoginId())
                                 .jobContent("계정이 잠겼습니다.")

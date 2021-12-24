@@ -37,7 +37,7 @@
             th:src="@{/assets/libs/jquery-validation/dist/additional-methods.js}"></script>
     <script href="/js/jquery-common.js" th:src="@{/js/jquery-common.js}"></script>
 
-    <script>
+    <script th:inline="javascript">
         $(function () {
             $("#passwrdform").validate({
                 rules: {
@@ -76,13 +76,21 @@
                    , data : param
                    , success : function (changes) {
                        //debugger;
-                       alert(changes.message);
+                       var msg = changes.message;
+                       /*[# th:if="${#authentication.getPrincipal().getBlocked()}"]*/
+                        msg += "\n다시 로그인해주세요.";
+                       /*[/]*/
+
+                       alert(msg);
                        if(changes.success == true){
                            $("mPassword").val('');
                            $("#password").val('');
                            $("#cnewPassword").val('');
                            $(".user-layerpop").hide();
                            $("html").removeClass("hold");
+                           /*[# th:if="${#authentication.getPrincipal().getBlocked()}"]*/
+                                location.href="/logout";
+                           /*[/]*/
                        }
                    }
                    , complete : function (changes) {
@@ -211,7 +219,7 @@
                 </div>
             </form>
         </div>
-        <a th:if="${#authentication.getPrincipal().getBlocked() == false}" href="javascript:changeclose();" class="btn-close">닫기</a>
+        <a th:if="${not #authentication.getPrincipal().getBlocked()}" href="javascript:changeclose();" class="btn-close">닫기</a>
     </div>
 </div>
 <style>
