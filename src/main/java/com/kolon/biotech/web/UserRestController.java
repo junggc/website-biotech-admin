@@ -41,7 +41,7 @@ public class UserRestController {
         Member _member = userService.getLoginId(member);
 
         boolean _bol = true;
-        if(member.getId() != null && member.getId() != 0){
+        if(_member.getId() != null && _member.getId() != 0){
             if(_member.getLoginId() != null && !"".equals(_member.getLoginId())){
                 _bol = false;
             }
@@ -94,5 +94,18 @@ public class UserRestController {
         }
 
         return dto;
+    }
+
+    //회원정보 수정 처리
+    @PostMapping(value="/updateUserAjax")
+    public ResultJsonPagingDto updateUser(@ModelAttribute Member user,@AuthenticationPrincipal MemberDto memberDto, HttpServletRequest request, HttpServletResponse response) throws Exception{
+        ResultJsonPagingDto resultJsonPagingDto = userService.updateUser(user, memberDto, request);
+        return resultJsonPagingDto;
+    }
+
+    @PostMapping("/createUserAjax")
+    public String createUser(@ModelAttribute Member user,@AuthenticationPrincipal MemberDto memberDto, HttpServletRequest request, HttpServletResponse response) throws Exception{
+        userService.joinUser(user, memberDto, request);
+        return "redirect:/userList";
     }
 }

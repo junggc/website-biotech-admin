@@ -9,9 +9,8 @@
             } else if (xhr.status == 403) {
                 alert("세션이 만료가 되었습니다. 로그인 페이지로 이동합니다.");
                 location.href = "/login";
-            }else if (jqXHR.status == 405) {
-                alert("세션이 종료 되었습니다. 로그인 페이지로 이동합니다.");
-                location.href = "/login";
+            }else {
+                location.href = "/error/error_500.html";
             }
         }
     });

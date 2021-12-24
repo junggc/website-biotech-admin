@@ -93,7 +93,13 @@
                     regex: /^[a-z0-9\d_-]{4,14}$/
                 }
                 ,samecheck:{
-                    sameidcheck: true
+                    sameidcheck: function(element){
+                        if($("#samecheck").val() == 'true'){
+                            return false;
+                        }else{
+                            return true;
+                        }
+                    }
                 },
                 /*[/]*/
                 name:{
@@ -190,6 +196,7 @@
         });
 
         sameIdCheck = function(){
+            console.log(1);
             var url = '/loginSameCheck';
             $.ajax({
                 dataType : 'json'
@@ -201,15 +208,52 @@
                 , url : url //for ASP.NET, java
                 , data : { loginId: $("#loginId").val() }
                 , success : function (changes) {
+                    console.log('changes',changes);
                     if(!changes){
                         alert("사용중인 아이디입니다.");
                         $("#samecheck").val('false');
                     }else{
+                        alert("사용가능 아이디입니다.");
                         $("#samecheck").val('true');
                     }
                 }
                 , complete : function () {
 
+                }
+            });
+        }
+
+        updateUser = function(){
+            if(!$('#is_form').valid()) return false;
+
+            var param = $('#is_form').serialize();
+
+            var url="";
+
+            /*[# th:if="${member.id == null}"]*/
+                url="/createUserAjax";
+            /*[/]*/
+            /*[# th:if="${member.id != null}"]*/
+                url="/updateUserAjax";
+            /*[/]*/
+
+            $.ajax({
+                dataType : 'json'
+                , type : 'POST'
+                , async : true
+                , beforeSend : function (jqXHR, settings) {
+                }
+                , url : url //for ASP.NET, java
+                , data : param
+                , success : function (changes) {
+                    //debugger;
+                    var msg = changes.message;
+                    alert(msg);
+                    if(changes.success == true){
+                        location.href="/userList";
+                    }
+                }
+                , complete : function (changes) {
                 }
             });
         }
@@ -220,7 +264,14 @@
     }
 
     function cancelAction(){
-        if(confirm("등록을 취소하시겠습니까?")){
+        var msg = "등록";
+        /*[# th:if="${member.id == null}"]*/
+            msg = "등록";
+        /*[/]*/
+        /*[# th:if="${member.id != null}"]*/
+            msg = "수정";
+        /*[/]*/
+        if(confirm(msg+"을 취소하시겠습니까?")){
             location.href='/userList';
         }
     }
@@ -245,7 +296,9 @@
                         <input id="id" name="id" th:value="*{id}" type="hidden">
                         <input id="samecheck" name="samecheck" value="" type="hidden">
                         <div class="card-body">
-                            <h4 class="card-title">관리자 등록</h4>
+                            <h4 class="card-title">관리자 <th:block th:if="*{id == null}" th:text="등록"></th:block><th:block th:if="*{id != null}" th:text="수정"></th:block></h4>
+
+
                             <div class="form-group row">
                                 <label class="col-md-3"
                                        for="loginId">관리자 구분</label>
@@ -266,7 +319,7 @@
                                             th:errorclass="is-invalid"
                                             th:field="*{loginId}" type="text"
                                     />
-                                    <button type="button" name="samecheck" class="btn btn-info">아이디중복체크</button>
+                                    <button type="button" class="btn btn-info" onclick="sameIdCheck();">아이디중복체크</button>
                                     </th:block>
                                     <th:block th:if="${member.id != null}" th:text="${member.loginId}"></th:block>
                                 </div>
@@ -461,9 +514,10 @@
                                         type="button">
                                     목록
                                 </button>
-                                <button class="btn btn-success text-white" onclick="$('#is_form').submit();"
+                                <button class="btn btn-success text-white" onclick="updateUser();"
                                         type="button">
-                                    등록
+                                    <th:block th:if="*{id == null}" th:text="등록"></th:block>
+                                    <th:block th:if="*{id != null}" th:text="수정"></th:block>
                                 </button>
                                 <button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
                                     취소

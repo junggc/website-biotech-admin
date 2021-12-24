@@ -40,8 +40,9 @@ public class UserService implements UserDetailsService {
     private HistoryService historyService;
 
     @Transactional
-    public Member joinUser(Member memberDto, MemberDto suser, HttpServletRequest request) throws Exception {
+    public ResultJsonPagingDto joinUser(Member memberDto, MemberDto suser, HttpServletRequest request) throws Exception {
         // 비밀번호 암호화
+        ResultJsonPagingDto _resultMap = new ResultJsonPagingDto();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 
@@ -61,7 +62,10 @@ public class UserService implements UserDetailsService {
                 .build();
         historyService.setWriteStroe(history);
 
-        return _member;
+        _resultMap.setSuccess(true);
+        _resultMap.setMessage("계정생성이 완료되었습니다.");
+
+        return _resultMap;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -170,7 +174,9 @@ public class UserService implements UserDetailsService {
                 .build();
         historyService.setWriteStroe(history);
 
-        if(!memberDto.getMainAuthority().equals(r_member.getMainAuthority())){
+        String smainauth = memberDto.getMainAuthority() == null ? "N" : memberDto.getMainAuthority();
+        String dmainauth = r_member.getMainAuthority() == null ? "N" : r_member.getMainAuthority();
+        if(!smainauth.equals(dmainauth)){
             r_member.setMainAuthority(memberDto.getMainAuthority());
 
             if("Y".equals(memberDto.getMainAuthority())){
@@ -196,7 +202,9 @@ public class UserService implements UserDetailsService {
             historyService.setWriteStroe(history);
         }
 
-        if(!memberDto.getNoticeAuthority().equals(r_member.getNoticeAuthority())){
+        String snotiauth = memberDto.getNoticeAuthority() == null ? "N" : memberDto.getNoticeAuthority();
+        String dnotiauth = r_member.getNoticeAuthority() == null ? "N" : r_member.getNoticeAuthority();
+        if(!snotiauth.equals(dnotiauth)){
             r_member.setNoticeAuthority(memberDto.getNoticeAuthority());
 
             if("Y".equals(memberDto.getNoticeAuthority())){
@@ -222,7 +230,9 @@ public class UserService implements UserDetailsService {
             historyService.setWriteStroe(history);
         }
 
-        if(!memberDto.getLogAuthority().equals(r_member.getLogAuthority())){
+        String slogauth = memberDto.getLogAuthority() == null ? "N" : memberDto.getLogAuthority();
+        String dlogauth = r_member.getLogAuthority() == null ? "N" : r_member.getLogAuthority();
+        if(!slogauth.equals(dlogauth)){
             r_member.setLogAuthority(memberDto.getLogAuthority());
 
             if("Y".equals(memberDto.getLogAuthority())){
@@ -463,7 +473,7 @@ public class UserService implements UserDetailsService {
         if(ChronoUnit.DAYS.between(pwdDate,LocalDateTime.now()) >= 90){
             user.setBlocked("true");
         }
-        memberDto.setBlocked(user.getBlocked());
+        memberDto.setBlocked(user.getBlocked() == null ? "false" : user.getBlocked());
         memberDto.setAuthorities(authorities);
         memberDto.setEnabled(true);
         memberDto.setAccountNonLocked(true);
