@@ -63,6 +63,12 @@ public class Interceptor implements HandlerInterceptor {
             }else if("/prbinfoList".equals(request.getRequestURI())){
                 jobContent = "개인정보처리방침관리에 접속했습니다.";
                 t = true;
+            }else if("/grantHistory".equals(request.getRequestURI())){
+                jobContent = "권한로그관리에 접속했습니다.";
+                t = true;
+            }else if("/jobHistory".equals(request.getRequestURI())){
+                jobContent = "작업로그관리에 접속했습니다.";
+                t = true;
             }
 
             if(t){
