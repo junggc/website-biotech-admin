@@ -55,7 +55,7 @@ public class QnaService {
     @Autowired
     private MailUtil mailUtil;
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
     public Qna getInfo(Integer id){
         Qna obj;
         if(id!=null && id != 0){
@@ -109,10 +109,16 @@ public class QnaService {
     public Qna setWriteStroe(Qna obj, MultipartFile[] files, List<Integer> deleteFileList) throws Exception {
         log.debug("===================setWriteStroeNotice============================");
         log.debug("########"+obj.getId()+"#########");
-        obj.setAnswerDate(LocalDateTime.now());
-        Qna r_obj = qnaRepository.save(obj);
 
         Qna _qna = qnaRepository.findById(obj.getId()).get();
+
+//        obj.setAnswerDate(LocalDateTime.now());
+//        Qna r_obj = qnaRepository.save(obj);
+
+        _qna.setAnswerDate(LocalDateTime.now());
+        _qna.setAnswerTitle(obj.getAnswerTitle());
+        _qna.setAnswerContents(obj.getAnswerContents());
+
         //메일보내기
         Mailinfo mailinfo = mailinfoRepository.findByJob("REP".toUpperCase());
 
@@ -124,8 +130,8 @@ public class QnaService {
         mailDto.setServerProfile(serverProfile);
         mailDto.setTitle("문의드립니다.");
         mailDto.setMessage(_qna.getUserContents());
-        //mailDto.setRegDtime(_qna.getRegDtime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        mailDto.setRegDtime(_qna.getUpdDtime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        mailDto.setRegDtime(_qna.getRegDtime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        //mailDto.setRegDtime(_qna.getUpdDtime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
         mailDto.setSubject(mailinfo.getSubject());
         mailDto.setAnswerTitle(_qna.getAnswerTitle());
@@ -137,7 +143,7 @@ public class QnaService {
 
         mailUtil.sendMailInFile(mailDto);
 
-        return r_obj;
+        return _qna;
 
     }
 
