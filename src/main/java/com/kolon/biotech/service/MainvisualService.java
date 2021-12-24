@@ -115,7 +115,7 @@ public class MainvisualService {
         String realFilePath = "";
 
         if(miFile != null && !miFile.isEmpty()){
-
+            log.debug("@@@@@타야지");
             if(_mainvisual != null && (_mainvisual.getPcImgRealPath() != null && !"".equals(_mainvisual.getPcImgRealPath()))){
                 File f = new File(_mainvisual.getPcImgRealPath());
                 f.delete();
@@ -137,6 +137,7 @@ public class MainvisualService {
 
 
         }else{
+            log.debug("@@@@@안타야지");
             if(_mainvisual != null){
                 mainvisual.setPcImgName(_mainvisual.getPcImgName());
                 mainvisual.setPcImgPath(_mainvisual.getPcImgPath());
@@ -273,6 +274,8 @@ public class MainvisualService {
 
         if(_mainvisual == null){
             mainvisual.setOrderSeq(mainvisualRepository.findMaxOrderSeq()+1);
+        }else{
+            mainvisual.setOrderSeq(_mainvisual.getOrderSeq());
         }
 
         Mainvisual r_mainvidual = mainvisualRepository.save(mainvisual);

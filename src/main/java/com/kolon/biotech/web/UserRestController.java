@@ -104,8 +104,8 @@ public class UserRestController {
     }
 
     @PostMapping("/createUserAjax")
-    public String createUser(@ModelAttribute Member user,@AuthenticationPrincipal MemberDto memberDto, HttpServletRequest request, HttpServletResponse response) throws Exception{
-        userService.joinUser(user, memberDto, request);
-        return "redirect:/userList";
+    public ResultJsonPagingDto createUser(@ModelAttribute Member user,@AuthenticationPrincipal MemberDto memberDto, HttpServletRequest request, HttpServletResponse response) throws Exception{
+        ResultJsonPagingDto resultJsonPagingDto = userService.joinUser(user, memberDto, request);
+        return resultJsonPagingDto;
     }
 }

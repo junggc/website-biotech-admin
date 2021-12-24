@@ -54,6 +54,7 @@ public class UserService implements UserDetailsService {
         Member _member = memberRepository.save(memberDto);
 
         History history = History.builder().userId(suser.getLoginId())
+                .userName(suser.getUsername())
                 .jobContent("관리자가 "+_member.getLoginId()+"을 신규생성 하였습니다.")
                 .jobFlag("J")
                 .requestDate(LocalDateTime.now())
@@ -299,7 +300,8 @@ public class UserService implements UserDetailsService {
     public void delete(List<Integer> deleteList){
         if(deleteList != null && !deleteList.isEmpty()){
             for(Integer id : deleteList){
-                memberRepository.updateDelYn(id);
+                //memberRepository.updateDelYn(id);
+                memberRepository.deleteById(id);
             }
         }
     }
@@ -421,6 +423,7 @@ public class UserService implements UserDetailsService {
         _resultMap.setMessage("초기화에 성공하였습니다.");
 
         History history = History.builder().userId(suser.getLoginId())
+                .userName(suser.getUsername())
                 .jobContent("관리자가 "+r_member.getLoginId()+"을 초기화 하였습니다.")
                 .jobFlag("J")
                 .requestDate(LocalDateTime.now())

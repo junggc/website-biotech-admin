@@ -60,7 +60,7 @@
 	<script href="/js/jquery-common.js" th:src="@{/js/jquery-common.js}"></script>
 	<script href="/dext5editor/js/dext5editor.js"
 			th:src="@{/dext5editor/js/dext5editor.js}"></script>
-	<script>
+	<script th:inline="javascript">
     $(function () {
           $("#datepicker-autoclose").datepicker({
             format:'yyyy-mm-dd',
@@ -253,7 +253,14 @@
 	}
 
 	function cancelAction(){
-		if(confirm("등록을 취소하시겠습니까?")){
+		var msg = "등록";
+		/*[# th:if="${notice.id == null}"]*/
+		msg = "등록";
+		/*[/]*/
+		/*[# th:if="${notice.id != null}"]*/
+		msg = "수정";
+		/*[/]*/
+		if(confirm(msg+"을 취소하시겠습니까?")){
 			location.href='/noticeList';
 		}
 	}
@@ -429,7 +436,8 @@
 								</button>
 								<button class="btn btn-success text-white" onclick="registerAction();"
 								        type="button">
-									등록
+									<th:block th:if="*{id == null}" th:text="등록"></th:block>
+									<th:block th:if="*{id != null}" th:text="수정"></th:block>
 								</button>
 								<button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
 									취소

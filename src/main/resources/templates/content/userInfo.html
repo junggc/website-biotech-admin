@@ -86,6 +86,7 @@
 
 
         $("#is_form").validate({
+            ignore: "",
             rules: {
                 /*[# th:if="${member.id == null}"]*/
                 loginId: {
@@ -93,13 +94,7 @@
                     regex: /^[a-z0-9\d_-]{4,14}$/
                 }
                 ,samecheck:{
-                    sameidcheck: function(element){
-                        if($("#samecheck").val() == 'true'){
-                            return false;
-                        }else{
-                            return true;
-                        }
-                    }
+                    required: true
                 },
                 /*[/]*/
                 name:{
@@ -136,9 +131,7 @@
                     required: true,
                     regex : /^01([0|1|6|7|8|9])-(\d{3,4})-(\d{4})$/
                 }
-                ,rank:{
-                    required: true
-                }
+
                 ,useYn:{
                     required: true
                 }
@@ -150,7 +143,7 @@
                     regex: "아이디는 영문소문자, 숫자와 특수문자(_-)만 사용 가능합니다."
                 }
                 ,samecheck:{
-                    sameidcheck: "아이디 중복체크를 해주세요."
+                    required: "아이디 중복체크를 해주세요."
                 },
                 /*[/]*/
                 name:{
@@ -185,9 +178,6 @@
                     required: "연락처를 입력해주세요.",
                     regex : "연락처를 확인하세요."
                 }
-                ,rank:{
-                    required: "직급을 입력해주세요."
-                }
                 ,useYn:{
                     required: "사용여부를 선택해주세요."
                 }
@@ -211,7 +201,7 @@
                     console.log('changes',changes);
                     if(!changes){
                         alert("사용중인 아이디입니다.");
-                        $("#samecheck").val('false');
+                        $("#samecheck").val('');
                     }else{
                         alert("사용가능 아이디입니다.");
                         $("#samecheck").val('true');
@@ -226,7 +216,8 @@
         updateUser = function(){
             if(!$('#is_form').valid()) return false;
 
-            var param = $('#is_form').serialize();
+            var form = $("#is_form")[0];
+            var formData = new FormData(form);
 
             var url="";
 
@@ -238,24 +229,27 @@
             /*[/]*/
 
             $.ajax({
-                dataType : 'json'
-                , type : 'POST'
-                , async : true
-                , beforeSend : function (jqXHR, settings) {
-                }
+                type : 'POST'
                 , url : url //for ASP.NET, java
-                , data : param
+                , data : formData
+                ,cache:false
+                ,processData: false
+                ,contentType: false
                 , success : function (changes) {
                     //debugger;
+                    console.log('changes',changes);
                     var msg = changes.message;
                     alert(msg);
                     if(changes.success == true){
                         location.href="/userList";
                     }
                 }
-                , complete : function (changes) {
+                ,error: function (xhr, status, error) {
+                    alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
+                    return false;
                 }
             });
+            return false;
         }
     });
 

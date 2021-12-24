@@ -60,7 +60,7 @@
 	<script href="/js/jquery-common.js" th:src="@{/js/jquery-common.js}"></script>
 	<script href="/dext5editor/js/dext5editor.js"
 			th:src="@{/dext5editor/js/dext5editor.js}"></script>
-	<script>
+	<script th:inline="javascript">
     $(function () {
           $("#datepicker-autoclose").datepicker({
             format:'yyyy-mm-dd',
@@ -509,7 +509,14 @@
 	}
 
 	function cancelAction(){
-		if(confirm("등록을 취소하시겠습니까?")){
+		var msg = "등록";
+		/*[# th:if="${mainvisual.id == null}"]*/
+		msg = "등록";
+		/*[/]*/
+		/*[# th:if="${mainvisual.id != null}"]*/
+		msg = "수정";
+		/*[/]*/
+		if(confirm(msg+"을 취소하시겠습니까?")){
 			location.href='/mainpopList';
 		}
 	}
@@ -535,7 +542,7 @@
 					      th:object="${mainvisual}">
 						<input type="hidden" name="id" th:value="*{id}"/>
 						<div class="card-body">
-							<h4 class="card-title">메인비주얼 등록</h4>
+							<h4 class="card-title">메인비주얼 <th:block th:if="*{id == null}" th:text="등록"></th:block><th:block th:if="*{id != null}" th:text="수정"></th:block></h4>
 							<div class="form-group required row">
 								<label class="col-sm-3 control-label" data-name="dispYn">전시여부</label>
 								<div class="col-md-9">
@@ -791,7 +798,8 @@
 								</button>
 								<button class="btn btn-success text-white" onclick="registerAction();"
 								        type="button">
-									등록
+									<th:block th:if="*{id == null}" th:text="등록"></th:block>
+									<th:block th:if="*{id != null}" th:text="수정"></th:block>
 								</button>
 								<button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
 									취소

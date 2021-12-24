@@ -59,7 +59,7 @@
 
 	<script href="/dext5editor/js/dext5editor.js"
 			th:src="@{/dext5editor/js/dext5editor.js}"></script>
-	<script>
+	<script th:inline="javascript">
     $(function () {
           $("#datepicker-autoclose").datepicker({
             format:'yyyy-mm-dd',
@@ -79,6 +79,24 @@
 				return false;
 			}
 		});
+
+
+		$("#is_form").validate({
+			ignore: "",
+			rules: {
+				answerTitle: {required:true}
+				,answerContents : {required:true}
+			},
+
+			messages: {
+				answerTitle: {required:"답변제목을 입력하세요."}
+				,answerContents : {required:"답변내용 입력하세요."}
+			},
+			errorPlacement: function(error, element) {
+
+			}
+		});
+
     });
 
 
@@ -147,6 +165,8 @@
      */
         function registerAction(){
 
+			if(!$('#is_form').valid()) return false;
+
         var form = $("#is_form")[0];
         var formData = new FormData(form);
 
@@ -190,7 +210,14 @@
 	}
 
 	function cancelAction(){
-		if(confirm("등록을 취소하시겠습니까?")){
+		var msg = "등록";
+		/*[# th:if="${obj.answerDate == null}"]*/
+		msg = "등록";
+		/*[/]*/
+		/*[# th:if="${obj.answerDate != null}"]*/
+		msg = "수정";
+		/*[/]*/
+		if(confirm(msg+"을 취소하시겠습니까?")){
 			location.href='/qnaList';
 		}
 	}
@@ -229,7 +256,7 @@
 						<input type="hidden" name="uriPath" th:value="*{uriPath}"/>
 						<input type="hidden" name="filePath" th:value="*{filePath}"/>
 						<div class="card-body">
-							<h4 class="card-title">문의하기 수정</h4>
+							<h4 class="card-title">문의하기 <th:block th:if="*{answerDate == null}" th:text="등록"></th:block><th:block th:if="*{answerDate != null}" th:text="수정"></th:block></h4>
 
 							<div class="form-group row">
 								<label class="col-md-3">문의 구분</label>
@@ -325,7 +352,8 @@
 								</button>
 								<button class="btn btn-success text-white" onclick="registerAction();"
 								        type="button">
-									등록
+									<th:block th:if="*{answerDate == null}" th:text="등록"></th:block>
+									<th:block th:if="*{answerDate != null}" th:text="수정"></th:block>
 								</button>
 								<button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
 									취소
