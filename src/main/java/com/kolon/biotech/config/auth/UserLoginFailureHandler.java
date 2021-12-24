@@ -37,6 +37,7 @@ public class UserLoginFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.debug("====onAuthenticationFailure====");
+        String url = "/login";
         if(exception instanceof BadCredentialsException) { // 그냥 아이디, 비밀번호가 일치하지 않아서 진입했을경우
             String loginId = request.getParameter("loginId");
             // 로그인 실패 카운트 수정하기 위해 엔티티 조회
@@ -132,9 +133,10 @@ public class UserLoginFailureHandler implements AuthenticationFailureHandler {
                     .jobUrl(request.getRequestURI()).requestIp(request.getRemoteAddr()).build();
             historyService.setWriteStroe(history);
 
-
             request.setAttribute("isLocked", true);
             request.setAttribute("isLockedMsg", exception.getMessage());
+
+
         }else if(exception instanceof UsernameNotFoundException){
 
             History history = History.builder().userId(request.getParameter("loginId"))

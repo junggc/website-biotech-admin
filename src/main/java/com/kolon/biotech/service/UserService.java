@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Slf4j
@@ -105,6 +106,8 @@ public class UserService implements UserDetailsService {
                 }else{
                     r_member.setPassword(passwordEncoder.encode(memberDto.getPassword()));
                     r_member.setPasswordChangeDate(LocalDateTime.now());
+                    r_member.setBlocked("false");
+                    r_member.setFailCount(0);
                     _resultMap.setSuccess(true);
                     _resultMap.setMessage("비밀번호 변경이 완료되었습니다.");
 
@@ -320,6 +323,7 @@ public class UserService implements UserDetailsService {
                 String newpassword = passwordEncoder.encode(member.getPassword());
                 r_member.setPassword(newpassword);
                 r_member.setPasswordChangeDate(LocalDateTime.now());
+                r_member.setBlocked("false");
 
                 History history = History.builder().userId(r_member.getLoginId())
                         .jobContent("비밀번호를 변경하였습니다.")
@@ -455,6 +459,11 @@ public class UserService implements UserDetailsService {
         memberDto.setMainAuthority(user.getMainAuthority());
         memberDto.setNoticeAuthority(user.getNoticeAuthority());
         memberDto.setLogAuthority(user.getLogAuthority());
+        LocalDateTime pwdDate = user.getPasswordChangeDate() != null ? user.getPasswordChangeDate() : user.getRegDtime();
+        if(ChronoUnit.DAYS.between(pwdDate,LocalDateTime.now()) >= 90){
+            user.setBlocked("true");
+        }
+        memberDto.setBlocked(user.getBlocked());
         memberDto.setAuthorities(authorities);
         memberDto.setEnabled(true);
         memberDto.setAccountNonLocked(true);

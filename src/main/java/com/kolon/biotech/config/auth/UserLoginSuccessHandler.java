@@ -58,20 +58,19 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
         LocalDateTime pwdDate = findAccount.getPasswordChangeDate() != null ? findAccount.getPasswordChangeDate() : findAccount.getRegDtime();
         if(ChronoUnit.DAYS.between(pwdDate,LocalDateTime.now()) >= 90){
             findAccount.setBlocked("true");
-
-
-            History history = History.builder().userId(findAccount.getLoginId())
-                    .jobContent("비밀번호가 3개월이 지나 로그인 할 수 없습니다.")
-                    .jobFlag("J")
-                    .requestDate(LocalDateTime.now())
-                    .jobUrl(request.getRequestURI()).requestIp(request.getRemoteAddr())
-                    .userName(findAccount.getName()).build();
-
-            historyService.setWriteStroe(history);
-
-
-
-            throw new LockedException("비밀번호가 3개월이 지나 로그인 할 수 없습니다.\\n마스터 관리자에게 문의하세요.");
+//
+//
+//            History history = History.builder().userId(findAccount.getLoginId())
+//                    .jobContent("비밀번호가 3개월이 지나 로그인 할 수 없습니다.")
+//                    .jobFlag("J")
+//                    .requestDate(LocalDateTime.now())
+//                    .jobUrl(request.getRequestURI()).requestIp(request.getRemoteAddr())
+//                    .userName(findAccount.getName()).build();
+//
+//            historyService.setWriteStroe(history);
+//
+//
+//            throw new LockedException("비밀번호가 3개월이 지나 로그인 할 수 없습니다.\\n마스터 관리자에게 문의하세요.");
         }
 
         if(findAccount.getFailCount() >= 5){

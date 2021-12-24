@@ -25,5 +25,6 @@ public class MemberDto implements UserDetails {
     private String noticeAuthority;
     private String logAuthority;
     private LocalDateTime loginDate;
+    private String blocked;
 
 }

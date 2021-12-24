@@ -57,6 +57,7 @@
                 $("#password").val('');
                 $("#cnewPassword").val('');
                 $(".user-layerpop").hide();
+                $("html").removeClass("hold");
             }
 
            changePwd = function(){
@@ -81,6 +82,7 @@
                            $("#password").val('');
                            $("#cnewPassword").val('');
                            $(".user-layerpop").hide();
+                           $("html").removeClass("hold");
                        }
                    }
                    , complete : function (changes) {
@@ -90,7 +92,16 @@
            }
         });
     </script>
+    <script th:inline="javascript">
+        $(function () {
+            /*[# th:if="${#authentication.getPrincipal().getBlocked()}"]*/
+                $("html").addClass("hold");
+                $('.user-layerpop').show();
+            /*[/]*/
+        });
+    </script>
 
+<!--    $("html").addClass("hold");//D: 팝업열때 addClass("hold"), 닫을때 removeClass("hold")-->
 </head>
 
 <body>
@@ -200,7 +211,7 @@
                 </div>
             </form>
         </div>
-        <a href="javascript:changeclose();" class="btn-close">닫기</a>
+        <a th:if="${#authentication.getPrincipal().getBlocked() == false}" href="javascript:changeclose();" class="btn-close">닫기</a>
     </div>
 </div>
 <style>
