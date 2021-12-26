@@ -348,7 +348,7 @@ public class UserService implements UserDetailsService {
 
                 _resultMap.setSuccess(true);
                 //_resultMap.setMessage("비밀번호 변경이 완료되었습니다.\\n 변경된 비밀번호로 다시 로그인하세요.");
-                _resultMap.setMessage("비밀번호 변경이 완료되었습니다.");
+                _resultMap.setMessage("비밀번호가 변경되었습니다.");
             }
         }else{
             _resultMap.setSuccess(false);

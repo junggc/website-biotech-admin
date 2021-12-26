@@ -505,7 +505,7 @@
         }
 
 	function listAction(){
-			location.href='/noticeList';
+			location.href='/mainvisualList';
 	}
 
 	function cancelAction(){
@@ -517,7 +517,32 @@
 		msg = "수정";
 		/*[/]*/
 		if(confirm(msg+"을 취소하시겠습니까?")){
-			location.href='/mainpopList';
+			location.href='/mainvisualList';
+		}
+	}
+
+	function deleteAction(id){
+		if(confirm("삭제하시겠습니까?")){
+			var obj=[];
+			obj.push(id);
+			var url="/mainvisualDelete";
+			$.ajax({
+				 type : 'POST'
+				, async : true
+				, beforeSend : function (jqXHR, settings) {
+				}
+				, url : url //for ASP.NET, java
+				, data : 'deleteList='+obj
+				, success : function (changes) {
+					//debugger;
+
+					if(changes.success == true){
+						location.href="/mainvisualList";
+					}
+				}
+				, complete : function (changes) {
+				}
+			});
 		}
 	}
 
@@ -801,9 +826,17 @@
 									<th:block th:if="*{id == null}" th:text="등록"></th:block>
 									<th:block th:if="*{id != null}" th:text="수정"></th:block>
 								</button>
-								<button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
-									취소
-								</button>
+								<th:block th:if="*{id == null}">
+									<button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
+										취소
+									</button>
+								</th:block>
+								<th:block th:if="*{id != null}">
+									<button class="btn btn-danger text-white" th:onclick="deleteAction([[*{id}]]);" type="button">
+										삭제
+									</button>
+								</th:block>
+
 							</div>
 						</div>
 					</form>

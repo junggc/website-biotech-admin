@@ -98,6 +98,12 @@
                });
 
            }
+
+           hlogout = function(){
+                if(confirm("로그아웃 하시겠습니까?")){
+                    location.href="/logout";
+                }
+           }
         });
     </script>
     <script th:inline="javascript">
@@ -188,13 +194,13 @@
                         <tr>
                             <th scope="row">현재 비밀번호</th>
                             <td>
-                                <input type="password" name="mPassword" id="mPassword" placeholder="현재 비밀번호를 입력해주세요" />
+                                <input type="password" name="mPassword" id="mPassword" placeholder="현재 비밀번호를 입력해주세요." />
                             </td>
                         </tr>
                         <tr>
                             <th scope="row">새로운 비밀번호</th>
                             <td>
-                                <input type="password" name="password" id="password" placeholder="새로운 비밀번호를 입력해주세요" />
+                                <input type="password" name="password" id="password" placeholder="새로운 비밀번호를 입력해주세요." />
                             </td>
                         </tr>
                         <tr>
