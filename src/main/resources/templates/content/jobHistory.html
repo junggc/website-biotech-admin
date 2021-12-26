@@ -34,19 +34,23 @@
 	<script th:inline="javascript">
         $(function () {
 
-			$("#datepicker-autoclose1").datepicker({
+			var $sdate = $("#datepicker-autoclose1").datepicker({
 				format:'yyyy-mm-dd',
 				language: 'kr',
 				autoclose: true,
 				todayHighlight: true,
 			});
 
-			$("#datepicker-autoclose2").datepicker({
+			$sdate.datepicker('setDate','-1M');
+
+			var $edate = $("#datepicker-autoclose2").datepicker({
 				format:'yyyy-mm-dd',
 				language: 'kr',
 				autoclose: true,
 				todayHighlight: true,
 			});
+
+			$edate.datepicker('setDate',new Date());
 
             var dataTable1=$("#zero_config").DataTable({
                 ajax : {
@@ -148,8 +152,8 @@
 
 			reset1 = function(){
 				$("#searchText").val('');
-				$("#datepicker-autoclose1").val(/*[[${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}]]*/);
-				$("#datepicker-autoclose2").val(/*[[${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}]]*/);
+				$sdate.datepicker('setDate','-1M');
+				$edate.datepicker('setDate',new Date());
 			}
 
 			exceldown = function(){

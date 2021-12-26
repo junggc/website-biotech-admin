@@ -6,12 +6,6 @@
 <head>
 	<!-- Custom CSS -->
 	<link
-			href="/assets/libs/select2/dist/css/select2.min.css"
-			rel="stylesheet"
-			th:href="@{/assets/libs/select2/dist/css/select2.min.css}"
-			type="text/css"
-	/>
-	<link
 			href="/assets/libs/jquery-minicolors/jquery.minicolors.css"
 			rel="stylesheet"
 			th:href="@{/assets/libs/jquery-minicolors/jquery.minicolors.css}"
@@ -36,10 +30,6 @@
 	<script href="/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"
 	        th:src="@{/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
 	<script href="/dist/js/pages/mask/mask.init.js" th:src="@{/dist/js/pages/mask/mask.init.js}"></script>
-	<script href="/assets/libs/select2/dist/js/select2.full.min.js"
-	        th:src="@{/assets/libs/select2/dist/js/select2.full.min.js}"></script>
-	<script href="/assets/libs/select2/dist/js/select2.min.js"
-	        th:src="@{/assets/libs/select2/dist/js/select2.min.js}"></script>
 	<script href="/assets/libs/jquery-asColor/dist/jquery-asColor.min.js"
 	        th:src="@{/assets/libs/jquery-asColor/dist/jquery-asColor.min.js}"></script>
 	<script href="/assets/libs/jquery-asGradient/dist/jquery-asGradient.js"
@@ -69,7 +59,6 @@
             todayHighlight: true,
           });
 
-          $(".select2").select2();
 
           $("#input_file").on("change", fileCheck);
 
@@ -84,6 +73,18 @@
 				return false;
 			}
 		});
+
+		$('#title').keyup(function (e){
+			var content = $(this).val();
+			$('#counter').html("("+content.length+" / 최대 100자)");    //글자수 실시간 카운팅
+			if (content.length > 100){
+				alert("최대 100자까지 입력 가능합니다.");
+				$(this).val(content.substring(0, 100));
+				$('#counter').html("(100 / 최대 100자)");
+			}
+		});
+
+		$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
 
 		$("#is_form").validate({
 			ignore: "",
@@ -345,7 +346,7 @@
 								</div>
 								<div class="col-md-2">
 									<select aria-hidden="true"
-									        class="select2 form-select shadow-none select2-hidden-accessible"
+									        class="select2 form-select shadow-none select2-hidden-accessible form-control"
 									        data-select2-id="1" id="dispStartTime" name="dispStartTime"
 									        style="width: 100%; height: 36px" tabindex="-1">
 										<option th:selected="*{dispStartTime} == '00'" value="00">00시</option>
@@ -401,15 +402,19 @@
 										for="title"
 								>제목</label
 								>
-								<div class="col-sm-9">
+								<div class="col-sm-5">
 									<input
 											class="form-control"
 											id="title"
 											name="title"
+											maxlength="100"
 											placeholder="제목을 입력하세요."
 											th:value="${@commUtils.getUnEscHtml(notice.title)}"
 											type="text"
 									/>
+								</div>
+								<div class="col-sm-4">
+									<middle class="text-muted">텍스트만 입력 가능<span id="counter">(0 / 최대 100자)</span></middle>
 								</div>
 							</div>
 							<div class="form-group required row">
@@ -435,7 +440,7 @@
 							</div>
 							<div class="form-group row">
 								<label class="col-md-1">첨부파일</label>
-								<div class="col-md-9">
+								<div class="col-md-5">
 									<div class="custom-file">
 										<input class="custom-file-input" id="input_file" type="file" />
 										<br/>
@@ -443,37 +448,37 @@
 											<div th:each="filedata, i: ${notice.noticefileList}" th:id="'dbfile'+${filedata.id}" th:onclick="'removeContent(' + ${filedata.id} + ');'" th:attr="data-ext=${filedata.fileExt}" th:attrappend="data-size=${filedata.fileLength},data-name=${filedata.fileName}" >
 												<font style="font-size:12px" th:utext="${filedata.fileName}"></font>
 												<i class="me-2 mdi mdi-minus"></i>
-											
+											</div>
+											<label class="custom-file-label" for="input_file">10MB 이하의 jpg, gif, png, pdf, doc, hwp, mp4 파일만 첨부 가능합니다.</label>
 										</div>
-										<label class="custom-file-label" for="input_file">10MB 이하의 jpg, gif,
-											png, pdf, doc, hwp, mp4 파일만 첨부 가능합니다.</label>
 									</div>
 								</div>
+								<div class="col-md-4">
+									<middle class="text-muted">10MB 이하의 jpg, gif, png, pdf, doc, hwp, mp4 파일만 첨부 가능합니다.</middle>
+								</div>
 							</div>
-
-
-						</div>
-						<div class="border-top" style="text-align:center;">
-							<div class="card-body">
-								<button class="btn btn-secondary text-white" onclick="listAction();"
-										type="button">
-									목록
-								</button>
-								<button class="btn btn-success text-white" onclick="registerAction();"
-								        type="button">
-									<th:block th:if="*{id == null}" th:text="등록"></th:block>
-									<th:block th:if="*{id != null}" th:text="수정"></th:block>
-								</button>
-								<th:block th:if="*{id == null}">
-									<button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
-										취소
+							<div class="border-top" style="text-align:center;">
+								<div class="card-body">
+									<button class="btn btn-secondary text-white" onclick="listAction();"
+											type="button">
+										목록
 									</button>
-								</th:block>
-								<th:block th:if="*{id != null}">
-									<button class="btn btn-danger text-white" th:onclick="deleteAction([[*{id}]]);" type="button">
-										삭제
+									<button class="btn btn-success text-white" onclick="registerAction();"
+											type="button">
+										<th:block th:if="*{id == null}" th:text="등록"></th:block>
+										<th:block th:if="*{id != null}" th:text="수정"></th:block>
 									</button>
-								</th:block>
+									<th:block th:if="*{id == null}">
+										<button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
+											취소
+										</button>
+									</th:block>
+									<th:block th:if="*{id != null}">
+										<button class="btn btn-danger text-white" th:onclick="deleteAction([[*{id}]]);" type="button">
+											삭제
+										</button>
+									</th:block>
+								</div>
 							</div>
 						</div>
 					</form>

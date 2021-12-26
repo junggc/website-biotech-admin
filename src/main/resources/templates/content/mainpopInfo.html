@@ -6,12 +6,6 @@
 <head>
 	<!-- Custom CSS -->
 	<link
-			href="/assets/libs/select2/dist/css/select2.min.css"
-			rel="stylesheet"
-			th:href="@{/assets/libs/select2/dist/css/select2.min.css}"
-			type="text/css"
-	/>
-	<link
 			href="/assets/libs/jquery-minicolors/jquery.minicolors.css"
 			rel="stylesheet"
 			th:href="@{/assets/libs/jquery-minicolors/jquery.minicolors.css}"
@@ -33,10 +27,6 @@
 	<script href="/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"
 	        th:src="@{/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
 	<script href="/dist/js/pages/mask/mask.init.js" th:src="@{/dist/js/pages/mask/mask.init.js}"></script>
-	<script href="/assets/libs/select2/dist/js/select2.full.min.js"
-	        th:src="@{/assets/libs/select2/dist/js/select2.full.min.js}"></script>
-	<script href="/assets/libs/select2/dist/js/select2.min.js"
-	        th:src="@{/assets/libs/select2/dist/js/select2.min.js}"></script>
 	<script href="/assets/libs/jquery-asColor/dist/jquery-asColor.min.js"
 	        th:src="@{/assets/libs/jquery-asColor/dist/jquery-asColor.min.js}"></script>
 	<script href="/assets/libs/jquery-asGradient/dist/jquery-asGradient.js"
@@ -62,6 +52,8 @@
 	</style>
 	<script th:inline="javascript">
     $(function () {
+
+
           $("#datepicker-autoclose1").datepicker({
             format:'yyyy-mm-dd',
 			language: 'kr',
@@ -76,7 +68,6 @@
 				todayHighlight: true,
 			});
 
-          $(".select2").select2();
 
           $("#input_file").on("change", fileCheck);
 
@@ -385,6 +376,7 @@
 											class="form-control"
 											id="title"
 											name="title"
+											maxlength="100"
 											placeholder="제목을 입력하세요."
 											th:value="${@commUtils.getUnEscHtml(mainpop.title)}"
 											type="text"
@@ -499,7 +491,7 @@
 								</div>
 								<div class="col-md-2">
 									<select aria-hidden="true"
-											class="select2 form-select shadow-none select2-hidden-accessible"
+											class="select2 form-select shadow-none select2-hidden-accessible form-control"
 											data-select2-id="1" id="dispStartTime" name="dispStartTime"
 											style="width: 100%; height: 36px" tabindex="-1">
 										<option th:selected="*{dispStartTime} == '00'" value="00">00시</option>
@@ -549,7 +541,7 @@
 								</div>
 								<div class="col-md-2">
 									<select aria-hidden="true"
-											class="select2 form-select shadow-none select2-hidden-accessible"
+											class="select2 form-select shadow-none select2-hidden-accessible form-control"
 											data-select2-id="1" id="dispEndTime" name="dispEndTime"
 											style="width: 100%; height: 36px" tabindex="-1">
 										<option th:selected="*{dispEndTime} == '00'" value="00">00시</option>
