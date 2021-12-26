@@ -407,7 +407,7 @@
 											id="title"
 											name="title"
 											placeholder="제목을 입력하세요."
-											th:value="*{#strings.unescapeJava(title)}"
+											th:value="${@commUtils.getUnEscHtml(notice.title)}"
 											type="text"
 									/>
 								</div>

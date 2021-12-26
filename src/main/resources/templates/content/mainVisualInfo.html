@@ -663,7 +663,7 @@
 											name="title"
 											maxlength="100"
 											placeholder="제목을 입력하세요."
-											th:field="*{title}"
+											th:value="${@commUtils.getUnEscHtml(mainvisual.title)}"
 											type="text"
 									/>
 								</div>

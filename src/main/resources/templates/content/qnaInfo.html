@@ -327,7 +327,7 @@
 											id="answerTitle"
 											name="answerTitle"
 											placeholder="제목을 입력하세요."
-											th:field="*{answerTitle}"
+											th:value="${@commUtils.getUnEscHtml(obj.answerTitle)}"
 											type="text"
 									/>
 								</div>

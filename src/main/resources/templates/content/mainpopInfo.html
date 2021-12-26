@@ -175,7 +175,9 @@
 					'<div id="file' + fileNum + '" width="100" hight="100" onclick="fileDelete(\'file' + fileNum + '\')">'
 					+ '<img src="' + e.target.result + '" alt="">'
 					+ '<i class="me-2 mdi mdi-minus"></i>'
-					+ ''
+						+ '<br/>'
+						+ '<font style="font-size:12px">' + f.name + '</font>'
+					+ '</div>'
 				);
 				fileNum ++;
 			};
@@ -372,7 +374,7 @@
 											id="title"
 											name="title"
 											placeholder="제목을 입력하세요."
-											th:field="*{title}"
+											th:value="${@commUtils.getUnEscHtml(mainpop.title)}"
 											type="text"
 									/>
 								</div>
@@ -390,6 +392,8 @@
 												<div th:id="'dbfile1'" th:onclick="removeContent([[*{popImgRealPath}]])">
 													<img th:src="*{popImgPath}" width="100" height="100"/>
 													<i class="me-2 mdi mdi-minus"></i>
+													<br/>
+													<font style="font-size:12px" th:text="*{popImgName}"></font>
 												</div>
 											</th:block>
 										</div>
