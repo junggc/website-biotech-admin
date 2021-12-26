@@ -78,7 +78,13 @@
 		$("#is_form").validate({
 			ignore: "",
 			rules: {
-				content: {required:true}
+				content: {required:function(element){
+						if(DEXT5.isEmpty("content")){
+							return true;
+						}else{
+							return false;
+						}
+					}}
 			},
 
 			messages: {
@@ -102,18 +108,14 @@
      * 폼 submit 로직
      */
         function registerAction(){
-
-			if(DEXT5.isEmpty("content")){
-				alert("내용을 입력해주세요.");
+			if(!$("#is_form").valid()){
 				return false;
 			}
 
 			var content = DEXT5.getBodyValueExLikeDiv('content');
 			$('textarea[name=content]').val(content);
 
-			if(!$("#is_form").valid()){
-				return false;
-			}
+
 
         var form = $("#is_form")[0];
         var formData = new FormData(form);
