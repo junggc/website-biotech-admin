@@ -204,6 +204,12 @@
      * 폼 submit 로직
      */
         function registerAction(){
+
+			if(DEXT5.isEmpty("content")){
+				alert("내용을 입력해주세요.");
+				return false;
+			}
+
 			var content = DEXT5.getBodyValueExLikeDiv('content');
 			$('textarea[name=content]').val(content);
 
