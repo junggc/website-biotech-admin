@@ -92,6 +92,18 @@
 			}
 		});
 
+		$('#title').keyup(function (e){
+			var content = $(this).val();
+			$('#counter').html("("+content.length+" / 최대 100자)");    //글자수 실시간 카운팅
+			if (content.length > 100){
+				alert("최대 100자까지 입력 가능합니다.");
+				$(this).val(content.substring(0, 100));
+				$('#counter').html("(100 / 최대 100자)");
+			}
+		});
+
+		$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+
 		$("#is_form").validate({
 			ignore: "",
 			rules: {
@@ -368,7 +380,7 @@
 										for="title"
 								>제목</label
 								>
-								<div class="col-sm-9">
+								<div class="col-sm-4">
 									<input
 											class="form-control"
 											id="title"
@@ -378,10 +390,13 @@
 											type="text"
 									/>
 								</div>
+								<div class="col-sm-4">
+									<middle class="text-muted">텍스트만 입력 가능<span id="counter">(0 / 최대 100자)</span></middle>
+								</div>
 							</div>
 							<div class="form-group required row">
 								<label class="col-md-1 control-label">팝업이미지</label>
-								<div class="col-md-9">
+								<div class="col-md-4">
 									<div class="custom-file">
 										<input class="custom-file-input" id="input_file"  type="file">
 										<input type="hidden" name="popImgCheck" id="popImgCheck" value="" th:value="*{popImgName}" th:attr="data-ext=*{popImgExt}" th:attrappend="data-size=*{popImgLength}"/>
@@ -399,6 +414,9 @@
 										</div>
 									</div>
 								</div>
+								<div class="col-md-4">
+									<middle class="text-muted">2MB 이하 jpg, png만 업로드 가능</middle>
+								</div>
 							</div>
 							<div class="form-group row">
 								<label
@@ -406,7 +424,7 @@
 										for="widthPoint"
 								>가로 위치</label
 								>
-								<div class="col-sm-9">
+								<div class="col-sm-4">
 									<input
 											class="form-control"
 											id="widthPoint"
@@ -423,7 +441,7 @@
 										for="heightPoint"
 								>세로 위치</label
 								>
-								<div class="col-sm-9">
+								<div class="col-sm-4">
 									<input
 											class="form-control"
 											id="heightPoint"
@@ -440,7 +458,7 @@
 										for="popImgLink"
 								>팝업 연결링크</label
 								>
-								<div class="col-sm-9">
+								<div class="col-sm-4">
 									<input
 											class="form-control"
 											id="popImgLink"
@@ -467,7 +485,7 @@
 							</div>
 							<div class="form-group required row">
 								<label class="col-md-1 control-label">전시시작일시</label>
-								<div class="col-md-3">
+								<div class="col-md-2">
 									<div class="input-group">
 										<input class="form-control" id="datepicker-autoclose1" name="dispStartDay"
 											   placeholder="yyyy-mm-dd"
@@ -510,11 +528,14 @@
 										<option th:selected="*{dispStartTime} == '23'" value="23">23시</option>
 									</select>
 								</div>
+								<div class="col-md-4">
+									<middle class="text-muted">00~23시 사이에서 설정하세요.</middle>
+								</div>
 							</div>
 
 							<div class="form-group required row">
 								<label class="col-md-1 control-label">전시종료일시</label>
-								<div class="col-md-3">
+								<div class="col-md-2">
 									<div class="input-group">
 										<input class="form-control" id="datepicker-autoclose2" name="dispEndDay"
 											   placeholder="yyyy-mm-dd"
@@ -556,6 +577,9 @@
 										<option th:selected="*{dispEndTime} == '22'" value="22">22시</option>
 										<option th:selected="*{dispEndTime} == '23'" value="23">23시</option>
 									</select>
+								</div>
+								<div class="col-md-4">
+									<middle class="text-muted">00~23시 사이에서 설정하세요.</middle>
 								</div>
 							</div>
 						</div>

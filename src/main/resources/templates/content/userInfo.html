@@ -329,20 +329,30 @@
                             <div class="form-group row" th:classappend="${member.id == null ? 'required' : ''}">
                                 <label class="col-md-3 " th:classappend="${member.id == null ? 'control-label' : ''}"
                                        for="loginId">Login ID</label>
-                                <div class="col-sm-9">
+
                                     <th:block th:if="${member.id == null}">
-                                    <input
-                                            class="form-control"
-                                            id="loginId"
-                                            name="loginId"
-                                            placeholder="ID를 입력하세요."
-                                            th:errorclass="is-invalid"
-                                            th:field="*{loginId}" type="text"
-                                    />
-                                    <button type="button" class="btn btn-info" onclick="sameIdCheck();">아이디중복체크</button>
+                                        <div class="col-sm-3">
+                                            <input
+                                                    class="form-control"
+                                                    id="loginId"
+                                                    name="loginId"
+                                                    placeholder="ID를 입력하세요."
+                                                    th:errorclass="is-invalid"
+                                                    th:field="*{loginId}" type="text"
+                                            />
+                                        </div>
+                                        <div class="col-sm-1.5">
+                                            <button type="button" class="btn btn-info" onclick="sameIdCheck();">아이디중복체크</button>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <middle class="text-muted">4~14자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.</middle>
+                                        </div>
                                     </th:block>
-                                    <th:block th:if="${member.id != null}" th:text="${member.loginId}"></th:block>
-                                </div>
+                                    <th:block th:if="${member.id != null}">
+                                        <div class="col-sm-9" th:text="${member.loginId}">
+                                        </div>
+                                    </th:block>
+
                             </div>
                             <div class="form-group required row">
                                 <label
@@ -350,7 +360,7 @@
                                         for="name"
                                 >이름</label
                                 >
-                                <div class="col-sm-9">
+                                <div class="col-sm-3">
                                     <input
                                             class="form-control"
                                             id="name"
@@ -367,7 +377,7 @@
                                         for="passwd"
                                 >비밀번호</label
                                 >
-                                <div class="col-sm-9">
+                                <div class="col-sm-3">
                                     <input
                                             class="form-control"
                                             id="passwd"
@@ -375,6 +385,9 @@
                                             placeholder="비밀번호 입력하세요."
                                             type="password"
                                     />
+                                </div>
+                                <div class="col-sm-6">
+                                    <middle class="text-muted">8자~25자 이내로, 영문/숫자/특수문자 !@#$%^*+=- 를 조합해서 생성해 주세요</middle>
                                 </div>
                             </div>
                             <th:block th:if="*{id == null}">
@@ -384,7 +397,7 @@
                                             for="passwd"
                                     >비밀번호 재입력</label
                                     >
-                                    <div class="col-sm-9">
+                                    <div class="col-sm-3">
                                         <input
                                                 class="form-control"
                                                 id="passwd1"
@@ -402,7 +415,7 @@
                                             for="mpasswd"
                                     >마스터 비밀번호</label
                                     >
-                                    <div class="col-sm-9">
+                                    <div class="col-sm-3">
                                         <input
                                                 class="form-control"
                                                 id="mpasswd"
@@ -464,7 +477,7 @@
                                         class="col-md-3 control-label"
                                         for="pnum"
                                 >연락처</label>
-                                <div class="col-sm-9">
+                                <div class="col-sm-3">
                                     <input
                                             class="form-control"
                                             id="pnum"
@@ -474,12 +487,15 @@
                                             type="text"
                                     />
                                 </div>
+                                <div class="col-sm-6">
+                                    <middle class="text-muted">숫자 13자리와 –(하이픈) 만 입력 가능 (ex: 010-0000-0000)</middle>
+                                </div>
                             </div>
                             <div class="form-group row">
                                 <label
                                         class="col-md-3"
                                         for="rank">직급</label>
-                                <div class="col-sm-9">
+                                <div class="col-sm-3">
                                     <input class="form-control" id="rank" name="rank" placeholder="직급을 입력하세요."
                                            th:field="*{rank}"
                                            type="text"/>
@@ -487,7 +503,7 @@
                             </div>
                             <div class="form-group required row">
                                 <label class="col-md-3 control-label">사용여부</label>
-                                <div class="col-md-9">
+                                <div class="col-md-3">
                                     <div class="form-check">
                                         <input class="form-check-input" id="useYn1" name="useYn" required=""
                                                th:checked="useYn == 'Y'"
@@ -506,7 +522,7 @@
                             </div>
                             <div class="form-group row">
                                 <label class="col-md-3">권한구분</label>
-                                <div class="col-md-9">
+                                <div class="col-md-6">
                                     <div class="form-check mr-sm-2">
                                         <input class="form-check-input" id="mainAuthority" name="mainAuthority"
                                                th:field="*{mainAuthority}" th:value="Y"

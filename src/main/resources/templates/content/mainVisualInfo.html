@@ -140,6 +140,42 @@
 
 		$("input[type=radio][name=videosWay]").trigger('change');
 
+		$('#title').keyup(function (e){
+			var content = $(this).val();
+			$('#counter').html("("+content.length+" / 최대 100자)");    //글자수 실시간 카운팅
+			if (content.length > 100){
+				alert("최대 100자까지 입력 가능합니다.");
+				$(this).val(content.substring(0, 100));
+				$('#counter').html("(100 / 최대 100자)");
+			}
+		});
+
+		$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+
+		$('#topSubTxt').keyup(function (e){
+			var content = $(this).val();
+			$('#tcounter').html("("+content.length+" / 최대 100자)");    //글자수 실시간 카운팅
+			if (content.length > 100){
+				alert("최대 100자까지 입력 가능합니다.");
+				$(this).val(content.substring(0, 100));
+				$('#tcounter').html("(100 / 최대 100자)");
+			}
+		});
+
+		$('#tcounter').html("("+$("#topSubTxt").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+
+		$('#bottomMainTxt').keyup(function (e){
+			var content = $(this).val();
+			$('#bcounter').html("("+content.length+" / 최대 100자)");    //글자수 실시간 카운팅
+			if (content.length > 100){
+				alert("최대 100자까지 입력 가능합니다.");
+				$(this).val(content.substring(0, 100));
+				$('#bcounter').html("(100 / 최대 100자)");
+			}
+		});
+
+		$('#bcounter').html("("+$("#bottomMainTxt").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+
 		$("#is_form").validate({
 			ignore: "",
 			rules: {
@@ -610,7 +646,9 @@
 					      th:object="${mainvisual}">
 						<input type="hidden" name="id" th:value="*{id}"/>
 						<div class="card-body">
+
 							<h4 class="card-title">메인비주얼 <th:block th:if="*{id == null}" th:text="등록"></th:block><th:block th:if="*{id != null}" th:text="수정"></th:block></h4>
+
 							<div class="form-group required row">
 								<label class="col-sm-3 control-label" data-name="dispYn">전시여부</label>
 								<div class="col-md-9">
@@ -650,13 +688,14 @@
 									</div>
 								</div>
 							</div>
+
 							<div class="form-group required row">
 								<label
 										class="col-sm-3 control-label"
 										for="title"
 								>제목</label
 								>
-								<div class="col-md-9">
+								<div class="col-md-4">
 									<input
 											class="form-control"
 											id="title"
@@ -667,7 +706,11 @@
 											type="text"
 									/>
 								</div>
+								<div class="col-md-4">
+									<middle class="text-muted">텍스트만 입력 가능<span id="counter">(0 / 최대 100자)</span></middle>
+								</div>
 							</div>
+
 							<div class="form-group required row">
 								<label class="col-sm-3 control-label" data-name="type">유형</label>
 								<div class="col-md-9">
@@ -687,12 +730,13 @@
 									</div>
 								</div>
 							</div>
+
 							<div id = "pcImgFile" class="form-group required row" style="display:none;">
 								<label class="col-sm-3 control-label" data-name="pcImg">PC이미지</label>
-								<div class="col-md-9">
+								<div class="col-md-4">
 									<div class="custom-file">
 										<input class="custom-file-input" id="input_file" type="file">
-										<label class="custom-file-label" for="input_file">2MB 이하의 png만 업로드 가능</label>
+										<label class="custom-file-label" for="input_file">2MB 이하의 jpg, png만 업로드 가능</label>
 										<input type="hidden" name="pcImgCheck" id="pcImgCheck" value="" th:value="*{pcImgName}" th:attr="data-ext=*{pcImgExt}" th:attrappend="data-size=*{pcImgLength}"/>
 										<br/>
 										<div id="articlefileChange">
@@ -707,44 +751,17 @@
 										</div>
 									</div>
 								</div>
+								<div class="col-md-4">
+									<middle class="text-muted">2MB 이하 jpg, png만 업로드 가능</middle>
+								</div>
 							</div>
-<!--							<div  id = "pcImgFileInfo" class="form-group row">-->
-<!--								<label-->
-<!--										class="col-sm-3"-->
-<!--										for="title"-->
-<!--								>PC 이미지 연결 링크</label-->
-<!--								>-->
-<!--								<div class="col-md-9">-->
-<!--									<input-->
-<!--											class="form-control"-->
-<!--											id="pcImgLink"-->
-<!--											name="pcImgLink"-->
-<!--											placeholder="연결할 URL을 입력해주세요."-->
-<!--											th:field="*{pcImgLink}"-->
-<!--											type="text"-->
-<!--									/>-->
-<!--									<div class="form-check">-->
-<!--										<input class="form-check-input" id="pcImgTarget1" name="pcImgTarget"-->
-<!--											   th:checked="pcImgTarget == '_blank'"-->
-<!--											   th:field="*{pcImgTarget}"-->
-<!--											   type="radio" value="_blank">-->
-<!--										<label class="form-check-label mb-0" for="pcImgTarget1">새창</label>-->
-<!--									</div>-->
-<!--									<div class="form-check">-->
-<!--										<input class="form-check-input" id="pcImgTarget2" name="pcImgTarget"-->
-<!--											   th:checked="pcImgTarget == '_self'"-->
-<!--											   th:field="*{pcImgTarget}"-->
-<!--											   type="radio" value="_self">-->
-<!--										<label class="form-check-label mb-0" for="langKoYn2">현재창</label>-->
-<!--									</div>-->
-<!--								</div>-->
-<!--							</div>-->
+
 							<div id = "moImgFile" class="form-group required row" style="display:none;">
 								<label class="col-sm-3 control-label" data-name="moImg">모바일 이미지</label>
-								<div class="col-md-9">
+								<div class="col-md-4">
 									<div class="custom-file">
 										<input class="custom-file-input" id="moinput_file" type="file">
-										<label class="custom-file-label" for="moinput_file">2MB 이하의 png만 업로드 가능</label>
+										<label class="custom-file-label" for="moinput_file">2MB 이하의 jpg, png만 업로드 가능</label>
 										<input type="hidden" name="moImgCheck" id="moImgCheck" value="" th:value="*{moImgName}" th:attr="data-ext=*{moImgExt}" th:attrappend="data-size=*{moImgLength}"/>
 										<br/>
 										<div id="moarticlefileChange">
@@ -753,47 +770,20 @@
 													<img th:src="*{moImgPath}" width="100" height="100"/>
 													<i class="me-2 mdi mdi-minus"></i>
 													<br/>
-													<font style="font-size:12px" th:text="*{moImgName}"></font></div>
+													<font style="font-size:12px" th:text="*{moImgName}"></font>
 												</div>
 											</th:block>
 										</div>
 									</div>
 								</div>
+								<div class="col-md-4">
+									<middle class="text-muted">2MB 이하 jpg, png만 업로드 가능</middle>
+								</div>
 							</div>
-<!--							<div  id = "moImgFileInfo" class="form-group row">-->
-<!--								<label-->
-<!--										class="col-sm-3"-->
-<!--										for="title"-->
-<!--								>모바일 이미지 연결 링크</label-->
-<!--								>-->
-<!--								<div class="col-md-9">-->
-<!--									<input-->
-<!--											class="form-control"-->
-<!--											id="moImgLink"-->
-<!--											name="moImgLink"-->
-<!--											placeholder="연결할 URL을 입력해주세요."-->
-<!--											th:field="*{moImgLink}"-->
-<!--											type="text"-->
-<!--									/>-->
-<!--									<div class="form-check">-->
-<!--										<input class="form-check-input" id="moImgTarget1" name="moImgTarget"-->
-<!--											   th:checked="moImgTarget == '_blank'"-->
-<!--											   th:field="*{moImgTarget}"-->
-<!--											   type="radio" value="_blank">-->
-<!--										<label class="form-check-label mb-0" for="moImgTarget1">새창</label>-->
-<!--									</div>-->
-<!--									<div class="form-check">-->
-<!--										<input class="form-check-input" id="moImgTarget2" name="moImgTarget"-->
-<!--											   th:checked="moImgTarget == '_self'"-->
-<!--											   th:field="*{moImgTarget}"-->
-<!--											   type="radio" value="_self">-->
-<!--										<label class="form-check-label mb-0" for="moImgTarget2">현재창</label>-->
-<!--									</div>-->
-<!--								</div>-->
-<!--							</div>-->
+
 							<div id="mvFileSelect" class="form-group required row" style="display:none;">
 								<label class="col-sm-3 control-label" data-name="videosWay">동영상 선택</label>
-								<div class="col-md-9">
+								<div class="col-md-4">
 									<div class="form-check">
 										<input class="form-check-input" id="videosWay1" name="videosWay"
 											   th:checked="videosWay == 'URL'"
@@ -810,6 +800,7 @@
 									</div>
 								</div>
 							</div>
+
 							<div  id = "mvFileUrlInfo" class="form-group required row" style="display:none;">
 								<label
 										class="col-sm-3 control-label"
@@ -817,7 +808,7 @@
 										for="title"
 								>동영상 url</label
 								>
-								<div class="col-md-9">
+								<div class="col-md-4">
 									<input
 											class="form-control"
 											id="videosUrl"
@@ -828,9 +819,10 @@
 									/>
 								</div>
 							</div>
+
 							<div id = "mvFileInfo" class="form-group required row" style="display:none;">
 								<label class="col-sm-3 control-label" data-name="mvFile">동영상 업로드</label>
-								<div class="col-md-9">
+								<div class="col-md-4">
 									<div class="custom-file">
 										<input class="custom-file-input" id="mvinput_file" type="file">
 										<label class="custom-file-label" for="moinput_file">10MB 이하의 MP4 파일만만 첨부 가능합니다.</label>
@@ -847,43 +839,54 @@
 										</div>
 									</div>
 								</div>
+								<div class="col-md-4">
+									<middle class="text-muted">10MB 이하 mp4만 업로드 가능</middle>
+								</div>
 							</div>
+
 							<div class="form-group row">
 								<label for="topSubTxt" class="col-sm-3">메인비주얼 상단 서브 텍스트</label>
-								<div class="col-sm-9">
+								<div class="col-sm-4">
 									<textarea maxlength="100" id="topSubTxt" name="topSubTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{topSubTxt}"></textarea>
 								</div>
-							</div>
-							<div class="form-group row">
-								<label for="bottomMainTxt" class="col-sm-3">메인비주얼 하단 서브 텍스트</label>
-								<div class="col-sm-9">
-									<textarea maxlength="100" id="bottomMainTxt" name="bottomMainTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{bottomMainTxt}"></textarea>
+								<div class="col-md-4">
+									<middle class="text-muted">텍스트만 입력 가능<span id="tcounter">(0 / 최대 100자)</span></middle>
 								</div>
 							</div>
 
+							<div class="form-group row">
+								<label for="bottomMainTxt" class="col-sm-3">메인비주얼 하단 서브 텍스트</label>
+								<div class="col-sm-4">
+									<textarea maxlength="100" id="bottomMainTxt" name="bottomMainTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{bottomMainTxt}"></textarea>
+								</div>
+								<div class="col-md-4">
+									<middle class="text-muted">텍스트만 입력 가능<span id="bcounter">(0 / 최대 100자)</span></middle>
+								</div>
+							</div>
 
-						<div class="border-top" style="text-align:center;">
-							<div class="card-body">
-								<button class="btn btn-secondary text-white" onclick="listAction();"
-										type="button">
-									목록
-								</button>
-								<button class="btn btn-success text-white" onclick="registerAction();"
-								        type="button">
-									<th:block th:if="*{id == null}" th:text="등록"></th:block>
-									<th:block th:if="*{id != null}" th:text="수정"></th:block>
-								</button>
-								<th:block th:if="*{id == null}">
-									<button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
-										취소
+							<div class="border-top" style="text-align:center;">
+								<div class="card-body">
+									<button class="btn btn-secondary text-white" onclick="listAction();"
+											type="button">
+										목록
 									</button>
-								</th:block>
-								<th:block th:if="*{id != null}">
-									<button class="btn btn-danger text-white" th:onclick="deleteAction([[*{id}]]);" type="button">
-										삭제
+									<button class="btn btn-success text-white" onclick="registerAction();"
+											type="button">
+										<th:block th:if="*{id == null}" th:text="등록"></th:block>
+										<th:block th:if="*{id != null}" th:text="수정"></th:block>
 									</button>
-								</th:block>
+									<th:block th:if="*{id == null}">
+										<button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
+											취소
+										</button>
+									</th:block>
+									<th:block th:if="*{id != null}">
+										<button class="btn btn-danger text-white" th:onclick="deleteAction([[*{id}]]);" type="button">
+											삭제
+										</button>
+									</th:block>
 
+								</div>
 							</div>
 						</div>
 					</form>
