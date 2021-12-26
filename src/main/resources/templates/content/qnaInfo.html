@@ -6,12 +6,6 @@
 <head>
 	<!-- Custom CSS -->
 	<link
-			href="/assets/libs/select2/dist/css/select2.min.css"
-			rel="stylesheet"
-			th:href="@{/assets/libs/select2/dist/css/select2.min.css}"
-			type="text/css"
-	/>
-	<link
 			href="/assets/libs/jquery-minicolors/jquery.minicolors.css"
 			rel="stylesheet"
 			th:href="@{/assets/libs/jquery-minicolors/jquery.minicolors.css}"
@@ -36,10 +30,6 @@
 	<script href="/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"
 	        th:src="@{/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
 	<script href="/dist/js/pages/mask/mask.init.js" th:src="@{/dist/js/pages/mask/mask.init.js}"></script>
-	<script href="/assets/libs/select2/dist/js/select2.full.min.js"
-	        th:src="@{/assets/libs/select2/dist/js/select2.full.min.js}"></script>
-	<script href="/assets/libs/select2/dist/js/select2.min.js"
-	        th:src="@{/assets/libs/select2/dist/js/select2.min.js}"></script>
 	<script href="/assets/libs/jquery-asColor/dist/jquery-asColor.min.js"
 	        th:src="@{/assets/libs/jquery-asColor/dist/jquery-asColor.min.js}"></script>
 	<script href="/assets/libs/jquery-asGradient/dist/jquery-asGradient.js"
@@ -69,13 +59,13 @@
             todayHighlight: true,
           });
 
-          $(".select2").select2();
+
 
           $("#input_file").on("change", fileCheck);
 
 		//좌측 메뉴 활성화
 		$(".sidebar-link").each(function(){
-			if($(this).attr("href").indexOf("noticeList") > 0){
+			if($(this).attr("href").indexOf("qnaList") > 0){
 				$(this).closest('li').addClass("selected");
 				return false;
 			}

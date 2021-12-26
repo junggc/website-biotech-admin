@@ -315,20 +315,37 @@
 							<div class="form-group required row">
 								<label class="col-md-1 control-label">전시여부</label>
 								<div class="col-md-3">
-									<div class="form-check dpib">
-										<input class="form-check-input" id="dispYn1" name="dispYn" 
-										       th:checked="dispYn == 'Y'"
-										       th:field="*{dispYn}"
-										       type="radio" value="Y">
-										<label class="form-check-label mb-0" for="dispYn1">전시</label>
-									</div>
-									<div class="form-check dpib">
-										<input class="form-check-input" id="dispYn2" name="dispYn" 
-										       th:checked="dispYn == 'N'"
-										       th:field="*{dispYn}"
-										       type="radio" value="N">
-										<label class="form-check-label mb-0" for="dispYn2">미전시</label>
-									</div>
+
+									<th:block th:if="*{id != null}">
+										<div class="form-check dpib">
+											<input class="form-check-input" id="dispYn1" name="dispYn"
+												   th:checked="dispYn == 'Y'"
+												   th:field="*{dispYn}"
+												   type="radio" value="Y">
+											<label class="form-check-label mb-0" for="dispYn1">전시</label>
+										</div>
+										<div class="form-check dpib">
+											<input class="form-check-input" id="dispYn2" name="dispYn"
+												   th:checked="dispYn == 'N'"
+												   th:field="*{dispYn}"
+												   type="radio" value="N">
+											<label class="form-check-label mb-0" for="dispYn2">미전시</label>
+										</div>
+									</th:block>
+
+
+									<th:block th:if="*{id == null}">
+										<div class="form-check dpib">
+											<input class="form-check-input" id="dispYn1" name="dispYn"
+												   type="radio" value="Y">
+											<label class="form-check-label mb-0" for="dispYn1">전시</label>
+										</div>
+										<div class="form-check dpib">
+											<input class="form-check-input" id="dispYn2" name="dispYn"
+												   type="radio" value="N" checked="checked">
+											<label class="form-check-label mb-0" for="dispYn2">미전시</label>
+										</div>
+									</th:block>
 								</div>
 
 								<label class="col-md-1 control-label">게시일</label>
@@ -379,20 +396,36 @@
 							<div class="form-group required row">
 								<label class="col-md-1 control-label">국문여부</label>
 								<div class="col-md-9">
-									<div class="form-check">
-										<input class="form-check-input" id="langKoYn1" name="langKoYn" 
-										       th:checked="langKoYn == 'Y'"
-										       th:field="*{langKoYn}"
-										       type="radio" value="Y">
-										<label class="form-check-label mb-0" for="langKoYn1">국문</label>
-									</div>
-									<div class="form-check">
-										<input class="form-check-input" id="langKoYn2" name="langKoYn" 
-										       th:checked="langKoYn == 'N'"
-										       th:field="*{langKoYn}"
-										       type="radio" value="N">
-										<label class="form-check-label mb-0" for="langKoYn2">영문</label>
-									</div>
+
+									<th:block th:if="*{id != null}">
+										<div class="form-check">
+											<input class="form-check-input" id="langKoYn1" name="langKoYn"
+												   th:checked="langKoYn == 'Y'"
+												   th:field="*{langKoYn}"
+												   type="radio" value="Y">
+											<label class="form-check-label mb-0" for="langKoYn1">국문</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" id="langKoYn2" name="langKoYn"
+												   th:checked="langKoYn == 'N'"
+												   th:field="*{langKoYn}"
+												   type="radio" value="N">
+											<label class="form-check-label mb-0" for="langKoYn2">영문</label>
+										</div>
+									</th:block>
+
+									<th:block th:if="*{id == null}">
+										<div class="form-check">
+											<input class="form-check-input" id="langKoYn1" name="langKoYn"
+												   type="radio" value="Y" checked="checked">
+											<label class="form-check-label mb-0" for="langKoYn1">국문</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" id="langKoYn2" name="langKoYn"
+												   type="radio" value="N">
+											<label class="form-check-label mb-0" for="langKoYn2">영문</label>
+										</div>
+									</th:block>
 								</div>
 							</div>
 
