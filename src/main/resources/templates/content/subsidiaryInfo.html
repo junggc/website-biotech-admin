@@ -86,9 +86,36 @@
 		$("#is_form").validate({
 			ignore: "",
 			rules: {
-				name: {required:true}
-				,nameEn : {required:true}
-				,url : {required:true, regex:/(http(s)?:\/\/)/i}
+				name: {required:function(elements){
+						var val = elements.value;
+						val = val.replace(/^\s+|\s+$/g, '');
+						elements.value = val;
+						if(val.length == 0){
+							return true;
+						}else{
+							return false;
+						}
+					}}
+				,nameEn : {required:function(elements){
+						var val = elements.value;
+						val = val.replace(/^\s+|\s+$/g, '');
+						elements.value = val;
+						if(val.length == 0){
+							return true;
+						}else{
+							return false;
+						}
+					}}
+				,url : {required:function(elements){
+						var val = elements.value;
+						val = val.replace(/^\s+|\s+$/g, '');
+						elements.value = val;
+						if(val.length == 0){
+							return true;
+						}else{
+							return false;
+						}
+					}, regex:/(http(s)?:\/\/)/i}
 				,useYn : {required:true}
 			},
 
