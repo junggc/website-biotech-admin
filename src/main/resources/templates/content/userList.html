@@ -94,9 +94,9 @@
                     {
                         data:function(data, type){
                             if(data.auth == 'ROLE_USER'){
-                                return '관리자';
+                                return '일반관리자';
                             }else{
-                                return '수퍼 관리자';
+                                return '마스터관리자';
                             }
                         }, targets: 4, orderable: false, visible: true
                     },
@@ -125,8 +125,13 @@
                     },
                     {
                         data: function(data, type){
+							console.log('block',data.blocked);
+							if(data.blocked == true){
+								return '<button type="button" onclick="loginReset(\''+data.id+'\')" className="btn btn-outline-secondary">초기화</button>';
+							}else{
+								return '<button type="button" disabled className="btn btn-outline-secondary">초기화</button>';
+							}
 
-                            return '<button type="button" onclick="loginReset(\''+data.id+'\')" className="btn btn-outline-secondary">초기화</button>';
                         }
                         , targets: 10, orderable: false, visible: true
                     }

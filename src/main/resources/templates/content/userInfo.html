@@ -329,7 +329,8 @@
                                 <label class="col-md-3"
                                        for="loginId">관리자 구분</label>
                                 <div class="col-sm-9">
-                                    일반관리자
+                                    <th:block th:if="*{auth} == 'ROLE_USER'">일반관리자</th:block>
+                                    <th:block th:if="*{auth} == 'ROLE_ADMIN'">마스터관리자</th:block>
                                 </div>
                             </div>
                             <div class="form-group row" th:classappend="${member.id == null ? 'required' : ''}">

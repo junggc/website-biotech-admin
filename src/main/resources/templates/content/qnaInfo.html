@@ -328,7 +328,7 @@
 
 							<div class="form-group row">
 								<label class="col-md-3">연락처</label>
-								<div class="col-sm-3" th:text="*{phone}">
+								<div class="col-sm-3" th:text="*{phone} == null or *{phone} == '' ? '-' : *{phone}">
 
 								</div>
 								<label class="col-md-3">국가</label>
@@ -339,11 +339,11 @@
 
 							<div class="form-group row">
 								<label class="col-md-3">회사</label>
-								<div class="col-sm-3" th:text="*{userCompany}">
+								<div class="col-sm-3" th:text="*{userCompany} == null or *{userCompany} == '' ? '-' : *{userCompany}">
 
 								</div>
 								<label class="col-md-3">직책</label>
-								<div class="col-sm-3" th:text="*{userPosition}">
+								<div class="col-sm-3" th:text="*{userPosition} == null or *{userPosition} == '' ? '-' : *{userPosition}">
 
 								</div>
 							</div>
@@ -370,7 +370,8 @@
 											id="answerTitle"
 											name="answerTitle"
 											placeholder="제목을 입력하세요."
-											th:value="${@commUtils.getUnEscHtml(obj.answerTitle)}"
+											maxlength="200"
+											th:value="${@commUtils.getUnEscHtml(obj.answerTitle == null ? '안녕하세요, 코오롱바이오텍입니다.' : obj.answerTitle)}"
 											type="text"
 									/>
 								</div>
