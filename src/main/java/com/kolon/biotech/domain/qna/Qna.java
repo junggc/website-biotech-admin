@@ -72,5 +72,7 @@ public class Qna extends BaseTimeEntity {
     @Column(name = "FILE_PATH",length = 500)
     private String filePath;
 
+    @Column(name = "DEL_YN", length = 1)
+    private String delYn;
 
 }

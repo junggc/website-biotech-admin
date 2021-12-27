@@ -80,10 +80,8 @@
 							val = val.replace(/^\s+|\s+$/g, '');
 							elements.value = val;
 							if(val.length == 0){
-								$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
 								return true;
 							}else{
-								$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
 								return false;
 							}
 						}}
@@ -219,7 +217,7 @@
 		}
 
 		function listAction(){
-			location.href='/qnaList';
+			$("#sch_form").attr("action", "/qnaList").submit();
 		}
 
 		function cancelAction(){
@@ -232,6 +230,31 @@
 			/*[/]*/
 			if(confirm(msg+"을 취소하시겠습니까?")){
 				location.href='/qnaList';
+			}
+		}
+
+		function deleteAction(id){
+			if(confirm("삭제하시겠습니까?")){
+				var obj=[];
+				obj.push(id);
+				var url="/qnaDelete";
+				$.ajax({
+					type : 'POST'
+					, async : true
+					, beforeSend : function (jqXHR, settings) {
+					}
+					, url : url //for ASP.NET, java
+					, data : 'deleteList='+obj
+					, success : function (changes) {
+						//debugger;
+
+						if(changes.success == true){
+							location.href="/qnaList";
+						}
+					}
+					, complete : function (changes) {
+					}
+				});
 			}
 		}
 	</script>
@@ -250,6 +273,15 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card">
+					<form id="sch_form" name="sch_form" method="post">
+						<input type="hidden" name="searchText" th:value="${searchDto.searchText}"/>
+						<input type="hidden" name="searchStartDate" th:value="${searchDto.searchStartDate}"/>
+						<input type="hidden" name="searchEndDate" th:value="${searchDto.searchEndDate}"/>
+						<input type="hidden" name="jobFlag" th:value="${searchDto.jobFlag}"/>
+						<input type="hidden" name="page" th:value="${searchDto.page}"/>
+						<input type="hidden" name="size" th:value="${searchDto.size}"/>
+						<input type="hidden" name="searchAnsStat" th:value="${searchDto.searchAnsStat}"/>
+					</form>
 					<form class="form-horizontal" id="is_form" method="post" enctype="multipart/form-data"
 						  name="is_form"
 						  th:object="${obj}">
@@ -268,6 +300,7 @@
 						<input type="hidden" name="fileLength" th:value="*{fileLength}"/>
 						<input type="hidden" name="uriPath" th:value="*{uriPath}"/>
 						<input type="hidden" name="filePath" th:value="*{filePath}"/>
+
 						<div class="card-body">
 							<h4 class="card-title">문의하기 <th:block th:if="*{answerDate == null}" th:text="등록"></th:block><th:block th:if="*{answerDate != null}" th:text="수정"></th:block></h4>
 
@@ -368,9 +401,16 @@
 									<th:block th:if="*{answerDate == null}" th:text="등록"></th:block>
 									<th:block th:if="*{answerDate != null}" th:text="수정"></th:block>
 								</button>
-								<button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
-									취소
-								</button>
+								<th:block th:if="*{id == null}">
+									<button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
+										취소
+									</button>
+								</th:block>
+								<th:block th:if="*{id != null}">
+									<button class="btn btn-danger text-white" th:onclick="deleteAction([[*{id}]]);" type="button">
+										삭제
+									</button>
+								</th:block>
 							</div>
 						</div>
 					</form>

@@ -4,6 +4,7 @@ import com.kolon.biotech.domain.mainpop.Mainpop;
 import com.kolon.biotech.domain.mainvisual.Mainvisual;
 import com.kolon.biotech.service.MainpopService;
 import com.kolon.biotech.web.dto.MemberDto;
+import com.kolon.biotech.web.dto.SearchDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +33,16 @@ public class MainpopController {
     private MainpopService mainpopService;
 
     @GetMapping("mainpopInfo")
-    public String mainpopInfo(Principal principal, @ModelAttribute Mainpop obj, Model model){
+    public String mainpopInfo(Principal principal, @ModelAttribute SearchDto searchDto, @ModelAttribute Mainpop obj, Model model){
 
+        model.addAttribute("searchDto",searchDto);
         model.addAttribute("mainpop",mainpopService.getInfo(obj.getId()));
         return "content/mainpopInfo";
     }
 
     @GetMapping("mainpopList")
-    public String mainpopList(@AuthenticationPrincipal MemberDto memberDto){
+    public String mainpopList(@AuthenticationPrincipal MemberDto memberDto, @ModelAttribute SearchDto searchDto, Model model){
+        model.addAttribute("searchDto",searchDto);
         return "content/mainpopList";
     }
 }

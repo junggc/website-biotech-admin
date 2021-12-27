@@ -4,6 +4,7 @@ import com.kolon.biotech.domain.mainvisual.Mainvisual;
 import com.kolon.biotech.domain.prbinfo.Prbinfo;
 import com.kolon.biotech.service.PrbinfoService;
 import com.kolon.biotech.web.dto.MemberDto;
+import com.kolon.biotech.web.dto.SearchDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +33,15 @@ public class PrbinfoController {
     private PrbinfoService prbinfoService;
 
     @GetMapping("prbinfoInfo")
-    public String prbinfoInfo(Principal principal, @ModelAttribute Prbinfo obj, Model model){
-
+    public String prbinfoInfo(Principal principal, @ModelAttribute SearchDto searchDto, @ModelAttribute Prbinfo obj, Model model){
+        model.addAttribute("searchDto",searchDto);
         model.addAttribute("obj",prbinfoService.getInfo(obj.getId()));
         return "content/prbinfoInfo";
     }
 
     @GetMapping("prbinfoList")
-    public String prbinfoList(@AuthenticationPrincipal MemberDto memberDto){
+    public String prbinfoList(@AuthenticationPrincipal MemberDto memberDto, @ModelAttribute SearchDto searchDto,Model model){
+        model.addAttribute("searchDto",searchDto);
         return "content/prbinfoList";
     }
 

@@ -271,7 +271,12 @@
 		}
 
 		function listAction(){
-			location.href='/noticeList';
+			//location.href='/noticeList';
+			if(document.referrer.indexOf('/noticeList') > -1){
+				history.back();
+			}else{
+				location.href='/noticeList';
+			}
 		}
 
 		function cancelAction(){

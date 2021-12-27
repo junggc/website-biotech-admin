@@ -3,6 +3,7 @@ package com.kolon.biotech.web;
 import com.kolon.biotech.domain.notice.Notice;
 import com.kolon.biotech.service.NoticeService;
 import com.kolon.biotech.web.dto.MemberDto;
+import com.kolon.biotech.web.dto.SearchDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,15 +42,17 @@ public class NoticeController {
     }
 
     @GetMapping("/noticeInfo")
-    public String noticeInfo(Principal principal, @ModelAttribute Notice notice, Model model){
+    public String noticeInfo(Principal principal, @ModelAttribute SearchDto searchDto, @ModelAttribute Notice notice, Model model){
         log.debug("======noticeInfo=======");
 
+        model.addAttribute("searchDto",searchDto);
         model.addAttribute("notice",noticeService.getNotice(notice.getId()));
         return "content/noticeInfo";
     }
 
     @GetMapping("/noticeList")
-    public String noticeList(@AuthenticationPrincipal MemberDto memberDto){
+    public String noticeList(@AuthenticationPrincipal MemberDto memberDto, @ModelAttribute SearchDto searchDto,Model model){
+        model.addAttribute("searchDto",searchDto);
         return "content/noticeList";
     }
 

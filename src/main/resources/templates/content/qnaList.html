@@ -52,6 +52,23 @@
 
 			$edate.datepicker('setDate',new Date());
 
+			/*[# th:if="${searchDto.searchText != null}"]*/
+			$("#searchText").val(/*[[ ${searchDto.searchText} ]]*/);
+			/*[/]*/
+
+			/*[# th:if="${searchDto.searchStartDate != null}"]*/
+			$("#datepicker-autoclose1").val(/*[[ ${searchDto.searchStartDate} ]]*/);
+			/*[/]*/
+
+			/*[# th:if="${searchDto.searchEndDate != null}"]*/
+			$("#datepicker-autoclose2").val(/*[[ ${searchDto.searchEndDate} ]]*/);
+			/*[/]*/
+
+			/*[# th:if="${searchDto.searchAnsStat != null}"]*/
+			$("#searchAnsStat").val(/*[[ ${searchDto.searchAnsStat} ]]*/);
+			/*[/]*/
+
+
             var dataTable1=$("#zero_config").DataTable({
                 ajax : {
                     url: "/qnaListAjax",
@@ -70,6 +87,7 @@
 						p.searchAnsStat = $("#searchAnsStat").val();
                         p.page = $("#zero_config").DataTable().page.info().page+1;
                         p.size = $("#zero_config").DataTable().page.len();
+
                     },
                     dataSrc: function(res) {
                         var data = res.data;
@@ -120,7 +138,7 @@
 							return emailMasking(data.userEmail);
 						},    targets: 4, orderable: false, visible: true},
 					{data:function(data, type){
-						return '<a href="/qnaInfo?id='+data.id+'">'+nameMasking(data.userName)+'이 문의합니다.</a>';
+						return '<a href="javascript:mvform(\''+data.id+'\');">'+nameMasking(data.userName)+'이 문의합니다.</a>';
 						}, targets: 5, orderable: false, visible: true
                     },
                     {data: function(data, type){
@@ -148,10 +166,28 @@
 				  bStateSave: true
             });
 
-            $(".dataTables_filter").html('');
+            $(".dataTables_filter").html('<button class="btn btn-outline-danger" id="refresh" onclick="deletelist();">삭제</button>');
 
+			$("#mainCheckbox").on("click",function(){
+				if ($(this).is(":checked") == true) {
+					$("input:checkbox[name='checkedbox']").each(function () {
+						$(this).attr("checked",true);
+						$(this).checked = true;
+					});
+				} else {
+					$("input:checkbox[name='checkedbox']").each(function () {
+						$(this).removeAttr("checked");
+						$(this).checked = false;
+					});
+				}
+			});
 			$("#zero_config_paginate").parent("div").addClass("page-wrap");
 			$("#zero_config_paginate").parent("div").siblings("div").addClass("before-page-wrap");
+
+			mvform = function(id){
+				$("#id").val(id);
+				$("form#is_form").attr("action", "/qnaInfo").submit();
+			}
 
 			search = function(){
 				var sdate = new Date($("#datepicker-autoclose1").val());
@@ -210,6 +246,53 @@
 				return bmail;
 			}
 
+			//삭제
+			deletelist = function(){
+
+				//체크된 애들 숫자
+				if($("input:checkbox[name='checkedbox']:checked").length == 0){
+					alert("삭제 대상을 선택해 주세요.");
+					return false;
+				}
+
+				if(confirm("선택한 문의글을 삭제하시겠습니까?")){
+					var form = $("#is_form")[0];
+					var formData = new FormData(form);
+
+					var flag = true;
+					delete_lists = [];
+
+					$("input:checkbox[name='checkedbox']:checked").each(function(){
+						delete_lists.push($(this).val());
+					});
+
+					console.log('dete',delete_lists);
+
+					if(flag){
+						formData.append("deleteList", delete_lists);
+
+						$.ajax({
+							type: "POST",
+							url: "/qnaDelete",
+							data : formData,
+							cache:false,
+							processData: false,
+							contentType: false,
+							success: function (data) {
+								console.log('data',data);
+								alert(data.message);
+								location.reload();
+							},
+							error: function (xhr, status, error) {
+								alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
+								return false;
+							}
+						});
+					}
+					return false;
+				}
+			}
+
         });
 
 
@@ -228,7 +311,10 @@
 
 	<div class="container-fluid">
 		<div class="card">
-			<form class="form-horizontal" id="is_form" method="post"name="is_form"  onsubmit="return false;">
+			<form class="form-horizontal" id="is_form" method="POST" name="is_form" >
+				<input type="hidden" name="id" id="id" />
+				<input type="hidden" name="page" id="page" />
+				<input type="hidden" name="size" id="size" />
 			<div class="card-body">
 				<h5 class="card-title">문의하기 목록</h5>
 

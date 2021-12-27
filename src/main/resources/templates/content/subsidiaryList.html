@@ -86,7 +86,7 @@
                     {data: 'id',    targets: 1, orderable: false, visible: true},
 					{
 						  data:function(data, type){
-							  return '<a href="/subsidiaryInfo?id='+data.id+'">'+data.name+'</a>';
+							  return '<a href="javascript:mvform(\''+data.id+'\');">'+data.name+'</a>';
 						  }, targets: 2, orderable: false, visible: true
 					},
 					{data: 'url',    targets: 3, orderable: false, visible: true},
@@ -117,7 +117,8 @@
                   processing: true,
                   serverSide: true,
                   pageLength: 10,
-                  paging: true
+                  paging: true,
+				bStateSave: true
             });
 
             $(".dataTables_filter").html('<button class="btn btn-outline-primary" id="refresh" onclick="location.href=\'/subsidiaryInfo\';">등록</button><button class="btn btn-outline-danger" id="refresh" onclick="deletelist();">삭제</button>');
@@ -137,6 +138,11 @@
 			});
 			$("#zero_config_paginate").parent("div").addClass("page-wrap");
 			$("#zero_config_paginate").parent("div").siblings("div").addClass("before-page-wrap");
+
+			mvform = function(id){
+				$("#id").val(id);
+				$("form#is_form").attr("action", "/subsidiaryInfo").submit();
+			}
 
 			//순서변경
 			ch_orderSeq = function(ida,udn){

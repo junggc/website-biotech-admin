@@ -302,7 +302,12 @@
 		}
 
 		function listAction(){
-			location.href='/mainpopList';
+			// location.href='/mainpopList';
+			if(document.referrer.indexOf('/mainpopList') > -1){
+				history.back();
+			}else{
+				location.href='/mainpopList';
+			}
 		}
 
 		function cancelAction(){

@@ -167,7 +167,12 @@
         }
 
 	function listAction(){
-		location.href='/subsidiaryList';
+		//location.href='/subsidiaryList';
+		if(document.referrer.indexOf('/subsidiaryList') > -1){
+			history.back();
+		}else{
+			location.href='/subsidiaryList';
+		}
 	}
 
 	function cancelAction(){

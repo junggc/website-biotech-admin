@@ -145,7 +145,12 @@
         }
 
 	function listAction(){
-		location.href='/prbinfoList';
+		//location.href='/prbinfoList';
+		if(document.referrer.indexOf('/prbinfoList') > -1){
+			history.back();
+		}else{
+			location.href='/prbinfoList';
+		}
 	}
 
 	function cancelAction(){

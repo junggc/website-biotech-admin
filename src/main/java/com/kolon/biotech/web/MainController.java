@@ -4,6 +4,7 @@ import com.kolon.biotech.domain.mainvisual.Mainvisual;
 import com.kolon.biotech.domain.notice.Notice;
 import com.kolon.biotech.service.MainvisualService;
 import com.kolon.biotech.web.dto.MemberDto;
+import com.kolon.biotech.web.dto.SearchDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.LocaleResolver;
 
 import java.security.Principal;
@@ -41,15 +43,17 @@ public class MainController {
         return "/content/hello";
     }
 
-    @GetMapping("mainvisualInfo")
-    public String mainvisualInfo(@AuthenticationPrincipal MemberDto memberDto, @ModelAttribute Mainvisual mainvisual, Model model){
+    @RequestMapping("mainvisualInfo")
+    public String mainvisualInfo(@AuthenticationPrincipal MemberDto memberDto, @ModelAttribute SearchDto searchDto, @ModelAttribute Mainvisual mainvisual, Model model){
 
+        model.addAttribute("searchDto",searchDto);
         model.addAttribute("mainvisual",mainvisualService.getMainvisual(mainvisual.getId()));
         return "content/mainVisualInfo";
     }
 
-    @GetMapping("mainvisualList")
-    public String mainvisualList(@AuthenticationPrincipal MemberDto memberDto){
+    @RequestMapping("mainvisualList")
+    public String mainvisualList(@AuthenticationPrincipal MemberDto memberDto,@ModelAttribute SearchDto searchDto,Model model){
+        model.addAttribute("searchDto",searchDto);
         return "content/mainVisualList";
     }
 

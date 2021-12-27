@@ -603,7 +603,12 @@
 		}
 
 		function listAction(){
-			location.href='/mainvisualList';
+			//location.href='/mainvisualList';
+			if(document.referrer.indexOf('/mainvisualList') > -1){
+				history.back();
+			}else{
+				location.href='/mainvisualList';
+			}
 		}
 
 		function cancelAction(){

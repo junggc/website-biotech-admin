@@ -4,6 +4,7 @@ import com.kolon.biotech.domain.mainpop.Mainpop;
 import com.kolon.biotech.domain.subsidiary.Subsidiary;
 import com.kolon.biotech.service.SubsidiaryService;
 import com.kolon.biotech.web.dto.MemberDto;
+import com.kolon.biotech.web.dto.SearchDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +33,15 @@ public class SubsidiaryController {
     private SubsidiaryService subsidiaryService;
 
     @GetMapping("subsidiaryInfo")
-    public String subsidiaryInfo(Principal principal, @ModelAttribute Subsidiary obj, Model model){
-
+    public String subsidiaryInfo(Principal principal, @ModelAttribute SearchDto searchDto, @ModelAttribute Subsidiary obj, Model model){
+        model.addAttribute("searchDto",searchDto);
         model.addAttribute("obj",subsidiaryService.getInfo(obj.getId()));
         return "content/subsidiaryInfo";
     }
 
     @GetMapping("/subsidiaryList")
-    public String subsidiaryList(@AuthenticationPrincipal MemberDto memberDto){
+    public String subsidiaryList(@AuthenticationPrincipal MemberDto memberDto, @ModelAttribute SearchDto searchDto,Model model){
+        model.addAttribute("searchDto",searchDto);
         return "content/subsidiaryList";
     }
 }

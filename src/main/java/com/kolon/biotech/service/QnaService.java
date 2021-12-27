@@ -80,22 +80,22 @@ public class QnaService {
 
         if(searchDto.getSearchAnsStat() != null && "".equals(searchDto.getSearchAnsStat())){
             if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
-                list = qnaRepository.findAllByRegDtimeBetweenAndUserNameLikeOrUserContentsLike(startDate,endDate,searchDto.getSearchText(),pageable);
+                list = qnaRepository.findAllByRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",startDate,endDate,searchDto.getSearchText(),pageable);
             }else{
-                list = qnaRepository.findAllByRegDtimeBetweenOrderByRegDtimeDesc(startDate, endDate,pageable);
+                list = qnaRepository.findAllByRegDtimeBetweenOrderByRegDtimeDesc("N",startDate, endDate,pageable);
             }
         }else{
             if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
                 if("Y".equals(searchDto.getSearchAnsStat())){
-                    list = qnaRepository.findAllByAnsStateYAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike(startDate,endDate,searchDto.getSearchText(),pageable);
+                    list = qnaRepository.findAllByAnsStateYAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",startDate,endDate,searchDto.getSearchText(),pageable);
                 }else{
-                    list = qnaRepository.findAllByAnsStateNAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike(startDate,endDate,searchDto.getSearchText(),pageable);
+                    list = qnaRepository.findAllByAnsStateNAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",startDate,endDate,searchDto.getSearchText(),pageable);
                 }
             }else{
                 if("Y".equals(searchDto.getSearchAnsStat())){
-                    list = qnaRepository.findAllByAnsStateYAndRegDtimeBetweenOrderByRegDtimeDesc(startDate, endDate,pageable);
+                    list = qnaRepository.findAllByAnsStateYAndRegDtimeBetweenOrderByRegDtimeDesc("N",startDate, endDate,pageable);
                 }else{
-                    list = qnaRepository.findAllByAnsStateNAndRegDtimeBetweenOrderByRegDtimeDesc(startDate, endDate,pageable);
+                    list = qnaRepository.findAllByAnsStateNAndRegDtimeBetweenOrderByRegDtimeDesc("N",startDate, endDate,pageable);
                 }
 
             }
@@ -153,15 +153,8 @@ public class QnaService {
         //파일 삭제
         if(deleteList != null && !deleteList.isEmpty()){
             for(Integer id : deleteList){
-
-                //실제 파일 삭제
-                Qna nfile = qnaRepository.findById(id).get();
-                if(nfile.getFilePath() != null && !"".equals(nfile.getFilePath())){
-                    File f = new File(nfile.getFilePath());
-                    f.delete();
-                }
-
-                qnaRepository.deleteById(id);
+                Qna qna = qnaRepository.findById(id).get();
+                qna.setDelYn("Y");
             }
 
         }

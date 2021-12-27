@@ -4,6 +4,7 @@ import com.kolon.biotech.domain.user.Role;
 import com.kolon.biotech.domain.user.Member;
 import com.kolon.biotech.service.UserService;
 import com.kolon.biotech.web.dto.MemberDto;
+import com.kolon.biotech.web.dto.SearchDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,9 +56,10 @@ public class UserController {
 
     //회원가입 페이지 이동
     @GetMapping(value = "/userInfo")
-    public String userInfo(@ModelAttribute Member member, Model model,@AuthenticationPrincipal MemberDto memberDto) {
+    public String userInfo(@ModelAttribute Member member, @ModelAttribute SearchDto searchDto, Model model, @AuthenticationPrincipal MemberDto memberDto) {
 
         Member user = userService.getUser(member);
+        model.addAttribute("searchDto",searchDto);
         model.addAttribute("member",user);
         return "content/userInfo";
     }
@@ -83,8 +85,8 @@ public class UserController {
     }
 
     @GetMapping("/userList")
-    public String userList(@AuthenticationPrincipal MemberDto memberDto){
-
+    public String userList(@AuthenticationPrincipal MemberDto memberDto, @ModelAttribute SearchDto searchDto, Model model){
+        model.addAttribute("searchDto",searchDto);
         return "content/userList";
     }
 

@@ -254,7 +254,13 @@
     });
 
     function listAction(){
-        location.href='/userList';
+
+        if(document.referrer.indexOf('/userList') > -1){
+            history.back();
+        }else{
+            location.href='/userList';
+        }
+
     }
 
     function cancelAction(){
