@@ -100,7 +100,18 @@
 			rules: {
 				dispYn: {required:true},
 				langKoYn: {required:true},
-				title: {required:true},
+				title: {required:function(elements){
+						var val = elements.value;
+						val = val.replace(/^\s+|\s+$/g, '');
+						elements.value = val;
+						if(val.length == 0){
+							$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+							return true;
+						}else{
+							$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+							return false;
+						}
+					}},
 				popImgCheck: {
 					required: function(element){
 						return element.value == '';
