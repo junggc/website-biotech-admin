@@ -60,49 +60,52 @@
 						<span class="hide-menu">문의하기 관리</span>
 					</a>
 				</li>
-				<li class="sidebar-item">
-					<a aria-expanded="false" class="sidebar-link has-arrow waves-effect waves-dark"
-					   href="javascript:void(0)">
-						<i class="mdi mdi-receipt"></i>
-						<span class="hide-menu">운영 관리</span>
-					</a>
-					<ul aria-expanded="false" class="collapse first-level">
-						<th:block th:if="${#strings.equals(#authentication.getPrincipal().getAuthorities()[0], 'ROLE_ADMIN')}">
+				<th:block th:if="${#authentication.getPrincipal().getLogAuthority() == 'Y' or #strings.equals(#authentication.getPrincipal().getAuthorities()[0], 'ROLE_ADMIN')}">
+					<li class="sidebar-item">
+						<a aria-expanded="false" class="sidebar-link has-arrow waves-effect waves-dark"
+						   href="javascript:void(0)">
+							<i class="mdi mdi-receipt"></i>
+							<span class="hide-menu">운영 관리</span>
+						</a>
+						<ul aria-expanded="false" class="collapse first-level">
+							<th:block th:if="${#strings.equals(#authentication.getPrincipal().getAuthorities()[0], 'ROLE_ADMIN')}">
+								<li class="sidebar-item">
+									<a class="sidebar-link" th:href="@{/userList}" href="/userList">
+										<i class="mdi mdi-note-outline"></i>
+										<span class="hide-menu">관리자 관리</span>
+									</a>
+								</li>
+							</th:block>
 							<li class="sidebar-item">
-								<a class="sidebar-link" th:href="@{/userList}" href="/userList">
-									<i class="mdi mdi-note-outline"></i>
-									<span class="hide-menu">관리자 관리</span>
-								</a>
-							</li>
-						</th:block>
-						<li class="sidebar-item">
-							<a class="sidebar-link" th:href="@{/subsidiaryList}"  href="/subsidiaryList">
-								<i class="mdi mdi-note-plus"></i>
-								<span class="hide-menu">계열사 관리</span>
-							</a>
-						</li>
-						<li class="sidebar-item">
-							<a class="sidebar-link" th:href="@{/prbinfoList}" href="/prbinfoList">
-								<i class="mdi mdi-note-plus"></i>
-								<span class="hide-menu">개인정보처리방침관리</span>
-							</a>
-						</li>
-						<th:block th:if="${#authentication.getPrincipal().getLogAuthority() == 'Y' or #strings.equals(#authentication.getPrincipal().getAuthorities()[0], 'ROLE_ADMIN')}">
-							<li class="sidebar-item">
-								<a class="sidebar-link" th:href="@{/grantHistory}" href="/grantHistory">
+								<a class="sidebar-link" th:href="@{/subsidiaryList}"  href="/subsidiaryList">
 									<i class="mdi mdi-note-plus"></i>
-									<span class="hide-menu">권한부여 로그 관리</span>
+									<span class="hide-menu">계열사 사이트 관리</span>
 								</a>
 							</li>
 							<li class="sidebar-item">
-								<a class="sidebar-link" th:href="@{/jobHistory}" href="/jobHistory">
+								<a class="sidebar-link" th:href="@{/prbinfoList}" href="/prbinfoList">
 									<i class="mdi mdi-note-plus"></i>
-									<span class="hide-menu">작업 로그 관리</span>
+									<span class="hide-menu">개인정보처리방침관리</span>
 								</a>
 							</li>
-						</th:block>
-					</ul>
-				</li>
+							<th:block th:if="${#authentication.getPrincipal().getLogAuthority() == 'Y' or #strings.equals(#authentication.getPrincipal().getAuthorities()[0], 'ROLE_ADMIN')}">
+								<li class="sidebar-item">
+									<a class="sidebar-link" th:href="@{/grantHistory}" href="/grantHistory">
+										<i class="mdi mdi-note-plus"></i>
+										<span class="hide-menu">권한부여 로그 관리</span>
+									</a>
+								</li>
+								<li class="sidebar-item">
+									<a class="sidebar-link" th:href="@{/jobHistory}" href="/jobHistory">
+										<i class="mdi mdi-note-plus"></i>
+										<span class="hide-menu">작업 로그 관리</span>
+									</a>
+								</li>
+							</th:block>
+						</ul>
+					</li>
+				</th:block>
+
 
 			</ul>
 		</nav>

@@ -135,7 +135,7 @@
 				  bStateSave: true
             });
 
-            $(".dataTables_filter").html('<button class="btn btn-outline-primary excelBtn" id="refresh" onclick="exceldown();">엑셀</button>');
+            $(".dataTables_filter").html('<button class="btn btn-outline-primary excelBtn" id="refresh" onclick="exceldown();">엑셀 다운로드</button>');
 			$("#zero_config_paginate").parent("div").addClass("page-wrap");
 			$("#zero_config_paginate").parent("div").siblings("div").addClass("before-page-wrap");
 
@@ -159,6 +159,13 @@
 			exceldown = function(){
 				exportExcel();
 			}
+
+			$("#searchText").keypress(function(e) {
+				if (e.keyCode === 13) {
+					search();
+					e.preventDefault();
+				}
+			});
         });
 
 		function s2ab(s) {

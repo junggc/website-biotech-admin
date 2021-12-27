@@ -5,12 +5,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Custom CSS -->
-    <link
-            href="/assets/libs/select2/dist/css/select2.min.css"
-            rel="stylesheet"
-            th:href="@{/assets/libs/select2/dist/css/select2.min.css}"
-            type="text/css"
-    />
+
     <link
             href="/assets/libs/jquery-minicolors/jquery.minicolors.css"
             rel="stylesheet"
@@ -36,10 +31,6 @@
     <script href="/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"
             th:src="@{/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
     <script href="/dist/js/pages/mask/mask.init.js" th:src="@{/dist/js/pages/mask/mask.init.js}"></script>
-    <script href="/assets/libs/select2/dist/js/select2.full.min.js"
-            th:src="@{/assets/libs/select2/dist/js/select2.full.min.js}"></script>
-    <script href="/assets/libs/select2/dist/js/select2.min.js"
-            th:src="@{/assets/libs/select2/dist/js/select2.min.js}"></script>
     <script href="/assets/libs/jquery-asColor/dist/jquery-asColor.min.js"
             th:src="@{/assets/libs/jquery-asColor/dist/jquery-asColor.min.js}"></script>
     <script href="/assets/libs/jquery-asGradient/dist/jquery-asGradient.js"
@@ -59,7 +50,6 @@
     <script href="/js/jquery-common.js" th:src="@{/js/jquery-common.js}"></script>
     <script th:inline="javascript">
     $(function () {
-        $(".select2").select2();
 
         //좌측 메뉴 활성화
         $(".sidebar-link").each(function(){
@@ -83,6 +73,7 @@
             }
         }
 
+        $("#changedmain2").trigger('change');
 
 
         $("#is_form").validate({
@@ -91,7 +82,7 @@
                 /*[# th:if="${member.id == null}"]*/
                 loginId: {
                     required: true ,
-                    regex: /^[a-z0-9\d_-][\s]{4,14}$/
+                    regex: /^[a-z0-9\d_-]{4,14}$/
                 }
                 ,samecheck:{
                     required: true
@@ -140,7 +131,7 @@
                 /*[# th:if="${member.id == null}"]*/
                 loginId : {
                     required: "로그인 아이디는 필수입니다." ,
-                    regex: "아이디는 영문소문자, 숫자와 특수문자(_-)만 사용 가능합니다."
+                    regex: "아이디는 4-14자의 영문소문자,숫자와 특수문자(_-)만 사용 가능합니다."
                 }
                 ,samecheck:{
                     required: "아이디 중복체크를 해주세요."
@@ -156,7 +147,7 @@
                 }
                 ,password1:{
                     required: "비밀번호확인을 입력해주세요."
-                    ,equalTo: "비밀번호와 일치하지 않습니다."
+                    ,equalTo: "비밀번호가 서로 틀립니다."
                 }
                 /*[/]*/
                 /*[# th:if="${member.id != null}"]*/
@@ -176,7 +167,7 @@
                 }
                 ,pnum:{
                     required: "연락처를 입력해주세요.",
-                    regex : "연락처를 확인하세요."
+                    regex : "휴대폰 번호는 -(하이픈) 포함하여 숫자 13자리까지만 입력가능합니다."
                 }
                 ,useYn:{
                     required: "사용여부를 선택해주세요."
@@ -185,8 +176,21 @@
             }
         });
 
+        recheck = function(obj){
+            $("#samecheck").val('');
+        }
+
         sameIdCheck = function(){
             console.log(1);
+            var val = $("#loginId").val();
+            val = val.replace(/^\s+|\s+$/g, '');
+            $("#loginId").val(val);
+
+            if(val.length == 0){
+                alert("로그인 아이디는 필수입니다.");
+                return false;
+            }
+
             var url = '/loginSameCheck';
             $.ajax({
                 dataType : 'json'
@@ -251,6 +255,11 @@
             });
             return false;
         }
+
+
+        $("#pnum").on("keyup",function(){
+           $(this).val($(this).val().replace(/[^0-9\-]/gi,""));
+        });
     });
 
     function listAction(){
@@ -344,6 +353,8 @@
                                                     id="loginId"
                                                     name="loginId"
                                                     placeholder="ID를 입력하세요."
+                                                    maxlength="14"
+                                                    onkeyup="recheck(this)"
                                                     th:errorclass="is-invalid"
                                                     th:field="*{loginId}" type="text"
                                             />
@@ -373,6 +384,7 @@
                                             id="name"
                                             name="name"
                                             placeholder="이름을 입력하세요."
+                                            maxlength="30"
                                             th:field="*{name}"
                                             type="text"
                                     />
@@ -446,6 +458,7 @@
                                             id="emailId"
                                             name="emailId"
                                             placeholder="이메일 아이디를 입력하세요."
+                                            maxlength="25"
                                             th:field="*{emailId}"
                                             type="text"
                                     />
@@ -457,6 +470,8 @@
                                             id="emailDomain"
                                             name="emailDomain"
                                             placeholder="이메일 도메인을 입력하세요."
+                                            maxlength="50"
+                                            readonly="readonly"
                                             th:field="*{emailDomain}"
                                             type="text"
                                     />
@@ -464,7 +479,7 @@
                                 <div class="col-md-2">
                                     <select aria-hidden="true"
                                             class="select2 form-select shadow-none select2-hidden-accessible"
-                                            data-select2-id="1" onchange="changeDomain(this);"
+                                            data-select2-id="1" id="changedmain2" onchange="changeDomain(this);"
                                             style="width: 100%; height: 36px" tabindex="-1">
                                         <option th:selected="*{emailDomain} == ''" value="">직접입력</option>
                                         <option th:selected="*{emailDomain} == 'naver.com'" value="naver.com">
@@ -489,7 +504,8 @@
                                             class="form-control"
                                             id="pnum"
                                             name="pnum"
-                                            placeholder="연락처를 입력하세요."
+                                            placeholder="010-1234-1234"
+                                            maxlength="13"
                                             th:field="*{pnum}"
                                             type="text"
                                     />
@@ -505,6 +521,7 @@
                                 <div class="col-sm-3">
                                     <input class="form-control" id="rank" name="rank" placeholder="직급을 입력하세요."
                                            th:field="*{rank}"
+                                           maxlength="5"
                                            type="text"/>
                                 </div>
                             </div>
@@ -546,7 +563,7 @@
                                         <input class="form-check-input" id="logAuthority" name="logAuthority"
                                                th:field="*{logAuthority}" th:value="Y"
                                                type="checkbox">
-                                        <label class="form-check-label mb-0" for="logAuthority">로그관리</label>
+                                        <label class="form-check-label mb-0" for="logAuthority">운영관리</label>
                                     </div>
                                 </div>
                             </div>
