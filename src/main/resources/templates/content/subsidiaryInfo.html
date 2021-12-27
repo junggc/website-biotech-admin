@@ -86,43 +86,16 @@
 		$("#is_form").validate({
 			ignore: "",
 			rules: {
-				name: {required:function(elements){
-						var val = elements.value;
-						val = val.replace(/^\s+|\s+$/g, '');
-						elements.value = val;
-						if(val.length == 0){
-							return true;
-						}else{
-							return false;
-						}
-					}}
-				,nameEn : {required:function(elements){
-						var val = elements.value;
-						val = val.replace(/^\s+|\s+$/g, '');
-						elements.value = val;
-						if(val.length == 0){
-							return true;
-						}else{
-							return false;
-						}
-					}}
-				,url : {required:function(elements){
-						var val = elements.value;
-						val = val.replace(/^\s+|\s+$/g, '');
-						elements.value = val;
-						if(val.length == 0){
-							return true;
-						}else{
-							return false;
-						}
-					}, regex:/(http(s)?:\/\/)/i}
+				name: {required:true}
+				,nameEn : {required:true}
+				,url : {required:true, regex:/(http(s)?:\/\/)/i}
 				,useYn : {required:true}
 			},
 
 			messages: {
 				name: {required:"계열사명을 입력하세요."}
 				,nameEn : {required:"계열사영문명을 입력하세요."}
-				,url : {required:"계열사 url을 입력하세요.", regex:"http:// 또는 https://를 포함하여 주세요."}
+				,url : {required:"계역사 url을 입력하세요.", regex:"http:// 또는 https://를 포함하여 주세요."}
 				,useYn : {required:"사용여부를 선택해주세요."}
 			},
 			errorPlacement: function(error, element) {
