@@ -56,7 +56,6 @@
                 $("mPassword").val('');
                 $("#password").val('');
                 $("#cnewPassword").val('');
-                $("#passwrdform")[0].reset();
                 $(".user-layerpop").hide();
                 $("html").removeClass("hold");
             }
@@ -110,7 +109,6 @@
     <script th:inline="javascript">
         $(function () {
             /*[# th:if="${#authentication.getPrincipal().getBlocked()}"]*/
-                alert("비밀번호 변경 후 90일이 지났습니다.\n비밀번호변경 후 이용해주세요.");
                 $("html").addClass("hold");
                 $('.user-layerpop').show();
             /*[/]*/
