@@ -54,14 +54,14 @@
 		$(function () {
 
 
-			$("#datepicker-autoclose1").datepicker({
+			var $sdate = $("#datepicker-autoclose1").datepicker({
 				format:'yyyy-mm-dd',
 				language: 'kr',
 				autoclose: true,
 				todayHighlight: true,
 			});
 
-			$("#datepicker-autoclose2").datepicker({
+			var $edate = $("#datepicker-autoclose2").datepicker({
 				format:'yyyy-mm-dd',
 				language: 'kr',
 				autoclose: true,
@@ -119,6 +119,9 @@
 						,extension2: 'png|jpg'
 						,filesize : 2097152
 					},
+					popImgLink:{
+						regex:/(http(s)?:\/\/)/i
+					},
 					widthPoint: {num:true},
 					heightPoint: {num:true},
 					dispStartDay: {required:true},
@@ -132,6 +135,9 @@
 					langKoYn: {required:"언어구분을 선택해주세요."},
 					title: {required:"제목을 입력해주세요."},
 					popImgCheck: {required: "팝업이미지를 선택해주세요.",extension2: "팝업이미지는 png, jpg만 업로드 가능합니다.",filesize: "팝업이미지는 2MB이하만 업로드 가능합니다."},
+					popImgLink:{
+						regex:"http:// 또는 https://를 포함하여 주세요."
+					},
 					widthPoint: {num:"숫자만 입력가능합니다."},
 					heightPoint: {num:"숫자만 입력가능합니다."},
 					dispStartDay: {required:"전시시작일을 입력해주세요."},
@@ -179,6 +185,19 @@
 				var ext = f.name.split('.').pop().toLowerCase();
 				var size = f.size;
 				var reader = new FileReader();
+
+				if(size > 2097152){
+					alert("2MB이하의 jpg, png 파일만 업로드 할 수 있습니다.");
+					$("#input_file").val("");
+					return false;
+				}
+
+				if("jpg|png".indexOf(ext) == -1){
+					alert("jpg, png 파일만 업로드 할 수 있습니다.");
+					$("#input_file").val("");
+					return false;
+				}
+
 				reader.onload = function (e) {
 					content_files = [];
 					content_files.push(f);
@@ -235,6 +254,14 @@
 		function registerAction(){
 
 			if(!$("#is_form").valid()){
+				return false;
+			}
+
+			var sdate = new Date($("#datepicker-autoclose1").val());
+			var edate = new Date($("#datepicker-autoclose2").val());
+
+			if(sdate>edate){
+				alert("시작일자, 종료일자를 확인해주세요.");
 				return false;
 			}
 
