@@ -91,7 +91,7 @@
                 /*[# th:if="${member.id == null}"]*/
                 loginId: {
                     required: true ,
-                    regex: /^[a-z0-9\d_-][\s]{4,14}$/
+                    regex: /^[a-z0-9\d_-]{4,14}$/
                 }
                 ,samecheck:{
                     required: true
@@ -211,10 +211,6 @@
 
                 }
             });
-        }
-
-        changeId = function(obj){
-            $("#samecheck").val('');
         }
 
         updateUser = function(){
@@ -341,8 +337,6 @@
                                                     id="loginId"
                                                     name="loginId"
                                                     placeholder="ID를 입력하세요."
-                                                    maxlength="14"
-                                                    onkeyup="changeId(this);"
                                                     th:errorclass="is-invalid"
                                                     th:field="*{loginId}" type="text"
                                             />
@@ -372,7 +366,6 @@
                                             id="name"
                                             name="name"
                                             placeholder="이름을 입력하세요."
-                                            maxlength="30"
                                             th:field="*{name}"
                                             type="text"
                                     />
@@ -389,7 +382,6 @@
                                             class="form-control"
                                             id="passwd"
                                             name="password"
-                                            maxlength="25"
                                             placeholder="비밀번호 입력하세요."
                                             type="password"
                                     />
@@ -410,7 +402,6 @@
                                                 class="form-control"
                                                 id="passwd1"
                                                 name="password1"
-                                                maxlength="25"
                                                 placeholder="비밀번호 재입력하세요."
                                                 type="password"
                                         />
@@ -429,7 +420,6 @@
                                                 class="form-control"
                                                 id="mpasswd"
                                                 name="mPassword"
-                                                maxlength="25"
                                                 placeholder="마스터 비밀번호를 입력하세요."
                                                 type="password"
                                         />
@@ -449,7 +439,6 @@
                                             id="emailId"
                                             name="emailId"
                                             placeholder="이메일 아이디를 입력하세요."
-                                            maxlength="25"
                                             th:field="*{emailId}"
                                             type="text"
                                     />
@@ -461,8 +450,6 @@
                                             id="emailDomain"
                                             name="emailDomain"
                                             placeholder="이메일 도메인을 입력하세요."
-                                            maxlength="45"
-                                            readonly="readonly"
                                             th:field="*{emailDomain}"
                                             type="text"
                                     />
@@ -496,7 +483,6 @@
                                             id="pnum"
                                             name="pnum"
                                             placeholder="연락처를 입력하세요."
-                                            maxlength="13"
                                             th:field="*{pnum}"
                                             type="text"
                                     />
@@ -510,7 +496,7 @@
                                         class="col-md-3"
                                         for="rank">직급</label>
                                 <div class="col-sm-3">
-                                    <input class="form-control" id="rank" name="rank" placeholder="직급을 입력하세요." maxlength="5"
+                                    <input class="form-control" id="rank" name="rank" placeholder="직급을 입력하세요."
                                            th:field="*{rank}"
                                            type="text"/>
                                 </div>
