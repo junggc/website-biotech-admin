@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko"
-      layout:decorate="~{layout/default_layout}"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+	  layout:decorate="~{layout/default_layout}"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:th="http://www.thymeleaf.org">
 <head>
 	<!-- Custom CSS -->
 	<link
@@ -28,192 +28,212 @@
 	</style>
 	<!-- This Page JS -->
 	<script href="/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"
-	        th:src="@{/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
+			th:src="@{/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
 	<script href="/dist/js/pages/mask/mask.init.js" th:src="@{/dist/js/pages/mask/mask.init.js}"></script>
 	<script href="/assets/libs/jquery-asColor/dist/jquery-asColor.min.js"
-	        th:src="@{/assets/libs/jquery-asColor/dist/jquery-asColor.min.js}"></script>
+			th:src="@{/assets/libs/jquery-asColor/dist/jquery-asColor.min.js}"></script>
 	<script href="/assets/libs/jquery-asGradient/dist/jquery-asGradient.js"
-	        th:src="@{/assets/libs/jquery-asGradient/dist/jquery-asGradient.js}"></script>
+			th:src="@{/assets/libs/jquery-asGradient/dist/jquery-asGradient.js}"></script>
 	<script href="/assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js"
-	        th:src="@{/assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js}"></script>
+			th:src="@{/assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js}"></script>
 	<script href="/assets/libs/jquery-minicolors/jquery.minicolors.min.js"
-	        th:src="@{/assets/libs/jquery-minicolors/jquery.minicolors.min.js}"></script>
+			th:src="@{/assets/libs/jquery-minicolors/jquery.minicolors.min.js}"></script>
 	<script href="/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"
-	        th:src="@{/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js}"></script>
+			th:src="@{/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js}"></script>
 	<script href="/assets/libs/quill/dist/quill.min.js" th:src="@{/assets/libs/quill/dist/quill.min.js}"></script>
 
 	<script href="/assets/libs/jquery-validation/dist/jquery.validate.min.js"
-	        th:src="@{/assets/libs/jquery-validation/dist/jquery.validate.min.js}"></script>
+			th:src="@{/assets/libs/jquery-validation/dist/jquery.validate.min.js}"></script>
 	<script href="/assets/libs/jquery-validation/dist/additional-methods.js"
-	        th:src="@{/assets/libs/jquery-validation/dist/additional-methods.js}"></script>
+			th:src="@{/assets/libs/jquery-validation/dist/additional-methods.js}"></script>
 	<script href="/js/jquery-common.js" th:src="@{/js/jquery-common.js}"></script>
 
 	<script href="/dext5editor/js/dext5editor.js"
 			th:src="@{/dext5editor/js/dext5editor.js}"></script>
 	<script th:inline="javascript">
-    $(function () {
-          $("#datepicker-autoclose").datepicker({
-            format:'yyyy-mm-dd',
-			language: 'kr',
-            autoclose: true,
-            todayHighlight: true,
-          });
+		$(function () {
+			$("#datepicker-autoclose").datepicker({
+				format:'yyyy-mm-dd',
+				language: 'kr',
+				autoclose: true,
+				todayHighlight: true,
+			});
 
 
 
-          $("#input_file").on("change", fileCheck);
+			$("#input_file").on("change", fileCheck);
 
-		//좌측 메뉴 활성화
-		$(".sidebar-link").each(function(){
-			if($(this).attr("href").indexOf("qnaList") > 0){
-				$(this).closest('li').addClass("selected");
-				return false;
-			}
+			//좌측 메뉴 활성화
+			$(".sidebar-link").each(function(){
+				if($(this).attr("href").indexOf("qnaList") > 0){
+					$(this).closest('li').addClass("selected");
+					return false;
+				}
+			});
+
+
+			$("#is_form").validate({
+				ignore: "",
+				rules: {
+					answerTitle: {required:function(elements){
+							var val = elements.value;
+							val = val.replace(/^\s+|\s+$/g, '');
+							elements.value = val;
+							if(val.length == 0){
+								$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+								return true;
+							}else{
+								$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+								return false;
+							}
+						}}
+					,answerContents : {required:function(elements){
+							var val = elements.value;
+							val = val.replace(/^\s+|\s+$/g, '');
+							elements.value = val;
+							if(val.length == 0){
+								return true;
+							}else{
+								return false;
+							}
+						}}
+				},
+
+				messages: {
+					answerTitle: {required:"답변제목을 입력하세요."}
+					,answerContents : {required:"답변내용 입력하세요."}
+				},
+				errorPlacement: function(error, element) {
+
+				}
+			});
+
 		});
 
 
-		$("#is_form").validate({
-			ignore: "",
-			rules: {
-				answerTitle: {required:true}
-				,answerContents : {required:true}
-			},
 
-			messages: {
-				answerTitle: {required:"답변제목을 입력하세요."}
-				,answerContents : {required:"답변내용 입력하세요."}
-			},
-			errorPlacement: function(error, element) {
 
+		// 파일 현재 필드 숫자 totalCount랑 비교값
+		var fileCount = 0;
+		// 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
+		var totalCount = 10;
+		// 파일 고유넘버
+		var fileNum = 0;
+		// 첨부파일 배열
+		var content_files = [];
+		var delete_files = [];
+
+		function fileCheck(e) {
+			var files = e.target.files;
+
+			// 파일 배열 담기
+			var filesArr = Array.prototype.slice.call(files);
+
+			// 파일 개수 확인 및 제한
+			if (fileCount + filesArr.length > totalCount) {
+				$.alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
+				return;
+			} else {
+				fileCount = fileCount + filesArr.length;
 			}
-		});
 
-    });
+			// 각각의 파일 배열담기 및 기타
+			filesArr.forEach(function (f) {
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					content_files.push(f);
+					$('#articlefileChange').append(
+							'<div id="file' + fileNum + '" onclick="fileDelete(\'file' + fileNum + '\')">'
+							+ '<font style="font-size:12px">' + f.name + '</font>'
+							+ '<i class="me-2 mdi mdi-minus"></i>'
+							+ ''
+					);
+					fileNum ++;
+				};
+				reader.readAsDataURL(f);
+			});
 
+			//초기화 한다.
+			$("#input_file").val("");
+		}
 
+		// 파일 부분 삭제 함수
+		function fileDelete(fileNum){
+			var no = fileNum.replace(/[^0-9]/g, "");
+			content_files[no].is_delete = true;
+			$('#' + fileNum).remove();
+			fileCount --;
+		}
 
+		function removeContent(fildId){
+			console.log('fild',fildId);
+			delete_files.push(fildId);
+			$("#dbfile"+fildId).remove();
+		}
 
-    // 파일 현재 필드 숫자 totalCount랑 비교값
-    var fileCount = 0;
-    // 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
-    var totalCount = 10;
-    // 파일 고유넘버
-    var fileNum = 0;
-    // 첨부파일 배열
-    var content_files = [];
-    var delete_files = [];
-
-    function fileCheck(e) {
-        var files = e.target.files;
-
-        // 파일 배열 담기
-        var filesArr = Array.prototype.slice.call(files);
-
-        // 파일 개수 확인 및 제한
-        if (fileCount + filesArr.length > totalCount) {
-          $.alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
-          return;
-        } else {
-             fileCount = fileCount + filesArr.length;
-        }
-
-        // 각각의 파일 배열담기 및 기타
-        filesArr.forEach(function (f) {
-          var reader = new FileReader();
-          reader.onload = function (e) {
-            content_files.push(f);
-            $('#articlefileChange').append(
-                '<div id="file' + fileNum + '" onclick="fileDelete(\'file' + fileNum + '\')">'
-                + '<font style="font-size:12px">' + f.name + '</font>'
-                + '<i class="me-2 mdi mdi-minus"></i>'
-                + ''
-            );
-            fileNum ++;
-          };
-          reader.readAsDataURL(f);
-        });
-
-        //초기화 한다.
-        $("#input_file").val("");
-      }
-
-    // 파일 부분 삭제 함수
-    function fileDelete(fileNum){
-        var no = fileNum.replace(/[^0-9]/g, "");
-        content_files[no].is_delete = true;
-        $('#' + fileNum).remove();
-        fileCount --;
-    }
-
-	function removeContent(fildId){
-		console.log('fild',fildId);
-		delete_files.push(fildId);
-		$("#dbfile"+fildId).remove();
-	}
-
-    /*
-     * 폼 submit 로직
-     */
-        function registerAction(){
+		/*
+         * 폼 submit 로직
+         */
+		function registerAction(){
 
 			if(!$('#is_form').valid()){
 				return false;
 			}
 
-        var form = $("#is_form")[0];
-        var formData = new FormData(form);
+			var form = $("#is_form")[0];
+			var formData = new FormData(form);
 
-            for (var x = 0; x < content_files.length; x++) {
-                // 삭제 안한것만 담아 준다.
-                if(!content_files[x].is_delete){
-                     formData.append("file", content_files[x]);
-                }
-            }
+			for (var x = 0; x < content_files.length; x++) {
+				// 삭제 안한것만 담아 준다.
+				if(!content_files[x].is_delete){
+					formData.append("file", content_files[x]);
+				}
+			}
 
 			for(var y = 0; y<delete_files.length; y++){
 				formData.append("deletefilenum", delete_files[y]);
 			}
 
 
-       /*
-       * 파일업로드 multiple ajax처리
-       */
-        $.ajax({
-              type: "POST",
-              url: "/qnaEditProcess",
-              data : formData,
-			  cache:false,
-              processData: false,
-              contentType: false,
-              success: function (data) {
-				console.log('data',data);
-				alert("답변이 저장되었습니다.");
-				location.href="/qnaList";
-              },
-              error: function (xhr, status, error) {
-                alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
-             return false;
-              }
-            });
-            return false;
-        }
+			/*
+            * 파일업로드 multiple ajax처리
+            */
+			$.ajax({
+				type: "POST",
+				url: "/qnaEditProcess",
+				data : formData,
+				cache:false,
+				processData: false,
+				contentType: false,
+				success: function (data) {
+					console.log('data',data);
+					alert("답변이 저장되었습니다.");
+					location.href="/qnaList";
+				},
+				error: function (xhr, status, error) {
+					alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
+					return false;
+				}
+			});
+			return false;
+		}
 
-	function listAction(){
-		location.href='/qnaList';
-	}
-
-	function cancelAction(){
-		var msg = "등록";
-		/*[# th:if="${obj.answerDate == null}"]*/
-		msg = "등록";
-		/*[/]*/
-		/*[# th:if="${obj.answerDate != null}"]*/
-		msg = "수정";
-		/*[/]*/
-		if(confirm(msg+"을 취소하시겠습니까?")){
+		function listAction(){
 			location.href='/qnaList';
 		}
-	}
+
+		function cancelAction(){
+			var msg = "등록";
+			/*[# th:if="${obj.answerDate == null}"]*/
+			msg = "등록";
+			/*[/]*/
+			/*[# th:if="${obj.answerDate != null}"]*/
+			msg = "수정";
+			/*[/]*/
+			if(confirm(msg+"을 취소하시겠습니까?")){
+				location.href='/qnaList';
+			}
+		}
 	</script>
 </head>
 
@@ -231,8 +251,8 @@
 			<div class="col-md-12">
 				<div class="card">
 					<form class="form-horizontal" id="is_form" method="post" enctype="multipart/form-data"
-					      name="is_form"
-					      th:object="${obj}">
+						  name="is_form"
+						  th:object="${obj}">
 						<input type="hidden" name="id" th:value="*{id}"/>
 						<input type="hidden" name="qnaCate" th:value="*{qnaCate}"/>
 						<input type="hidden" name="userName" th:value="*{userName}"/>
@@ -344,7 +364,7 @@
 									목록
 								</button>
 								<button class="btn btn-success text-white" onclick="registerAction();"
-								        type="button">
+										type="button">
 									<th:block th:if="*{answerDate == null}" th:text="등록"></th:block>
 									<th:block th:if="*{answerDate != null}" th:text="수정"></th:block>
 								</button>

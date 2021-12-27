@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko"
-      layout:decorate="~{layout/default_layout}"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+	  layout:decorate="~{layout/default_layout}"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:th="http://www.thymeleaf.org">
 <head>
 	<!-- Custom CSS -->
 	<link
@@ -25,24 +25,24 @@
 	/>
 	<!-- This Page JS -->
 	<script href="/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"
-	        th:src="@{/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
+			th:src="@{/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
 	<script href="/dist/js/pages/mask/mask.init.js" th:src="@{/dist/js/pages/mask/mask.init.js}"></script>
 	<script href="/assets/libs/jquery-asColor/dist/jquery-asColor.min.js"
-	        th:src="@{/assets/libs/jquery-asColor/dist/jquery-asColor.min.js}"></script>
+			th:src="@{/assets/libs/jquery-asColor/dist/jquery-asColor.min.js}"></script>
 	<script href="/assets/libs/jquery-asGradient/dist/jquery-asGradient.js"
-	        th:src="@{/assets/libs/jquery-asGradient/dist/jquery-asGradient.js}"></script>
+			th:src="@{/assets/libs/jquery-asGradient/dist/jquery-asGradient.js}"></script>
 	<script href="/assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js"
-	        th:src="@{/assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js}"></script>
+			th:src="@{/assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js}"></script>
 	<script href="/assets/libs/jquery-minicolors/jquery.minicolors.min.js"
-	        th:src="@{/assets/libs/jquery-minicolors/jquery.minicolors.min.js}"></script>
+			th:src="@{/assets/libs/jquery-minicolors/jquery.minicolors.min.js}"></script>
 	<script href="/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"
-	        th:src="@{/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js}"></script>
+			th:src="@{/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js}"></script>
 	<script href="/assets/libs/quill/dist/quill.min.js" th:src="@{/assets/libs/quill/dist/quill.min.js}"></script>
 
 	<script href="/assets/libs/jquery-validation/dist/jquery.validate.min.js"
-	        th:src="@{/assets/libs/jquery-validation/dist/jquery.validate.min.js}"></script>
+			th:src="@{/assets/libs/jquery-validation/dist/jquery.validate.min.js}"></script>
 	<script href="/assets/libs/jquery-validation/dist/additional-methods.js"
-	        th:src="@{/assets/libs/jquery-validation/dist/additional-methods.js}"></script>
+			th:src="@{/assets/libs/jquery-validation/dist/additional-methods.js}"></script>
 
 	<script href="/js/jquery-common.js" th:src="@{/js/jquery-common.js}"></script>
 	<script href="/dext5editor/js/dext5editor.js"
@@ -51,15 +51,15 @@
 		.form-group.required .control-label:after { content:"*";color:red; }
 	</style>
 	<script th:inline="javascript">
-    $(function () {
+		$(function () {
 
 
-          $("#datepicker-autoclose1").datepicker({
-            format:'yyyy-mm-dd',
-			language: 'kr',
-            autoclose: true,
-            todayHighlight: true,
-          });
+			$("#datepicker-autoclose1").datepicker({
+				format:'yyyy-mm-dd',
+				language: 'kr',
+				autoclose: true,
+				todayHighlight: true,
+			});
 
 			$("#datepicker-autoclose2").datepicker({
 				format:'yyyy-mm-dd',
@@ -69,252 +69,252 @@
 			});
 
 
-          $("#input_file").on("change", fileCheck);
+			$("#input_file").on("change", fileCheck);
 
-		//좌측 메뉴 활성화
-		$(".sidebar-link").each(function(){
-			if($(this).attr("href").indexOf("mainpopList") > 0){
-				$(this).addClass("active");
-				$(this).closest('li').addClass("active");
-				$(this).closest('li').closest('ul').addClass("in");
-				$(this).closest('li').closest('ul').prev().addClass("active");
-				$(this).closest('li').closest('ul').closest('li').addClass('selected');
+			//좌측 메뉴 활성화
+			$(".sidebar-link").each(function(){
+				if($(this).attr("href").indexOf("mainpopList") > 0){
+					$(this).addClass("active");
+					$(this).closest('li').addClass("active");
+					$(this).closest('li').closest('ul').addClass("in");
+					$(this).closest('li').closest('ul').prev().addClass("active");
+					$(this).closest('li').closest('ul').closest('li').addClass('selected');
+					return false;
+				}
+			});
+
+			$('#title').keyup(function (e){
+				var content = $(this).val();
+				$('#counter').html("("+content.length+" / 최대 100자)");    //글자수 실시간 카운팅
+				if (content.length > 100){
+					alert("최대 100자까지 입력 가능합니다.");
+					$(this).val(content.substring(0, 100));
+					$('#counter').html("(100 / 최대 100자)");
+				}
+			});
+
+			$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+
+			$("#is_form").validate({
+				ignore: "",
+				rules: {
+					dispYn: {required:true},
+					langKoYn: {required:true},
+					title: {required:function(elements){
+							var val = elements.value;
+							val = val.replace(/^\s+|\s+$/g, '');
+							elements.value = val;
+							if(val.length == 0){
+								$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+								return true;
+							}else{
+								$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+								return false;
+							}
+						}},
+					popImgCheck: {
+						required: function(element){
+							return element.value == '';
+						}
+						,extension2: 'png|jpg'
+						,filesize : 2097152
+					},
+					widthPoint: {num:true},
+					heightPoint: {num:true},
+					dispStartDay: {required:true},
+					dispStartTime: {required:true},
+					dispEndDay: {required:true},
+					dispEndTime: {required:true}
+				},
+
+				messages: {
+					dispYn: {required:"전시여부를 선택해주세요."},
+					langKoYn: {required:"언어구분을 선택해주세요."},
+					title: {required:"제목을 입력해주세요."},
+					popImgCheck: {required: "팝업이미지를 선택해주세요.",extension2: "팝업이미지는 png, jpg만 업로드 가능합니다.",filesize: "팝업이미지는 2MB이하만 업로드 가능합니다."},
+					widthPoint: {num:"숫자만 입력가능합니다."},
+					heightPoint: {num:"숫자만 입력가능합니다."},
+					dispStartDay: {required:"전시시작일을 입력해주세요."},
+					dispStartTime: {required:"전시시작시간을 입력해주세요."},
+					dispEndDay: {required:"정시종료일을 입력해주세요."},
+					dispEndTime: {required:"전시종료시간을 입력해주세요."}
+				},
+				errorPlacement: function(error, element) {
+
+				}
+			});
+		});
+
+
+
+
+		// 파일 현재 필드 숫자 totalCount랑 비교값
+		var fileCount = $('#articlefileChange').children().length;
+		// 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
+		var totalCount = 1;
+		// 파일 고유넘버
+		var fileNum = 0;
+		// 첨부파일 배열
+		var content_files = [];
+		var delete_files = [];
+
+		function fileCheck(e) {
+			var files = e.target.files;
+
+			// 파일 배열 담기
+			var filesArr = Array.prototype.slice.call(files);
+
+			fileCount = $('#articlefileChange').children().length;
+			// 파일 개수 확인 및 제한
+			if (fileCount + filesArr.length > totalCount) {
+				alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
+				return;
+			} else {
+				fileCount = fileCount + filesArr.length;
+			}
+
+			// 각각의 파일 배열담기 및 기타
+			filesArr.forEach(function (f) {
+				var name = f.name;
+				var ext = f.name.split('.').pop().toLowerCase();
+				var size = f.size;
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					content_files = [];
+					content_files.push(f);
+					$("#popImgCheck").val(name);
+					$("#popImgCheck").attr('data-ext',ext);
+					$("#popImgCheck").attr('data-size',size);
+					$('#articlefileChange').append(
+							'<div id="file' + fileNum + '" width="100" hight="100" onclick="fileDelete(\'file' + fileNum + '\')">'
+							+ '<img src="' + e.target.result + '" alt="">'
+							+ '<i class="me-2 mdi mdi-minus"></i>'
+							+ '<br/>'
+							+ '<font style="font-size:12px">' + f.name + '</font>'
+							+ '</div>'
+					);
+					fileNum ++;
+				};
+				reader.readAsDataURL(f);
+			});
+
+			//초기화 한다.
+			$("#input_file").val("");
+		}
+
+		// 파일 부분 삭제 함수
+		function fileDelete(fileNum){
+			var no = fileNum.replace(/[^0-9]/g, "");
+			content_files = [];
+			$('#' + fileNum).remove();
+
+			$("#popImgCheck").val('');
+			$("#popImgCheck").attr('data-ext','');
+			$("#popImgCheck").attr('data-size','');
+
+			fileCount --;
+		}
+
+		function removeContent(fildId){
+			console.log('fild',fildId);
+			delete_files.push(fildId);
+			$("#dbfile1").remove();
+
+			$("#popImgCheck").val('');
+			$("#popImgCheck").attr('data-ext','');
+			$("#popImgCheck").attr('data-size','');
+
+			content_files = [];
+
+			fileCount --;
+		}
+
+		/*
+         * 폼 submit 로직
+         */
+		function registerAction(){
+
+			if(!$("#is_form").valid()){
 				return false;
 			}
-		});
 
-		$('#title').keyup(function (e){
-			var content = $(this).val();
-			$('#counter').html("("+content.length+" / 최대 100자)");    //글자수 실시간 카운팅
-			if (content.length > 100){
-				alert("최대 100자까지 입력 가능합니다.");
-				$(this).val(content.substring(0, 100));
-				$('#counter').html("(100 / 최대 100자)");
+			var form = $("#is_form")[0];
+			var formData = new FormData(form);
+
+			for (var x = 0; x < content_files.length; x++) {
+				formData.append("file", content_files[x]);
 			}
-		});
 
-		$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+			for(var y = 0; y<delete_files.length; y++){
+				formData.append("deletefilenum", delete_files[y]);
+			}
 
-		$("#is_form").validate({
-			ignore: "",
-			rules: {
-				dispYn: {required:true},
-				langKoYn: {required:true},
-				title: {required:function(elements){
-						var val = elements.value;
-						val = val.replace(/^\s+|\s+$/g, '');
-						elements.value = val;
-						if(val.length == 0){
-							$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
-							return true;
-						}else{
-							$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
-							return false;
-						}
-					}},
-				popImgCheck: {
-					required: function(element){
-						return element.value == '';
-					}
-					,extension2: 'png|jpg'
-					,filesize : 2097152
+
+			/*
+            * 파일업로드 multiple ajax처리
+            */
+			$.ajax({
+				type: "POST",
+				url: "/mainpopEditProcess",
+				data : formData,
+				cache:false,
+				processData: false,
+				contentType: false,
+				success: function (data) {
+					console.log('data',data);
+					alert("메인팝업이 저장되었습니다.");
+					//location.reload();
+					location.href="/mainpopList";
 				},
-				widthPoint: {num:true},
-				heightPoint: {num:true},
-				dispStartDay: {required:true},
-				dispStartTime: {required:true},
-				dispEndDay: {required:true},
-				dispEndTime: {required:true}
-			},
-
-			messages: {
-				dispYn: {required:"전시여부를 선택해주세요."},
-				langKoYn: {required:"언어구분을 선택해주세요."},
-				title: {required:"제목을 입력해주세요."},
-				popImgCheck: {required: "팝업이미지를 선택해주세요.",extension2: "팝업이미지는 png, jpg만 업로드 가능합니다.",filesize: "팝업이미지는 2MB이하만 업로드 가능합니다."},
-				widthPoint: {num:"숫자만 입력가능합니다."},
-				heightPoint: {num:"숫자만 입력가능합니다."},
-				dispStartDay: {required:"전시시작일을 입력해주세요."},
-				dispStartTime: {required:"전시시작시간을 입력해주세요."},
-				dispEndDay: {required:"정시종료일을 입력해주세요."},
-				dispEndTime: {required:"전시종료시간을 입력해주세요."}
-			},
-			errorPlacement: function(error, element) {
-
-			}
-		});
-    });
-
-
-
-
-    // 파일 현재 필드 숫자 totalCount랑 비교값
-    var fileCount = $('#articlefileChange').children().length;
-    // 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
-    var totalCount = 1;
-    // 파일 고유넘버
-    var fileNum = 0;
-    // 첨부파일 배열
-    var content_files = [];
-    var delete_files = [];
-
-    function fileCheck(e) {
-        var files = e.target.files;
-
-        // 파일 배열 담기
-        var filesArr = Array.prototype.slice.call(files);
-
-		fileCount = $('#articlefileChange').children().length;
-        // 파일 개수 확인 및 제한
-        if (fileCount + filesArr.length > totalCount) {
-          alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
-          return;
-        } else {
-             fileCount = fileCount + filesArr.length;
-        }
-
-        // 각각의 파일 배열담기 및 기타
-        filesArr.forEach(function (f) {
-			var name = f.name;
-			var ext = f.name.split('.').pop().toLowerCase();
-			var size = f.size;
-			var reader = new FileReader();
-			reader.onload = function (e) {
-				content_files = [];
-				content_files.push(f);
-				  $("#popImgCheck").val(name);
-				  $("#popImgCheck").attr('data-ext',ext);
-				  $("#popImgCheck").attr('data-size',size);
-				$('#articlefileChange').append(
-					'<div id="file' + fileNum + '" width="100" hight="100" onclick="fileDelete(\'file' + fileNum + '\')">'
-					+ '<img src="' + e.target.result + '" alt="">'
-					+ '<i class="me-2 mdi mdi-minus"></i>'
-						+ '<br/>'
-						+ '<font style="font-size:12px">' + f.name + '</font>'
-					+ '</div>'
-				);
-				fileNum ++;
-			};
-			reader.readAsDataURL(f);
-        });
-
-        //초기화 한다.
-        $("#input_file").val("");
-      }
-
-    // 파일 부분 삭제 함수
-    function fileDelete(fileNum){
-        var no = fileNum.replace(/[^0-9]/g, "");
-		content_files = [];
-        $('#' + fileNum).remove();
-
-		$("#popImgCheck").val('');
-		$("#popImgCheck").attr('data-ext','');
-		$("#popImgCheck").attr('data-size','');
-
-        fileCount --;
-    }
-
-	function removeContent(fildId){
-		console.log('fild',fildId);
-		delete_files.push(fildId);
-		$("#dbfile1").remove();
-
-		$("#popImgCheck").val('');
-		$("#popImgCheck").attr('data-ext','');
-		$("#popImgCheck").attr('data-size','');
-
-		content_files = [];
-
-		fileCount --;
-	}
-
-    /*
-     * 폼 submit 로직
-     */
-	function registerAction(){
-
-		if(!$("#is_form").valid()){
+				error: function (xhr, status, error) {
+					alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
+					return false;
+				}
+			});
 			return false;
 		}
 
-		var form = $("#is_form")[0];
-		var formData = new FormData(form);
-
-		for (var x = 0; x < content_files.length; x++) {
-			formData.append("file", content_files[x]);
-		}
-
-		for(var y = 0; y<delete_files.length; y++){
-			formData.append("deletefilenum", delete_files[y]);
-		}
-
-
-   /*
-   * 파일업로드 multiple ajax처리
-   */
-	$.ajax({
-		  type: "POST",
-		  url: "/mainpopEditProcess",
-		  data : formData,
-		  cache:false,
-		  processData: false,
-		  contentType: false,
-		  success: function (data) {
-			console.log('data',data);
-			alert("메인팝업이 저장되었습니다.");
-			//location.reload();
-			  location.href="/mainpopList";
-		  },
-		  error: function (xhr, status, error) {
-			alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
-		 return false;
-		  }
-		});
-		return false;
-	}
-
-	function listAction(){
-		location.href='/mainpopList';
-	}
-
-	function cancelAction(){
-		var msg = "등록";
-		/*[# th:if="${mainpop.id == null}"]*/
-		msg = "등록";
-		/*[/]*/
-		/*[# th:if="${mainpop.id != null}"]*/
-		msg = "수정";
-		/*[/]*/
-		if(confirm(msg+"을 취소하시겠습니까?")){
+		function listAction(){
 			location.href='/mainpopList';
 		}
-	}
 
-	function deleteAction(id){
-		if(confirm("삭제하시겠습니까?")){
-			var obj=[];
-			obj.push(id);
-			var url="/mainpopDelete";
-			$.ajax({
-				type : 'POST'
-				, async : true
-				, beforeSend : function (jqXHR, settings) {
-				}
-				, url : url //for ASP.NET, java
-				, data : 'deleteList='+obj
-				, success : function (changes) {
-					//debugger;
-
-					if(changes.success == true){
-						location.href="/mainpopList";
-					}
-				}
-				, complete : function (changes) {
-				}
-			});
+		function cancelAction(){
+			var msg = "등록";
+			/*[# th:if="${mainpop.id == null}"]*/
+			msg = "등록";
+			/*[/]*/
+			/*[# th:if="${mainpop.id != null}"]*/
+			msg = "수정";
+			/*[/]*/
+			if(confirm(msg+"을 취소하시겠습니까?")){
+				location.href='/mainpopList';
+			}
 		}
-	}
+
+		function deleteAction(id){
+			if(confirm("삭제하시겠습니까?")){
+				var obj=[];
+				obj.push(id);
+				var url="/mainpopDelete";
+				$.ajax({
+					type : 'POST'
+					, async : true
+					, beforeSend : function (jqXHR, settings) {
+					}
+					, url : url //for ASP.NET, java
+					, data : 'deleteList='+obj
+					, success : function (changes) {
+						//debugger;
+
+						if(changes.success == true){
+							location.href="/mainpopList";
+						}
+					}
+					, complete : function (changes) {
+					}
+				});
+			}
+		}
 
 	</script>
 </head>
@@ -333,8 +333,8 @@
 			<div class="col-md-12">
 				<div class="card">
 					<form class="form-horizontal" id="is_form" method="post" enctype="multipart/form-data"
-					      name="is_form"
-					      th:object="${mainpop}">
+						  name="is_form"
+						  th:object="${mainpop}">
 						<input type="hidden" name="id" th:value="*{id}"/>
 						<div class="card-body">
 							<h4 class="card-title">메인팝업 <th:block th:if="*{id == null}" th:text="등록"></th:block><th:block th:if="*{id != null}" th:text="수정"></th:block></h4>
@@ -342,20 +342,20 @@
 								<label class="col-md-1 control-label">전시여부</label>
 								<div class="col-md-3">
 									<th:block th:if="*{id != null}">
-									<div class="form-check">
-										<input class="form-check-input" id="dispYn1" name="dispYn" 
-										       th:checked="dispYn == 'Y'"
-										       th:field="*{dispYn}"
-										       type="radio" value="Y">
-										<label class="form-check-label mb-0" for="dispYn1">전시</label>
-									</div>
-									<div class="form-check">
-										<input class="form-check-input" id="dispYn2" name="dispYn" 
-										       th:checked="dispYn == 'N'"
-										       th:field="*{dispYn}"
-										       type="radio" value="N">
-										<label class="form-check-label mb-0" for="dispYn2">미전시</label>
-									</div>
+										<div class="form-check">
+											<input class="form-check-input" id="dispYn1" name="dispYn"
+												   th:checked="dispYn == 'Y'"
+												   th:field="*{dispYn}"
+												   type="radio" value="Y">
+											<label class="form-check-label mb-0" for="dispYn1">전시</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" id="dispYn2" name="dispYn"
+												   th:checked="dispYn == 'N'"
+												   th:field="*{dispYn}"
+												   type="radio" value="N">
+											<label class="form-check-label mb-0" for="dispYn2">미전시</label>
+										</div>
 									</th:block>
 									<th:block th:if="*{id == null}">
 										<div class="form-check">
@@ -639,7 +639,7 @@
 									목록
 								</button>
 								<button class="btn btn-success text-white" onclick="registerAction();"
-								        type="button">
+										type="button">
 									<th:block th:if="*{id == null}" th:text="등록"></th:block>
 									<th:block th:if="*{id != null}" th:text="수정"></th:block>
 								</button>

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko"
-      layout:decorate="~{layout/default_layout}"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+	  layout:decorate="~{layout/default_layout}"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:th="http://www.thymeleaf.org">
 <head>
 	<!-- Custom CSS -->
 	<link
@@ -34,509 +34,528 @@
 	</style>
 	<!-- This Page JS -->
 	<script href="/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"
-	        th:src="@{/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
+			th:src="@{/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
 	<script href="/dist/js/pages/mask/mask.init.js" th:src="@{/dist/js/pages/mask/mask.init.js}"></script>
 	<script href="/assets/libs/select2/dist/js/select2.full.min.js"
-	        th:src="@{/assets/libs/select2/dist/js/select2.full.min.js}"></script>
+			th:src="@{/assets/libs/select2/dist/js/select2.full.min.js}"></script>
 	<script href="/assets/libs/select2/dist/js/select2.min.js"
-	        th:src="@{/assets/libs/select2/dist/js/select2.min.js}"></script>
+			th:src="@{/assets/libs/select2/dist/js/select2.min.js}"></script>
 	<script href="/assets/libs/jquery-asColor/dist/jquery-asColor.min.js"
-	        th:src="@{/assets/libs/jquery-asColor/dist/jquery-asColor.min.js}"></script>
+			th:src="@{/assets/libs/jquery-asColor/dist/jquery-asColor.min.js}"></script>
 	<script href="/assets/libs/jquery-asGradient/dist/jquery-asGradient.js"
-	        th:src="@{/assets/libs/jquery-asGradient/dist/jquery-asGradient.js}"></script>
+			th:src="@{/assets/libs/jquery-asGradient/dist/jquery-asGradient.js}"></script>
 	<script href="/assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js"
-	        th:src="@{/assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js}"></script>
+			th:src="@{/assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js}"></script>
 	<script href="/assets/libs/jquery-minicolors/jquery.minicolors.min.js"
-	        th:src="@{/assets/libs/jquery-minicolors/jquery.minicolors.min.js}"></script>
+			th:src="@{/assets/libs/jquery-minicolors/jquery.minicolors.min.js}"></script>
 	<script href="/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"
-	        th:src="@{/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js}"></script>
+			th:src="@{/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js}"></script>
 	<script href="/assets/libs/quill/dist/quill.min.js" th:src="@{/assets/libs/quill/dist/quill.min.js}"></script>
 
 	<script href="/assets/libs/jquery-validation/dist/jquery.validate.min.js"
-	        th:src="@{/assets/libs/jquery-validation/dist/jquery.validate.min.js}"></script>
+			th:src="@{/assets/libs/jquery-validation/dist/jquery.validate.min.js}"></script>
 	<script href="/assets/libs/jquery-validation/dist/additional-methods.js"
-	        th:src="@{/assets/libs/jquery-validation/dist/additional-methods.js}"></script>
+			th:src="@{/assets/libs/jquery-validation/dist/additional-methods.js}"></script>
 
 	<script href="/js/jquery-common.js" th:src="@{/js/jquery-common.js}"></script>
 	<script href="/dext5editor/js/dext5editor.js"
 			th:src="@{/dext5editor/js/dext5editor.js}"></script>
 	<script th:inline="javascript">
-    $(function () {
-          $("#datepicker-autoclose").datepicker({
-            format:'yyyy-mm-dd',
-			language: 'kr',
-            autoclose: true,
-            todayHighlight: true,
-          });
+		$(function () {
+			$("#datepicker-autoclose").datepicker({
+				format:'yyyy-mm-dd',
+				language: 'kr',
+				autoclose: true,
+				todayHighlight: true,
+			});
 
-          $(".select2").select2();
+			$(".select2").select2();
 
-          $("#input_file").on("change", fileCheck);
-		  $("#moinput_file").on("change", mofileCheck);
-		  $("#mvinput_file").on("change", mvfileCheck);
+			$("#input_file").on("change", fileCheck);
+			$("#moinput_file").on("change", mofileCheck);
+			$("#mvinput_file").on("change", mvfileCheck);
 
-		//좌측 메뉴 활성화
-		$(".sidebar-link").each(function(){
-			if($(this).attr("href").indexOf("mainvisualList") > 0){
-				$(this).addClass("active");
-				$(this).closest('li').addClass("active");
-				$(this).closest('li').closest('ul').addClass("in");
-				$(this).closest('li').closest('ul').prev().addClass("active");
-				$(this).closest('li').closest('ul').closest('li').addClass('selected');
-				return false;
-			}
-		});
+			//좌측 메뉴 활성화
+			$(".sidebar-link").each(function(){
+				if($(this).attr("href").indexOf("mainvisualList") > 0){
+					$(this).addClass("active");
+					$(this).closest('li').addClass("active");
+					$(this).closest('li').closest('ul').addClass("in");
+					$(this).closest('li').closest('ul').prev().addClass("active");
+					$(this).closest('li').closest('ul').closest('li').addClass('selected');
+					return false;
+				}
+			});
 
-		$("input[type=radio][name=type]").change(function(){
-			var cvalue = $("input[name='type']:checked").val();
-			if(cvalue == 'I'){
-				$("#pcImgFile").show();
-				$("#moImgFile").show();
-				$("#mvFileSelect").hide();
-				$("#mvFileInfo").hide();
-				$("#mvFileUrlInfo").hide();
-				$("#mvFileCheck").val('');
-				mvcontent_files = [];
-				$('#mvarticlefileChange').html('');
-				$("#videosUrl").val('');
+			$("input[type=radio][name=type]").change(function(){
+				var cvalue = $("input[name='type']:checked").val();
+				if(cvalue == 'I'){
+					$("#pcImgFile").show();
+					$("#moImgFile").show();
+					$("#mvFileSelect").hide();
+					$("#mvFileInfo").hide();
+					$("#mvFileUrlInfo").hide();
+					$("#mvFileCheck").val('');
+					mvcontent_files = [];
+					$('#mvarticlefileChange').html('');
+					$("#videosUrl").val('');
 
-				$("input[type=radio][name=videosWay]").prop('checked', false);
-			}else if(cvalue == 'M'){
-				$("#pcImgFile").hide();
-				$("#moImgFile").hide();
-				$("#mvFileSelect").show();
-				$("#pcImgCheck").val('');
-				content_files = [];
-				$('#articlefileChange').html('');
-				$("#moImgCheck").val('');
-				mocontent_files = [];
-				$('#moarticlefileChange').html('');
+					$("input[type=radio][name=videosWay]").prop('checked', false);
+				}else if(cvalue == 'M'){
+					$("#pcImgFile").hide();
+					$("#moImgFile").hide();
+					$("#mvFileSelect").show();
+					$("#pcImgCheck").val('');
+					content_files = [];
+					$('#articlefileChange').html('');
+					$("#moImgCheck").val('');
+					mocontent_files = [];
+					$('#moarticlefileChange').html('');
 
-				//첫번째거 강제선택
-				// $("input[type=radio][name=videosWay][value=URL]").prop('checked', true);
-				// $("input[type=radio][name=videosWay]").trigger('change');
+					//첫번째거 강제선택
+					$("input[type=radio][name=videosWay][value=URL]").prop('checked', true);
+					$("input[type=radio][name=videosWay]").trigger('change');
 
-			}
-		});
+				}
+			});
 
-		$("input[type=radio][name=type]").trigger('change');
+			$("input[type=radio][name=type]").trigger('change');
 
-		$("input[type=radio][name=videosWay]").change(function(){
-			var cvalue = $("input[name='videosWay']:checked").val();
-			if(cvalue == 'URL'){
-				$("#mvFileUrlInfo").show();
-				$("#mvFileInfo").hide();
+			$("input[type=radio][name=videosWay]").change(function(){
+				var cvalue = $("input[name='videosWay']:checked").val();
+				if(cvalue == 'URL'){
+					$("#mvFileUrlInfo").show();
+					$("#mvFileInfo").hide();
 
-				mvcontent_files = [];
-                $('#mvarticlefileChange').html('');
+					mvcontent_files = [];
+					$('#mvarticlefileChange').html('');
 
-			}else if(cvalue == 'UPLOAD'){
-				$("#mvFileUrlInfo").hide();
-				$("#mvFileInfo").show();
+				}else if(cvalue == 'UPLOAD'){
+					$("#mvFileUrlInfo").hide();
+					$("#mvFileInfo").show();
 
-				$("#videosUrl").val('');
-			}
-		});
+					$("#videosUrl").val('');
+				}
+			});
 
-		$("input[type=radio][name=videosWay]").trigger('change');
+			$("input[type=radio][name=videosWay]").trigger('change');
 
-		$('#title').keyup(function (e){
-			var content = $(this).val();
-			$('#counter').html("("+content.length+" / 최대 100자)");    //글자수 실시간 카운팅
-			if (content.length > 100){
-				alert("최대 100자까지 입력 가능합니다.");
-				$(this).val(content.substring(0, 100));
-				$('#counter').html("(100 / 최대 100자)");
-			}
-		});
+			$('#title').keyup(function (e){
+				var content = $(this).val();
+				$('#counter').html("("+content.length+" / 최대 100자)");    //글자수 실시간 카운팅
+				if (content.length > 100){
+					alert("최대 100자까지 입력 가능합니다.");
+					$(this).val(content.substring(0, 100));
+					$('#counter').html("(100 / 최대 100자)");
+				}
+			});
 
-		$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+			$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
 
-		$('#topSubTxt').keyup(function (e){
-			var content = $(this).val();
-			$('#tcounter').html("("+content.length+" / 최대 100자)");    //글자수 실시간 카운팅
-			if (content.length > 100){
-				alert("최대 100자까지 입력 가능합니다.");
-				$(this).val(content.substring(0, 100));
-				$('#tcounter').html("(100 / 최대 100자)");
-			}
-		});
+			$('#topSubTxt').keyup(function (e){
+				var content = $(this).val();
+				$('#tcounter').html("("+content.length+" / 최대 100자)");    //글자수 실시간 카운팅
+				if (content.length > 100){
+					alert("최대 100자까지 입력 가능합니다.");
+					$(this).val(content.substring(0, 100));
+					$('#tcounter').html("(100 / 최대 100자)");
+				}
+			});
 
-		$('#tcounter').html("("+$("#topSubTxt").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+			$('#tcounter').html("("+$("#topSubTxt").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
 
-		$('#bottomMainTxt').keyup(function (e){
-			var content = $(this).val();
-			$('#bcounter').html("("+content.length+" / 최대 100자)");    //글자수 실시간 카운팅
-			if (content.length > 100){
-				alert("최대 100자까지 입력 가능합니다.");
-				$(this).val(content.substring(0, 100));
-				$('#bcounter').html("(100 / 최대 100자)");
-			}
-		});
+			$('#bottomMainTxt').keyup(function (e){
+				var content = $(this).val();
+				$('#bcounter').html("("+content.length+" / 최대 100자)");    //글자수 실시간 카운팅
+				if (content.length > 100){
+					alert("최대 100자까지 입력 가능합니다.");
+					$(this).val(content.substring(0, 100));
+					$('#bcounter').html("(100 / 최대 100자)");
+				}
+			});
 
-		$('#bcounter').html("("+$("#bottomMainTxt").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+			$('#bcounter').html("("+$("#bottomMainTxt").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
 
-		$("#is_form").validate({
-			ignore: "",
-			rules: {
-				dispYn: {required:true},
-				langKoYn: {required:true},
-				title: {required:true},
-				type: {required: true},
-				pcImgCheck: {
-					required: function(element){
-						return $("input[name='type']:checked").val() == 'I' && element.value == '';
-					}
-					,extension2: 'png|jpg'
-					,filesize : 2097152
+			$("#is_form").validate({
+				ignore: "",
+				rules: {
+					dispYn: {required:true},
+					langKoYn: {required:true},
+					title: {required:function(elements){
+							var val = elements.value;
+							val = val.replace(/^\s+|\s+$/g, '');
+							elements.value = val;
+							if(val.length == 0){
+								$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+								return true;
+							}else{
+								$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+								return false;
+							}
+						}},
+					type: {required: true},
+					pcImgCheck: {
+						required: function(element){
+							return $("input[name='type']:checked").val() == 'I' && element.value == '';
+						}
+						,extension2: 'png|jpg'
+						,filesize : 2097152
+					},
+					moImgCheck: {
+						required: function(element){
+							return $("input[name='type']:checked").val() == 'I' && element.value == '';
+						}
+						,extension2: 'png|jpg'
+						,filesize : 2097152
+					},
+					videosWay: {
+						required: function(element){
+							return $("input[name='type']:checked").val() == 'M';
+						}
+					},
+					videosUrl: {
+						required: function(element){
+
+							var val = element.value;
+							val = val.replace(/^\s+|\s+$/g, '');
+							element.value = val;
+							if($("input[name='type']:checked").val() == 'M' && $("input[name='videosWay']:checked").val() == 'URL' && val == ''){
+								return true;
+							}else{
+								return false;
+							}
+						}
+					},
+					mvFileCheck: {
+						required: function(element){
+							return $("input[name='type']:checked").val() == 'M' && $("input[name='videosWay']:checked").val() == 'UPLOAD' && element.value == '';
+						}
+						,extension2: 'mp4'
+						,filesize : 10485760
+					},
+					topSubTxt: {maxlength:100},
+					bottomMainTxt: {maxlength:100}
+
 				},
-				moImgCheck: {
-					required: function(element){
-						return $("input[name='type']:checked").val() == 'I' && element.value == '';
-					}
-					,extension2: 'png|jpg'
-					,filesize : 2097152
-				},
-				videosWay: {
-					required: function(element){
-						return $("input[name='type']:checked").val() == 'M';
-					}
-				},
-				videosUrl: {
-					required: function(element){
-						return $("input[name='type']:checked").val() == 'M' && $("input[name='videosWay']:checked").val() == 'URL' && element.value == '';
-					}
-				},
-				mvFileCheck: {
-					required: function(element){
-						return $("input[name='type']:checked").val() == 'M' && $("input[name='videosWay']:checked").val() == 'UPLOAD' && element.value == '';
-					}
-					,extension2: 'mp4'
-					,filesize : 10485760
-				},
-				topSubTxt: {maxlength:100},
-				bottomMainTxt: {maxlength:100}
 
-			},
+				messages: {
+					dispYn: {required:"전시여부를 선택해주세요."},
+					langKoYn: {required:"언어구분을 선택해주세요."},
+					title: {required:"제목을 입력해주세요."},
+					type: {required: "유형를 선택해주세요."},
+					pcImgCheck: {required: "pc이미지를 선택해주세요.",extension2: "pc이미지는 jpg,png만 업로드 가능합니다.",filesize: "pc이미지는 2MB이하만 업로드 가능합니다."},
+					moImgCheck: {required: "모바일이미지를 선택해주세요.",extension2: "모바일이미지는 jpg,png만 업로드 가능합니다.",filesize: "모바일이미지는 2MB이하만 업로드 가능합니다."},
+					videosWay: {required: "동영상선택을 선택해주세요."},
+					videosUrl: {required: "동영상 연결 url을 입력해주세요."},
+					mvFileCheck: {required: "동영상을 선택해주세요.",extension2: "동영상은 mp4만 업로드 가능합니다.", filesize: "동영상은 10MB이하만 업로드 가능합니다."},
+					topSubTxt: {maxlength:"최대 100글자까지 입력가능합니다."},
+					bottomMainTxt: {maxlength:"최대 100글자까지 입력가능합니다."}
+				},
+				errorPlacement: function(error, element) {
 
-            messages: {
-				dispYn: {required:"전시여부를 선택해주세요."},
-				langKoYn: {required:"언어구분을 선택해주세요."},
-				title: {required:"제목을 입력해주세요."},
-				type: {required: "유형를 선택해주세요."},
-				pcImgCheck: {required: "pc이미지를 선택해주세요.",extension2: "pc이미지는 jpg,png만 업로드 가능합니다.",filesize: "pc이미지는 2MB이하만 업로드 가능합니다."},
-				moImgCheck: {required: "모바일이미지를 선택해주세요.",extension2: "모바일이미지는 jpg,png만 업로드 가능합니다.",filesize: "모바일이미지는 2MB이하만 업로드 가능합니다."},
-				videosWay: {required: "동영상선택을 선택해주세요."},
-				videosUrl: {required: "동영상 연결 url을 입력해주세요."},
-				mvFileCheck: {required: "동영상을 선택해주세요.",extension2: "동영상은 mp4만 업로드 가능합니다.", filesize: "동영상은 10MB이하만 업로드 가능합니다."},
-				topSubTxt: {maxlength:"최대 100글자까지 입력가능합니다."},
-				bottomMainTxt: {maxlength:"최대 100글자까지 입력가능합니다."}
-			},
-			errorPlacement: function(error, element) {
+				}
+			});
 
-			}
 		});
 
-    });
 
 
 
+		/***********************pc이미지****************************/
+				// 파일 현재 필드 숫자 totalCount랑 비교값
+		var fileCount = $('#articlefileChange').children().length;
+		// 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
+		var totalCount = 1;
+		// 파일 고유넘버
+		var fileNum = 0;
+		// 첨부파일 배열
+		var content_files = [];
+		var delete_files = [];
 
-	/***********************pc이미지****************************/
-    // 파일 현재 필드 숫자 totalCount랑 비교값
-    var fileCount = $('#articlefileChange').children().length;
-    // 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
-    var totalCount = 1;
-    // 파일 고유넘버
-    var fileNum = 0;
-    // 첨부파일 배열
-    var content_files = [];
-    var delete_files = [];
+		function fileCheck(e) {
+			var files = e.target.files;
 
-    function fileCheck(e) {
-        var files = e.target.files;
+			// 파일 배열 담기
+			var filesArr = Array.prototype.slice.call(files);
 
-        // 파일 배열 담기
-        var filesArr = Array.prototype.slice.call(files);
-
-		fileCount = $('#articlefileChange').children().length;
-        // 파일 개수 확인 및 제한
-        if (fileCount + filesArr.length > totalCount) {
-          alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
-          return;
-        } else {
-             fileCount = fileCount + filesArr.length;
-        }
-
-        // 각각의 파일 배열담기 및 기타
-        filesArr.forEach(function (f) {
-		  var name = f.name;
-		  var ext = f.name.split('.').pop().toLowerCase();
-		  var size = f.size;
-          var reader = new FileReader();
-
-			if(size > 2097152){
-				alert("2MB이하의 jpg, png 파일만 업로드 할 수 있습니다.");
-				$("#input_file").val("");
-				return false;
+			fileCount = $('#articlefileChange').children().length;
+			// 파일 개수 확인 및 제한
+			if (fileCount + filesArr.length > totalCount) {
+				alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
+				return;
+			} else {
+				fileCount = fileCount + filesArr.length;
 			}
 
-			if("jpg|png".indexOf(ext) == -1){
-				alert("jpg, png 파일만 업로드 할 수 있습니다.");
-				$("#input_file").val("");
-				return false;
-			}
+			// 각각의 파일 배열담기 및 기타
+			filesArr.forEach(function (f) {
+				var name = f.name;
+				var ext = f.name.split('.').pop().toLowerCase();
+				var size = f.size;
+				var reader = new FileReader();
 
-          reader.onload = function (e) {
+				if(size > 2097152){
+					alert("2MB이하의 jpg, png 파일만 업로드 할 수 있습니다.");
+					$("#input_file").val("");
+					return false;
+				}
+
+				if("jpg|png".indexOf(ext) == -1){
+					alert("jpg, png 파일만 업로드 할 수 있습니다.");
+					$("#input_file").val("");
+					return false;
+				}
+
+				reader.onload = function (e) {
+					content_files = [];
+					content_files.push(f);
+					$("#pcImgCheck").val(name);
+					$("#pcImgCheck").attr('data-ext',ext);
+					$("#pcImgCheck").attr('data-size',size);
+					$('#articlefileChange').html(
+							'<div id="file' + fileNum + '" onclick="fileDelete(\'file' + fileNum + '\')">'
+							+ '<img src="' + e.target.result + '" width="200" height="200" alt="">'
+							+ '<i class="me-2 mdi mdi-minus"></i>'
+							+ '<br/>'
+							+ '<font style="font-size:12px">' + f.name + '</font>'
+							+ '</div>'
+					);
+					fileNum ++;
+				};
+				reader.readAsDataURL(f);
+			});
+
+			//초기화 한다.
+			$("#input_file").val("");
+		}
+
+		// 파일 부분 삭제 함수
+		function fileDelete(fileNum){
+			var no = fileNum.replace(/[^0-9]/g, "");
 			content_files = [];
-            content_files.push(f);
-			$("#pcImgCheck").val(name);
-			$("#pcImgCheck").attr('data-ext',ext);
-			$("#pcImgCheck").attr('data-size',size);
-            $('#articlefileChange').html(
-				 '<div id="file' + fileNum + '" onclick="fileDelete(\'file' + fileNum + '\')">'
-				+ '<img src="' + e.target.result + '" width="200" height="200" alt="">'
-                + '<i class="me-2 mdi mdi-minus"></i>'
-					+ '<br/>'
-					+ '<font style="font-size:12px">' + f.name + '</font>'
-                + '</div>'
-            );
-            fileNum ++;
-          };
-          reader.readAsDataURL(f);
-        });
+			//content_files[no].is_delete = true;
+			$('#' + fileNum).remove();
 
-        //초기화 한다.
-        $("#input_file").val("");
-      }
+			$("#pcImgCheck").val('');
+			$("#pcImgCheck").attr('data-ext','');
+			$("#pcImgCheck").attr('data-size','');
 
-    // 파일 부분 삭제 함수
-    function fileDelete(fileNum){
-        var no = fileNum.replace(/[^0-9]/g, "");
-		content_files = [];
-        //content_files[no].is_delete = true;
-        $('#' + fileNum).remove();
-
-		$("#pcImgCheck").val('');
-		$("#pcImgCheck").attr('data-ext','');
-		$("#pcImgCheck").attr('data-size','');
-
-        fileCount --;
-    }
-
-	function removeContent(fildId){
-		console.log('fild',fildId);
-		delete_files.push(fildId);
-		$("#dbfile1").remove();
-
-		$("#pcImgCheck").val('');
-		$("#pcImgCheck").attr('data-ext','');
-		$("#pcImgCheck").attr('data-size','');
-	}
-
-	/***********************pc이미지****************************/
-
-	/***********************mo이미지****************************/
-			// 파일 현재 필드 숫자 totalCount랑 비교값
-	var mofileCount = $('#moarticlefileChange').children().length;
-	// 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
-	var mototalCount = 1;
-	// 파일 고유넘버
-	var mofileNum = 0;
-	// 첨부파일 배열
-	var mocontent_files = [];
-	var modelete_files = [];
-
-	function mofileCheck(e) {
-		var files = e.target.files;
-
-		// 파일 배열 담기
-		var filesArr = Array.prototype.slice.call(files);
-
-		mofileCount = $('#moarticlefileChange').children().length;
-		// 파일 개수 확인 및 제한
-		if (mofileCount + filesArr.length > mototalCount) {
-			alert('파일은 최대 '+mototalCount+'개까지 업로드 할 수 있습니다.');
-			return;
-		} else {
-			mofileCount = mofileCount + filesArr.length;
+			fileCount --;
 		}
 
-		// 각각의 파일 배열담기 및 기타
-		filesArr.forEach(function (f) {
-			var name = f.name;
-			var ext = f.name.split('.').pop().toLowerCase();
-			var size = f.size;
-			var reader = new FileReader();
+		function removeContent(fildId){
+			console.log('fild',fildId);
+			delete_files.push(fildId);
+			$("#dbfile1").remove();
 
-			if(size > 2097152){
-				alert("2MB이하의 jpg, png 파일만 업로드 할 수 있습니다.");
-				$("#moinput_file").val("");
-				return false;
-			}
-
-			if("jpg|png".indexOf(ext) == -1){
-				alert("jpg, png 파일만 업로드 할 수 있습니다.");
-				$("#moinput_file").val("");
-				return false;
-			}
-
-			reader.onload = function (e) {
-				mocontent_files = [];
-				mocontent_files.push(f);
-				$("#moImgCheck").val(name);
-				$("#moImgCheck").attr('data-ext',ext);
-				$("#moImgCheck").attr('data-size',size);
-				$('#moarticlefileChange').html(
-						'<div id="mofile' + mofileNum + '" onclick="mofileDelete(\'mofile' + mofileNum + '\')">'
-						+ '<img src="' + e.target.result + '" width="200" height="200" alt="">'
-						+ '<i class="me-2 mdi mdi-minus"></i>'
-						+ '<br/>'
-						+ '<font style="font-size:12px">' + f.name + '</font>'
-						+ '</div>'
-				);
-				mofileNum ++;
-			};
-			reader.readAsDataURL(f);
-		});
-
-		//초기화 한다.
-		$("#moinput_file").val("");
-	}
-
-	// 파일 부분 삭제 함수
-	function mofileDelete(fileNum){
-		var no = fileNum.replace(/[^0-9]/g, "");
-		mocontent_files = [];
-		//mocontent_files[no].is_delete = true;
-		$('#' + fileNum).remove();
-
-		$("#moImgCheck").val('');
-		$("#moImgCheck").attr('data-ext','');
-		$("#moImgCheck").attr('data-size','');
-
-		mofileCount --;
-	}
-
-	function moremoveContent(fildId){
-		console.log('fild',fildId);
-		modelete_files.push(fildId);
-		$("#modbfile1").remove();
-
-		$("#moImgCheck").val('');
-		$("#moImgCheck").attr('data-ext','');
-		$("#moImgCheck").attr('data-size','');
-
-	}
-	/**********************mo이미지****************************/
-
-	/***********************mv파일****************************/
-			// 파일 현재 필드 숫자 totalCount랑 비교값
-	var mvfileCount = $('#mvarticlefileChange').children().length;
-	// 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
-	var mvtotalCount = 1;
-	// 파일 고유넘버
-	var mvfileNum = 0;
-	// 첨부파일 배열
-	var mvcontent_files = [];
-	var mvdelete_files = [];
-
-	function mvfileCheck(e) {
-		var files = e.target.files;
-
-		// 파일 배열 담기
-		var filesArr = Array.prototype.slice.call(files);
-
-		mvfileCount = $('#mvarticlefileChange').children().length;
-		// 파일 개수 확인 및 제한
-		if (mvfileCount + filesArr.length > mvtotalCount) {
-			alert('파일은 최대 '+mvtotalCount+'개까지 업로드 할 수 있습니다.');
-			return;
-		} else {
-			mvfileCount = mvfileCount + filesArr.length;
+			$("#pcImgCheck").val('');
+			$("#pcImgCheck").attr('data-ext','');
+			$("#pcImgCheck").attr('data-size','');
 		}
 
-		// 각각의 파일 배열담기 및 기타
-		filesArr.forEach(function (f) {
-			var name = f.name;
-			var ext = f.name.split('.').pop().toLowerCase();
-			var size = f.size;
-			var reader = new FileReader();
+		/***********************pc이미지****************************/
 
-			if(size > 10485760){
-				alert("10MB이하의 mp4 파일만 업로드 할 수 있습니다.");
-				$("#mvinput_file").val("");
-				return false;
+		/***********************mo이미지****************************/
+				// 파일 현재 필드 숫자 totalCount랑 비교값
+		var mofileCount = $('#moarticlefileChange').children().length;
+		// 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
+		var mototalCount = 1;
+		// 파일 고유넘버
+		var mofileNum = 0;
+		// 첨부파일 배열
+		var mocontent_files = [];
+		var modelete_files = [];
+
+		function mofileCheck(e) {
+			var files = e.target.files;
+
+			// 파일 배열 담기
+			var filesArr = Array.prototype.slice.call(files);
+
+			mofileCount = $('#moarticlefileChange').children().length;
+			// 파일 개수 확인 및 제한
+			if (mofileCount + filesArr.length > mototalCount) {
+				alert('파일은 최대 '+mototalCount+'개까지 업로드 할 수 있습니다.');
+				return;
+			} else {
+				mofileCount = mofileCount + filesArr.length;
 			}
 
-			if("mp4".indexOf(ext) == -1){
-				alert("mp4 파일만 업로드 할 수 있습니다.");
-				$("#mvinput_file").val("");
-				return false;
+			// 각각의 파일 배열담기 및 기타
+			filesArr.forEach(function (f) {
+				var name = f.name;
+				var ext = f.name.split('.').pop().toLowerCase();
+				var size = f.size;
+				var reader = new FileReader();
+
+				if(size > 2097152){
+					alert("2MB이하의 jpg, png 파일만 업로드 할 수 있습니다.");
+					$("#moinput_file").val("");
+					return false;
+				}
+
+				if("jpg|png".indexOf(ext) == -1){
+					alert("jpg, png 파일만 업로드 할 수 있습니다.");
+					$("#moinput_file").val("");
+					return false;
+				}
+
+				reader.onload = function (e) {
+					mocontent_files = [];
+					mocontent_files.push(f);
+					$("#moImgCheck").val(name);
+					$("#moImgCheck").attr('data-ext',ext);
+					$("#moImgCheck").attr('data-size',size);
+					$('#moarticlefileChange').html(
+							'<div id="mofile' + mofileNum + '" onclick="mofileDelete(\'mofile' + mofileNum + '\')">'
+							+ '<img src="' + e.target.result + '" width="200" height="200" alt="">'
+							+ '<i class="me-2 mdi mdi-minus"></i>'
+							+ '<br/>'
+							+ '<font style="font-size:12px">' + f.name + '</font>'
+							+ '</div>'
+					);
+					mofileNum ++;
+				};
+				reader.readAsDataURL(f);
+			});
+
+			//초기화 한다.
+			$("#moinput_file").val("");
+		}
+
+		// 파일 부분 삭제 함수
+		function mofileDelete(fileNum){
+			var no = fileNum.replace(/[^0-9]/g, "");
+			mocontent_files = [];
+			//mocontent_files[no].is_delete = true;
+			$('#' + fileNum).remove();
+
+			$("#moImgCheck").val('');
+			$("#moImgCheck").attr('data-ext','');
+			$("#moImgCheck").attr('data-size','');
+
+			mofileCount --;
+		}
+
+		function moremoveContent(fildId){
+			console.log('fild',fildId);
+			modelete_files.push(fildId);
+			$("#modbfile1").remove();
+
+			$("#moImgCheck").val('');
+			$("#moImgCheck").attr('data-ext','');
+			$("#moImgCheck").attr('data-size','');
+
+		}
+		/**********************mo이미지****************************/
+
+		/***********************mv파일****************************/
+				// 파일 현재 필드 숫자 totalCount랑 비교값
+		var mvfileCount = $('#mvarticlefileChange').children().length;
+		// 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
+		var mvtotalCount = 1;
+		// 파일 고유넘버
+		var mvfileNum = 0;
+		// 첨부파일 배열
+		var mvcontent_files = [];
+		var mvdelete_files = [];
+
+		function mvfileCheck(e) {
+			var files = e.target.files;
+
+			// 파일 배열 담기
+			var filesArr = Array.prototype.slice.call(files);
+
+			mvfileCount = $('#mvarticlefileChange').children().length;
+			// 파일 개수 확인 및 제한
+			if (mvfileCount + filesArr.length > mvtotalCount) {
+				alert('파일은 최대 '+mvtotalCount+'개까지 업로드 할 수 있습니다.');
+				return;
+			} else {
+				mvfileCount = mvfileCount + filesArr.length;
 			}
 
-			reader.onload = function (e) {
-				mvcontent_files = [];
-				mvcontent_files.push(f);
-				$("#mvFileCheck").val(name);
-				$("#mvFileCheck").attr('data-ext',ext);
-				$("#mvFileCheck").attr('data-size',size);
-				$('#mvarticlefileChange').append(
-						'<div id="mvfile' + mvfileNum + '" onclick="mvfileDelete(\'mvfile' + mvfileNum + '\')">'
-						+ '<font style="font-size:12px">' + f.name + '</font>'
-						+ '<i class="me-2 mdi mdi-minus"></i>'
-						+ '</div>'
-				);
-				mvfileNum ++;
-			};
-			reader.readAsDataURL(f);
-		});
+			// 각각의 파일 배열담기 및 기타
+			filesArr.forEach(function (f) {
+				var name = f.name;
+				var ext = f.name.split('.').pop().toLowerCase();
+				var size = f.size;
+				var reader = new FileReader();
 
-		//초기화 한다.
-		$("#mvinput_file").val("");
-	}
+				if(size > 10485760){
+					alert("10MB이하의 mp4 파일만 업로드 할 수 있습니다.");
+					$("#mvinput_file").val("");
+					return false;
+				}
 
-	// 파일 부분 삭제 함수
-	function mvfileDelete(fileNum){
-		var no = fileNum.replace(/[^0-9]/g, "");
-		mvcontent_files = [];
-		//mvcontent_files[no].is_delete = true;
-		$('#' + fileNum).remove();
+				if("mp4".indexOf(ext) == -1){
+					alert("mp4 파일만 업로드 할 수 있습니다.");
+					$("#mvinput_file").val("");
+					return false;
+				}
 
-		$("#mvFileCheck").val('');
-		$("#mvFileCheck").attr('data-ext','');
-		$("#mvFileCheck").attr('data-size','');
+				reader.onload = function (e) {
+					mvcontent_files = [];
+					mvcontent_files.push(f);
+					$("#mvFileCheck").val(name);
+					$("#mvFileCheck").attr('data-ext',ext);
+					$("#mvFileCheck").attr('data-size',size);
+					$('#mvarticlefileChange').append(
+							'<div id="mvfile' + mvfileNum + '" onclick="mvfileDelete(\'mvfile' + mvfileNum + '\')">'
+							+ '<font style="font-size:12px">' + f.name + '</font>'
+							+ '<i class="me-2 mdi mdi-minus"></i>'
+							+ '</div>'
+					);
+					mvfileNum ++;
+				};
+				reader.readAsDataURL(f);
+			});
 
-		mvfileCount --;
-	}
+			//초기화 한다.
+			$("#mvinput_file").val("");
+		}
 
-	function mvremoveContent(fildId){
-		console.log('fild',fildId);
-		mvdelete_files.push(fildId);
-		$("#mvdbfile1").remove();
+		// 파일 부분 삭제 함수
+		function mvfileDelete(fileNum){
+			var no = fileNum.replace(/[^0-9]/g, "");
+			mvcontent_files = [];
+			//mvcontent_files[no].is_delete = true;
+			$('#' + fileNum).remove();
 
-		$("#mvFileCheck").val('');
-		$("#mvFileCheck").attr('data-ext','');
-		$("#mvFileCheck").attr('data-size','');
-	}
-	/**********************mv파일****************************/
+			$("#mvFileCheck").val('');
+			$("#mvFileCheck").attr('data-ext','');
+			$("#mvFileCheck").attr('data-size','');
 
-    /*
-     * 폼 submit 로직
-     */
-        function registerAction(){
+			mvfileCount --;
+		}
+
+		function mvremoveContent(fildId){
+			console.log('fild',fildId);
+			mvdelete_files.push(fildId);
+			$("#mvdbfile1").remove();
+
+			$("#mvFileCheck").val('');
+			$("#mvFileCheck").attr('data-ext','');
+			$("#mvFileCheck").attr('data-size','');
+		}
+		/**********************mv파일****************************/
+
+		/*
+         * 폼 submit 로직
+         */
+		function registerAction(){
 
 			if(!$("#is_form").valid()){
 				return false;
 			}
 
 
-        var form = $("#is_form")[0];
-        var formData = new FormData(form);
+			var form = $("#is_form")[0];
+			var formData = new FormData(form);
 
-            for (var x = 0; x < content_files.length; x++) {
-                formData.append("pcImg", content_files[x]);
-            }
+			for (var x = 0; x < content_files.length; x++) {
+				formData.append("pcImg", content_files[x]);
+			}
 
 			for(var y = 0; y<delete_files.length; y++){
 				formData.append("pcImgDelete", delete_files[y]);
@@ -560,70 +579,70 @@
 
 			console.log('formData',formData);
 
-       /*
-       * 파일업로드 multiple ajax처리
-       */
-        $.ajax({
-              type: "POST",
-              url: "/mainvisualEditProcess",
-              data : formData,
-			  cache:false,
-              processData: false,
-              contentType: false,
-              success: function (data) {
-				console.log('data',data);
-				alert("메인비주얼이 저장되었습니다.");
-				location.href="/mainvisualList";
-              },
-              error: function (xhr, status, error) {
-                alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
-             	return false;
-              }
-            });
-            return false;
-        }
-
-	function listAction(){
-			location.href='/mainvisualList';
-	}
-
-	function cancelAction(){
-		var msg = "등록";
-		/*[# th:if="${mainvisual.id == null}"]*/
-		msg = "등록";
-		/*[/]*/
-		/*[# th:if="${mainvisual.id != null}"]*/
-		msg = "수정";
-		/*[/]*/
-		if(confirm(msg+"을 취소하시겠습니까?")){
-			location.href='/mainvisualList';
-		}
-	}
-
-	function deleteAction(id){
-		if(confirm("삭제하시겠습니까?")){
-			var obj=[];
-			obj.push(id);
-			var url="/mainvisualDelete";
+			/*
+            * 파일업로드 multiple ajax처리
+            */
 			$.ajax({
-				 type : 'POST'
-				, async : true
-				, beforeSend : function (jqXHR, settings) {
-				}
-				, url : url //for ASP.NET, java
-				, data : 'deleteList='+obj
-				, success : function (changes) {
-					//debugger;
-
-					if(changes.success == true){
-						location.href="/mainvisualList";
-					}
-				}
-				, complete : function (changes) {
+				type: "POST",
+				url: "/mainvisualEditProcess",
+				data : formData,
+				cache:false,
+				processData: false,
+				contentType: false,
+				success: function (data) {
+					console.log('data',data);
+					alert("메인비주얼이 저장되었습니다.");
+					location.href="/mainvisualList";
+				},
+				error: function (xhr, status, error) {
+					alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
+					return false;
 				}
 			});
+			return false;
 		}
-	}
+
+		function listAction(){
+			location.href='/mainvisualList';
+		}
+
+		function cancelAction(){
+			var msg = "등록";
+			/*[# th:if="${mainvisual.id == null}"]*/
+			msg = "등록";
+			/*[/]*/
+			/*[# th:if="${mainvisual.id != null}"]*/
+			msg = "수정";
+			/*[/]*/
+			if(confirm(msg+"을 취소하시겠습니까?")){
+				location.href='/mainvisualList';
+			}
+		}
+
+		function deleteAction(id){
+			if(confirm("삭제하시겠습니까?")){
+				var obj=[];
+				obj.push(id);
+				var url="/mainvisualDelete";
+				$.ajax({
+					type : 'POST'
+					, async : true
+					, beforeSend : function (jqXHR, settings) {
+					}
+					, url : url //for ASP.NET, java
+					, data : 'deleteList='+obj
+					, success : function (changes) {
+						//debugger;
+
+						if(changes.success == true){
+							location.href="/mainvisualList";
+						}
+					}
+					, complete : function (changes) {
+					}
+				});
+			}
+		}
 
 	</script>
 </head>
@@ -642,8 +661,8 @@
 			<div class="col-md-12">
 				<div class="card">
 					<form class="form-horizontal" id="is_form" method="post" enctype="multipart/form-data"
-					      name="is_form"
-					      th:object="${mainvisual}">
+						  name="is_form"
+						  th:object="${mainvisual}">
 						<input type="hidden" name="id" th:value="*{id}"/>
 						<div class="card-body">
 
@@ -860,7 +879,7 @@
 								<div class="col-md-4">
 									<div class="custom-file">
 										<input class="custom-file-input" id="mvinput_file" type="file">
-										<label class="custom-file-label" for="moinput_file">10MB 이하의 MP4 파일만만 첨부 가능합니다.</label>
+										<label class="custom-file-label" for="moinput_file">10MB 이하의 MP4 파일만 첨부 가능합니다.</label>
 										<input type="hidden" name="mvFileCheck" id="mvFileCheck" value="" th:value="*{videosName}" th:attr="data-ext=*{videosExt}" th:attrappend="data-size=*{videosLength}"/>
 										<br/>
 										<div id="mvarticlefileChange">
@@ -868,7 +887,7 @@
 												<div th:id="'mvdbfile1'"  th:onclick="mvremoveContent([[*{videosRealPath}]])">
 													<font style="font-size:12px" th:text="*{videosName}"></font>
 													<i class="me-2 mdi mdi-minus"></i>
-													
+
 												</div>
 											</th:block>
 										</div>
@@ -890,7 +909,7 @@
 							</div>
 
 							<div class="form-group row">
-								<label for="bottomMainTxt" class="col-sm-3">메인비주얼 하단 서브 텍스트</label>
+								<label for="bottomMainTxt" class="col-sm-3">메인비주얼 하단 메인 텍스트</label>
 								<div class="col-sm-4">
 									<textarea maxlength="100" id="bottomMainTxt" name="bottomMainTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{bottomMainTxt}"></textarea>
 								</div>
