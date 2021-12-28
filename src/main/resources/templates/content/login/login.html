@@ -52,10 +52,20 @@
             });
 
             subutton = function(){
+                $("#loginId").val($("#loginId").val().replace(/\s+/g, ''));
+                $("#password").val($("#password").val().replace(/\s+/g, ''));
                 if($("#loginform").valid()){
 
                     $("#loginform")[0].submit()
                     return false;
+                }
+            }
+
+            press = function(v,event){
+                v.value = v.value.replace(/\s+/g, '');
+                if(event.keyCode == 13){
+                    //javascript에서는 13이 enter키를 의미함
+                    subutton(); //formname에 사용자가 지정한 form의 name입력
                 }
             }
         });
@@ -107,6 +117,7 @@
                                 <input aria-describedby="basic-addon1" aria-label="loginId"
                                        class="form-control form-control-lg"
                                        name="loginId" placeholder="ID"
+                                       onkeyup="javascript:press(this,event);"
                                        type="text"/>
                             </div>
                             <div class="input-group mb-3">
@@ -117,6 +128,7 @@
                                 <input aria-describedby="basic-addon1" aria-label="Password"
                                        class="form-control form-control-lg"
                                        name="password" placeholder="Password"
+                                       onkeyup="javascript:press(this,event);"
                                        type="password"/>
                             </div>
                         </div>

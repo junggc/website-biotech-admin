@@ -89,7 +89,7 @@
 
 			$("input[type=radio][name=type]").change(function(){
 				var cvalue = $("input[name='type']:checked").val();
-				if(cvalue == 'I'){
+				if(cvalue == 'I' || cvalue == ''){
 					$("#pcImgFile").show();
 					$("#moImgFile").show();
 					$("#mvFileSelect").hide();
@@ -772,22 +772,43 @@
 
 							<div class="form-group required row">
 								<label class="col-sm-3 control-label" data-name="type">유형</label>
-								<div class="col-md-9">
-									<div class="form-check">
-										<input class="form-check-input" id="type1" name="type"
-											   th:checked="type == 'I'"
-											   th:field="*{type}"
-											   type="radio" value="I">
-										<label class="form-check-label mb-0" for="type1">이미지</label>
+
+								<th:block th:if="*{id != null}">
+									<div class="col-md-9">
+										<div class="form-check">
+											<input class="form-check-input" id="type1" name="type"
+												   th:checked="type == 'I'"
+												   th:field="*{type}"
+												   type="radio" value="I">
+											<label class="form-check-label mb-0" for="type1">이미지</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" id="type2" name="type"
+												   th:checked="type == 'M'"
+												   th:field="*{type}"
+												   type="radio" value="M">
+											<label class="form-check-label mb-0" for="type2">동영상</label>
+										</div>
 									</div>
-									<div class="form-check">
-										<input class="form-check-input" id="type2" name="type"
-											   th:checked="type == 'M'"
-											   th:field="*{type}"
-											   type="radio" value="M">
-										<label class="form-check-label mb-0" for="type2">동영상</label>
+								</th:block>
+
+								<th:block th:if="*{id == null}">
+									<div class="col-md-9">
+										<div class="form-check">
+											<input class="form-check-input" id="type1" name="type"
+												   checked="checked"
+												   type="radio" value="I">
+											<label class="form-check-label mb-0" for="type1">이미지</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" id="type2" name="type"
+												   type="radio" value="M">
+											<label class="form-check-label mb-0" for="type2">동영상</label>
+										</div>
 									</div>
-								</div>
+								</th:block>
+
+
 							</div>
 
 							<div id = "pcImgFile" class="form-group required row" style="display:none;">
@@ -906,7 +927,7 @@
 							<div class="form-group row">
 								<label for="topSubTxt" class="col-sm-3">메인비주얼 상단 서브 텍스트</label>
 								<div class="col-sm-4">
-									<textarea maxlength="100" id="topSubTxt" name="topSubTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{topSubTxt}"></textarea>
+									<textarea maxlength="100" id="topSubTxt" name="topSubTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{topSubTxt}" placeholder="메인 비주얼에 표시될 상단 서브 텍스트를 입력해주세요.&#13;&#10태그 포함 최대 100자 이내"></textarea>
 								</div>
 								<div class="col-md-4">
 									<middle class="text-muted">텍스트만 입력 가능<span id="tcounter">(0 / 최대 100자)</span></middle>
@@ -916,7 +937,7 @@
 							<div class="form-group row">
 								<label for="bottomMainTxt" class="col-sm-3">메인비주얼 하단 메인 텍스트</label>
 								<div class="col-sm-4">
-									<textarea maxlength="100" id="bottomMainTxt" name="bottomMainTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{bottomMainTxt}"></textarea>
+									<textarea maxlength="100" id="bottomMainTxt" name="bottomMainTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{bottomMainTxt}" placeholder="  메인 비주얼에 표시될 하단 메인 텍스트를 입력해주세요.&#13;&#10태그 포함 최대 100자 이내"></textarea>
 								</div>
 								<div class="col-md-4">
 									<middle class="text-muted">텍스트만 입력 가능<span id="bcounter">(0 / 최대 100자)</span></middle>

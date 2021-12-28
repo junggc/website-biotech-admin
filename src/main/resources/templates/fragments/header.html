@@ -196,6 +196,7 @@
                                 src="../assets/images/users/1.jpg"
                                 width="31"
                         />
+                        <span style="margin-left:10px; font-weight:bold;" th:text="${#authentication.getPrincipal().getUsername()}">관리자</span>
                     </a>
                     <ul
                             aria-labelledby="navbarDropdown"
@@ -213,6 +214,7 @@
                 <!-- User profile and search -->
                 <!-- ============================================================== -->
             </ul>
+<!--            <div style="text-align:right;width:100%;color:#fff"><span style="font-weight:bold;" th:text="${#authentication.getPrincipal().getUsername()}"></span>님 안녕하세요.</div>-->
         </div>
     </nav>
 </header>
