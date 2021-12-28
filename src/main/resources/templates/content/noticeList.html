@@ -59,6 +59,7 @@
                          return JSON.stringify(json);
                     },
                     complete : function(res) {
+						$("#mainCheckbox").multicheck($(".listCheckbox"));
                     },
                     error : function (jqXHR, textStatus, errorThrown) {
 						console.log(jqXHR.status);
@@ -131,19 +132,6 @@
 
             $(".dataTables_filter").html('<button class="btn btn-outline-primary" id="refresh" onclick="location.href=\'/noticeInfo\';">등록</button><button class="btn btn-outline-danger" id="refresh" onclick="deletelist();">삭제</button>');
 
-			$("#mainCheckbox").on("click",function(){
-				if ($(this).is(":checked") == true) {
-					$("input:checkbox[name='checkedbox']").each(function () {
-						$(this).attr("checked",true);
-						$(this).checked = true;
-					});
-				} else {
-					$("input:checkbox[name='checkedbox']").each(function () {
-						$(this).removeAttr("checked");
-						$(this).checked = false;
-					});
-				}
-			});
 			$("#zero_config_paginate").parent("div").addClass("page-wrap");
 			$("#zero_config_paginate").parent("div").siblings("div").addClass("before-page-wrap");
 
