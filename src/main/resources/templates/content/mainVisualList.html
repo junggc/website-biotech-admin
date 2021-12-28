@@ -78,7 +78,7 @@
                   columnDefs: [
                     {
                       data: function (data, type) {
-                          return '<label class="customcheckbox"><input type="checkbox" name="checkedbox"  data-dispyn="'+data.dispYn+'" value="'+data.id+'" class="listCheckbox"><span class="checkmark"></span></label>';
+                          return '<label onclick="checkingbox();" class="customcheckbox"><input type="checkbox" name="checkedbox"  data-dispyn="'+data.dispYn+'" value="'+data.id+'" class="listCheckbox"><span class="checkmark"></span></label>';
                       },
                       targets: 0,
                       orderable: false,
@@ -153,6 +153,23 @@
 					});
 				}
 			});
+
+			checkingbox = function(){
+				console.log("123123");
+				console.log($("input:checkbox[name='checkedbox']:checked").length);
+				console.log($("input:checkbox[name='checkedbox']").length);
+
+				if($("input:checkbox[name='checkedbox']:checked").length == $("input:checkbox[name='checkedbox']").length){
+					$("#mainCheckbox").attr("checked",true);
+					$("#mainCheckbox").checked = true;
+				}else{
+					$("#mainCheckbox").removeAttr("checked");
+					$("#mainCheckbox").checked = false;
+				}
+
+			}
+
+
 			$("#zero_config_paginate").parent("div").addClass("page-wrap");
 			$("#zero_config_paginate").parent("div").siblings("div").addClass("before-page-wrap");
 
