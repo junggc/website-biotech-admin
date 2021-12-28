@@ -49,20 +49,20 @@ public class HistoryService {
 
         Page<History> list = null;
 
-        if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
+        log.debug("########jobflag===="+searchDto.getJobFlag());
 
-            if("J".equals(searchDto.getJobFlag())){
-                list = historyRepository.qfindAllByJobFlagAndRequestDateBetweenAndJobContentLikeOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate, searchDto.getSearchText(), pageable);
+        if("J".equals(searchDto.getJobFlag())){
+            if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
+                list = historyRepository.qfindAllByJobFlagAndRequestDateBetweenAndUserIdLikeOrUserNameLikeOrderByRegDtimeDesc(startDate, endDate, searchDto.getSearchText(), pageable);
             }else{
-                list = historyRepository.qfindAllByJobFlagAndRequestDateBetweenAndUserIdLikeOrUserNameLikeOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate, searchDto.getSearchText(), pageable);
+                list = historyRepository.findAllByRequestDateBetweenOrderByRegDtimeDesc(startDate, endDate, pageable);
             }
         }else{
-            if("J".equals(searchDto.getJobFlag())){
-                list = historyRepository.findAllByRequestDateBetweenOrderByRegDtimeDesc(startDate, endDate, pageable);
+            if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
+                list = historyRepository.qfindAllByJobFlagAndRequestDateBetweenAndJobContentLikeOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate, searchDto.getSearchText(), pageable);
             }else{
                 list = historyRepository.findAllByJobFlagAndRequestDateBetweenOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate, pageable);
             }
-
         }
 
         return list;
@@ -77,15 +77,15 @@ public class HistoryService {
 
         List<History> list = null;
 
-        if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
-            if("J".equals(searchDto.getJobFlag())){
-                list = historyRepository.qpfindAllByJobFlagAndRequestDateBetweenAndJobContentLikeOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate, searchDto.getSearchText());
+        if("J".equals(searchDto.getJobFlag())){
+            if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
+                list = historyRepository.qpfindAllByJobFlagAndRequestDateBetweenAndUserIdLikeOrUserNameLikeOrderByRegDtimeDesc(startDate, endDate, searchDto.getSearchText());
             }else{
-                list = historyRepository.qpfindAllByJobFlagAndRequestDateBetweenAndUserIdLikeOrUserNameLikeOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate, searchDto.getSearchText());
+                list = historyRepository.findAllByRequestDateBetweenOrderByRegDtimeDesc(startDate, endDate);
             }
         }else{
-            if("J".equals(searchDto.getJobFlag())){
-                list = historyRepository.findAllByRequestDateBetweenOrderByRegDtimeDesc(startDate,endDate);
+            if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
+                list = historyRepository.qpfindAllByJobFlagAndRequestDateBetweenAndJobContentLikeOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate, searchDto.getSearchText());
             }else{
                 list = historyRepository.findAllByJobFlagAndRequestDateBetweenOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate);
             }

@@ -17,8 +17,8 @@ public interface HistoryRepository  extends JpaRepository<History, Integer> {
     @Query("select e from History e where e.jobFlag=:jobFlag and e.requestDate between :startDate and :endDate and e.jobContent like %:searchWord%  order by e.regDtime desc")
     Page<History> qfindAllByJobFlagAndRequestDateBetweenAndJobContentLikeOrderByRegDtimeDesc(String jobFlag, LocalDateTime startDate, LocalDateTime endDate, String searchWord, Pageable paging);
 
-    @Query("select e from History e where e.jobFlag=:jobFlag and e.requestDate between :startDate and :endDate and (e.userId like %:searchWord% or e.userName like %:searchWord%) order by e.regDtime desc")
-    Page<History> qfindAllByJobFlagAndRequestDateBetweenAndUserIdLikeOrUserNameLikeOrderByRegDtimeDesc(String jobFlag, LocalDateTime startDate, LocalDateTime endDate, String searchWord, Pageable paging);
+    @Query("select e from History e where e.requestDate between :startDate and :endDate and (e.userId like %:searchWord% or e.userName like %:searchWord% or e.jobContent like %:searchWord%) order by e.regDtime desc")
+    Page<History> qfindAllByJobFlagAndRequestDateBetweenAndUserIdLikeOrUserNameLikeOrderByRegDtimeDesc(LocalDateTime startDate, LocalDateTime endDate, String searchWord, Pageable paging);
 
     List<History> findAllByJobFlagAndRequestDateBetweenOrderByRegDtimeDesc(String jobFlag, LocalDateTime startDate, LocalDateTime endDate);
 
@@ -27,6 +27,6 @@ public interface HistoryRepository  extends JpaRepository<History, Integer> {
     @Query("select e from History e where e.jobFlag=:jobFlag and e.requestDate between :startDate and :endDate and e.jobContent like %:searchWord%  order by e.regDtime desc")
     List<History> qpfindAllByJobFlagAndRequestDateBetweenAndJobContentLikeOrderByRegDtimeDesc(String jobFlag, LocalDateTime startDate, LocalDateTime endDate, String searchWord);
 
-    @Query("select e from History e where e.jobFlag=:jobFlag and e.requestDate between :startDate and :endDate and (e.userId like %:searchWord% or e.userName like %:searchWord%) order by e.regDtime desc")
-    List<History> qpfindAllByJobFlagAndRequestDateBetweenAndUserIdLikeOrUserNameLikeOrderByRegDtimeDesc(String jobFlag, LocalDateTime startDate, LocalDateTime endDate, String searchWord);
+    @Query("select e from History e where e.requestDate between :startDate and :endDate and (e.userId like %:searchWord% or e.userName like %:searchWord% or e.jobContent like %:searchWord%) order by e.regDtime desc")
+    List<History> qpfindAllByJobFlagAndRequestDateBetweenAndUserIdLikeOrUserNameLikeOrderByRegDtimeDesc(LocalDateTime startDate, LocalDateTime endDate, String searchWord);
 }

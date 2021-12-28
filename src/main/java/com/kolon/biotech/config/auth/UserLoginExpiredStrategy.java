@@ -52,6 +52,7 @@ public class UserLoginExpiredStrategy implements SessionInformationExpiredStrate
                 MemberDto memberDto= (MemberDto)event.getSessionInformation().getPrincipal();
 
                 History history = History.builder().userId(memberDto.getLoginId())
+                        .userName(memberDto.getUsername())
                         .jobContent("Ajax REquest Denied (Session Expired)")
                         .jobFlag("J")
                         .requestDate(LocalDateTime.now())
@@ -69,6 +70,7 @@ public class UserLoginExpiredStrategy implements SessionInformationExpiredStrate
                 MemberDto memberDto= (MemberDto)event.getSessionInformation().getPrincipal();
 
                 History history = History.builder().userId(memberDto.getLoginId())
+                        .userName(memberDto.getUsername())
                         .jobContent("중복 로그인으로 로그아웃 처리되었습니다.")
                         .jobFlag("J")
                         .requestDate(LocalDateTime.now())
