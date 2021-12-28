@@ -344,7 +344,7 @@
                             </div>
                             <div class="form-group row" th:classappend="${member.id == null ? 'required' : ''}">
                                 <label class="col-md-3 " th:classappend="${member.id == null ? 'control-label' : ''}"
-                                       for="loginId">Login ID</label>
+                                       for="loginId">아이디</label>
 
                                     <th:block th:if="${member.id == null}">
                                         <div class="col-sm-3">
@@ -551,19 +551,19 @@
                                         <input class="form-check-input" id="mainAuthority" name="mainAuthority"
                                                th:field="*{mainAuthority}" th:value="Y"
                                                type="checkbox">
-                                        <label clas="form-check-label mb-0" for="mainAuthority">메인관리</label>
+                                        <label clas="form-check-label mb-0" for="mainAuthority">메인 관리</label>
                                     </div>
                                     <div class="form-check mr-sm-2">
                                         <input class="form-check-input" id="noticeAuthority" name="noticeAuthority"
                                                th:field="*{noticeAuthority}" th:value="Y"
                                                type="checkbox">
-                                        <label class="form-check-label mb-0" for="noticeAuthority">공지사항관리</label>
+                                        <label class="form-check-label mb-0" for="noticeAuthority">공지사항 관리</label>
                                     </div>
                                     <div class="form-check mr-sm-2">
                                         <input class="form-check-input" id="logAuthority" name="logAuthority"
                                                th:field="*{logAuthority}" th:value="Y"
                                                type="checkbox">
-                                        <label class="form-check-label mb-0" for="logAuthority">운영관리</label>
+                                        <label class="form-check-label mb-0" for="logAuthority">운영 관리</label>
                                     </div>
                                 </div>
                             </div>

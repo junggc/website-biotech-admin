@@ -41,13 +41,13 @@
 						<a aria-expanded="false" class="sidebar-link has-arrow waves-effect waves-dark"
 						   href="javascript:void(0);">
 							<i class="mdi mdi-chart-bar"></i>
-							<span class="hide-menu">공지사항관리</span>
+							<span class="hide-menu">공지사항 관리</span>
 						</a>
 						<ul aria-expanded="false" class="collapse first-level">
 							<li class="sidebar-item">
 								<a class="sidebar-link" th:href="@{/noticeList}" href="/noticeList">
 									<i class="mdi mdi-note-outline"></i>
-									<span class="hide-menu">공지사항관리</span></a>
+									<span class="hide-menu">공지사항 관리</span></a>
 							</li>
 						</ul>
 					</li>
@@ -85,7 +85,7 @@
 							<li class="sidebar-item">
 								<a class="sidebar-link" th:href="@{/prbinfoList}" href="/prbinfoList">
 									<i class="mdi mdi-note-plus"></i>
-									<span class="hide-menu">개인정보처리방침관리</span>
+									<span class="hide-menu">개인정보처리방침 관리</span>
 								</a>
 							</li>
 							<th:block th:if="${#authentication.getPrincipal().getLogAuthority() == 'Y' or #strings.equals(#authentication.getPrincipal().getAuthorities()[0], 'ROLE_ADMIN')}">
@@ -98,7 +98,7 @@
 								<li class="sidebar-item">
 									<a class="sidebar-link" th:href="@{/jobHistory}" href="/jobHistory">
 										<i class="mdi mdi-note-plus"></i>
-										<span class="hide-menu">작업 로그 관리</span>
+										<span class="hide-menu">작업로그 관리</span>
 									</a>
 								</li>
 							</th:block>
