@@ -12,4 +12,5 @@ public class SearchDto {
     private String size;
     private String id;
     private String searchAnsStat;
+    private String searchCate;
 }

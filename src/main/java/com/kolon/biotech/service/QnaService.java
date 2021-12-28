@@ -78,28 +78,54 @@ public class QnaService {
         LocalDateTime endDate = LocalDateTime.parse(searchDto.getSearchEndDate().replaceAll("-","")+"235959",formatter);
         Page<Qna> list = null;
 
-        if(searchDto.getSearchAnsStat() != null && "".equals(searchDto.getSearchAnsStat())){
-            if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
-                list = qnaRepository.findAllByRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",startDate,endDate,searchDto.getSearchText(),pageable);
+        if(searchDto.getSearchCate() != null && "".equals(searchDto.getSearchCate())){
+            if(searchDto.getSearchAnsStat() != null && "".equals(searchDto.getSearchAnsStat())){
+                if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
+                    list = qnaRepository.findAllByRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",startDate,endDate,searchDto.getSearchText(),pageable);
+                }else{
+                    list = qnaRepository.findAllByRegDtimeBetweenOrderByRegDtimeDesc("N",startDate, endDate,pageable);
+                }
             }else{
-                list = qnaRepository.findAllByRegDtimeBetweenOrderByRegDtimeDesc("N",startDate, endDate,pageable);
+                if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
+                    if("Y".equals(searchDto.getSearchAnsStat())){
+                        list = qnaRepository.findAllByAnsStateYAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",startDate,endDate,searchDto.getSearchText(),pageable);
+                    }else{
+                        list = qnaRepository.findAllByAnsStateNAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",startDate,endDate,searchDto.getSearchText(),pageable);
+                    }
+                }else{
+                    if("Y".equals(searchDto.getSearchAnsStat())){
+                        list = qnaRepository.findAllByAnsStateYAndRegDtimeBetweenOrderByRegDtimeDesc("N",startDate, endDate,pageable);
+                    }else{
+                        list = qnaRepository.findAllByAnsStateNAndRegDtimeBetweenOrderByRegDtimeDesc("N",startDate, endDate,pageable);
+                    }
+
+                }
             }
         }else{
-            if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
-                if("Y".equals(searchDto.getSearchAnsStat())){
-                    list = qnaRepository.findAllByAnsStateYAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",startDate,endDate,searchDto.getSearchText(),pageable);
+            if(searchDto.getSearchAnsStat() != null && "".equals(searchDto.getSearchAnsStat())){
+                if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
+                    list = qnaRepository.findAllByRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",searchDto.getSearchCate(),startDate,endDate,searchDto.getSearchText(),pageable);
                 }else{
-                    list = qnaRepository.findAllByAnsStateNAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",startDate,endDate,searchDto.getSearchText(),pageable);
+                    list = qnaRepository.findAllByRegDtimeBetweenOrderByRegDtimeDesc("N",searchDto.getSearchCate(),startDate, endDate,pageable);
                 }
             }else{
-                if("Y".equals(searchDto.getSearchAnsStat())){
-                    list = qnaRepository.findAllByAnsStateYAndRegDtimeBetweenOrderByRegDtimeDesc("N",startDate, endDate,pageable);
+                if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
+                    if("Y".equals(searchDto.getSearchAnsStat())){
+                        list = qnaRepository.findAllByAnsStateYAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",searchDto.getSearchCate(),startDate,endDate,searchDto.getSearchText(),pageable);
+                    }else{
+                        list = qnaRepository.findAllByAnsStateNAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",searchDto.getSearchCate(),startDate,endDate,searchDto.getSearchText(),pageable);
+                    }
                 }else{
-                    list = qnaRepository.findAllByAnsStateNAndRegDtimeBetweenOrderByRegDtimeDesc("N",startDate, endDate,pageable);
-                }
+                    if("Y".equals(searchDto.getSearchAnsStat())){
+                        list = qnaRepository.findAllByAnsStateYAndRegDtimeBetweenOrderByRegDtimeDesc("N",searchDto.getSearchCate(),startDate, endDate,pageable);
+                    }else{
+                        list = qnaRepository.findAllByAnsStateNAndRegDtimeBetweenOrderByRegDtimeDesc("N",searchDto.getSearchCate(),startDate, endDate,pageable);
+                    }
 
+                }
             }
         }
+
 
 
         return list;

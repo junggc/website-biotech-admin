@@ -85,6 +85,7 @@
 						p.searchStartDate = $("#datepicker-autoclose1").val();
 						p.searchEndDate = $("#datepicker-autoclose2").val();
 						p.searchAnsStat = $("#searchAnsStat").val();
+						p.searchCate = $("#searchCate").val();
                         p.page = $("#zero_config").DataTable().page.info().page+1;
                         p.size = $("#zero_config").DataTable().page.len();
 
@@ -347,7 +348,20 @@
 									<tr>
 										<td style="vertical-align:middle;width:20%;"><label style="margin:0;">검색</label></td>
 										<td style="width:80%;">
-											<input type="text" name="searchText" id="searchText" class="form-control col-md-6" placeholder="작성자,내용">
+											<select name="searchCate" id="searchCate"
+													aria-hidden="true"
+													class="select2 form-select shadow-none select2-hidden-accessible form-control col-md-3"
+													data-select2-id="1"
+													style="width: 15%; height: 35px; display: inline-block;" tabindex="-1" height="35px">
+												<option value="">전체</option>
+												<option value="CMO">CMO</option>
+												<option value="CDO">CDO</option>
+												<option value="ADDSER">ADDSER</option>
+												<option value="PARTNERSHIP">PARTNERSHIP</option>
+												<option value="RECRUIMENT">RECRUIMENT</option>
+												<option value="OTHER">OTHER</option>
+											</select>
+											<input type="text" name="searchText" id="searchText" class="form-control col-md-5" placeholder="작성자,내용">
 										</td>
 									</tr>
 									<tr>
