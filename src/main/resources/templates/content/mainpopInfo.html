@@ -655,7 +655,7 @@
 										<option th:selected="*{dispEndTime} == '20'" value="20">20시</option>
 										<option th:selected="*{dispEndTime} == '21'" value="21">21시</option>
 										<option th:selected="*{dispEndTime} == '22'" value="22">22시</option>
-										<option th:selected="*{dispEndTime} == '23'" value="23" selected="selected">23시</option>
+										<option th:selected="*{dispEndTime} == '23' or *{dispEndTime} == null" value="23" >23시</option>
 									</select>
 								</div>
 								<div class="col-md-4">

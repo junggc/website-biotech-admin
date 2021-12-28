@@ -222,6 +222,10 @@
          */
 		function registerAction(){
 
+			if(DEXT5.isEmpty("content")){
+				alert("내용을 입력해주세요.");
+				return false;
+			}
 
 			if(!$("#is_form").valid()){
 				return false;

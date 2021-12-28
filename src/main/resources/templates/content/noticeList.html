@@ -93,19 +93,28 @@
                             }
                         }, targets: 2, orderable: false, visible: true
                     },
+				  {
+					  data:function(data, type){
+						  if(data.langKoYn == 'Y'){
+							  return '국문';
+						  }else{
+							  return '영문';
+						  }
+					  }, targets: 3, orderable: false, visible: true
+				  },
                     {
                         data:function(data, type){
                             return '<a href="/noticeInfo?id='+data.id+'">'+data.title+'</a>';
-                        }, targets: 3, orderable: false, visible: true
+                        }, targets: 4, orderable: false, visible: true
                     },
-                    {data: 'regId', targets: 4, orderable: false, visible: true},
+                    {data: 'regId', targets: 5, orderable: false, visible: true},
                     {data: function(data, type){
 						return data.dispStartDay+' '+data.dispStartTime;
-						}, targets: 5, orderable: false, visible: true},
+						}, targets: 6, orderable: false, visible: true},
 					{data: function(data, type){
 							var date = new Date(data.regDtime);
 							return toStringByFormattingHms(date,'-');
-						}, targets: 6, orderable: false, visible: true}
+						}, targets: 7, orderable: false, visible: true}
 
                   ],
                   ordering: false,
@@ -218,18 +227,19 @@
 					>
 						<thead>
 						<tr>
-							<th>
+							<th style="width:3%;">
 								<label class="customcheckbox mb-3">
 									<input id="mainCheckbox" type="checkbox">
 									<span class="checkmark"></span>
 								</label>
 							</th>
-							<th>번호</th>
-							<th>전시여부</th>
-							<th>제목</th>
-							<th>등록자</th>
-							<th>게시일</th>
-							<th>등록일시</th>
+							<th style="width:5%;">번호</th>
+							<th style="width:10%;">전시여부</th>
+							<th style="width:5%;">언어</th>
+							<th style="width:37%;">제목</th>
+							<th style="width:10%;">등록자</th>
+							<th style="width:15%;">게시일</th>
+							<th style="width:15%;">등록일시</th>
 						</tr>
 						</thead>
 						<tbody>
