@@ -73,7 +73,7 @@
             }
         }
 
-        $("#changedmain2").trigger('change');
+        //$("#changedmain2").trigger('change');
 
 
         $("#is_form").validate({
@@ -89,7 +89,8 @@
                 },
                 /*[/]*/
                 name:{
-                    required: true
+                    required: true,
+                    regex: /^[가-힣a-zA-Z]+$/
                 }
                 /*[# th:if="${member.id == null}"]*/
                 ,password:{
@@ -112,7 +113,16 @@
                 }
                 /*[/]*/
                 ,emailId:{
-                    required: true
+                    required: function(elements){
+                        var val = elements.value;
+                        val = val.replace(/^\s+|\s+$/g, '');
+                        elements.value = val;
+                        if(val.length == 0){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    }
                 }
                 ,emailDomain:{
                     required: true,
@@ -122,7 +132,9 @@
                     required: true,
                     regex : /^01([0|1|6|7|8|9])-(\d{3,4})-(\d{4})$/
                 }
-
+                ,rank:{
+                    regex: /^[가-힣a-zA-Z]+$/
+                }
                 ,useYn:{
                     required: true
                 }
@@ -138,12 +150,13 @@
                 },
                 /*[/]*/
                 name:{
-                    required: "이름을 입력해주세요."
+                    required: "이름을 입력해주세요.",
+                    regex: "이름은 글자(한글,영문)만 입력가능합니다."
                 }
                 /*[# th:if="${member.id == null}"]*/
                 ,password:{
                     required: "비밀번호를 입력해주세요.",
-                    regex: "비밀번호는  8자~25자 이내로, 영문/숫자/특수문자를 조합해서 사용해야 합니다."
+                    regex: "비밀번호는 8자~25자 이내로, 영문/숫자/특수문자를 조합해서 사용해야 합니다."
                 }
                 ,password1:{
                     required: "비밀번호확인을 입력해주세요."
@@ -169,6 +182,9 @@
                     required: "연락처를 입력해주세요.",
                     regex : "휴대폰 번호는 -(하이픈) 포함하여 숫자 13자리까지만 입력가능합니다."
                 }
+                ,rank:{
+                    regex: "직급은 글자(한글,영문)만 입력가능합니다."
+                }
                 ,useYn:{
                     required: "사용여부를 선택해주세요."
                 }
@@ -177,6 +193,7 @@
         });
 
         recheck = function(obj){
+            $(obj).val($(obj).val().replace(/^\s+|\s+$/g, ''));
             $("#samecheck").val('');
         }
 
@@ -188,6 +205,11 @@
 
             if(val.length == 0){
                 alert("로그인 아이디는 필수입니다.");
+                return false;
+            }
+
+            if(!/^[a-z0-9\d_-]{4,14}$/.test(val)){
+                alert("아이디는 4-14자의 영문소문자,숫자와 특수문자(_-)만 사용 가능합니다.");
                 return false;
             }
 
@@ -384,7 +406,7 @@
                                             id="name"
                                             name="name"
                                             placeholder="이름을 입력하세요."
-                                            maxlength="30"
+                                            maxlength="5"
                                             th:field="*{name}"
                                             type="text"
                                     />
@@ -401,6 +423,7 @@
                                             class="form-control"
                                             id="passwd"
                                             name="password"
+                                            maxlength="25"
                                             placeholder="비밀번호 입력하세요."
                                             type="password"
                                     />
@@ -421,6 +444,7 @@
                                                 class="form-control"
                                                 id="passwd1"
                                                 name="password1"
+                                                maxlength="25"
                                                 placeholder="비밀번호 재입력하세요."
                                                 type="password"
                                         />
@@ -439,6 +463,7 @@
                                                 class="form-control"
                                                 id="mpasswd"
                                                 name="mPassword"
+                                                maxlength="25"
                                                 placeholder="마스터 비밀번호를 입력하세요."
                                                 type="password"
                                         />
@@ -471,7 +496,7 @@
                                             name="emailDomain"
                                             placeholder="이메일 도메인을 입력하세요."
                                             maxlength="50"
-                                            readonly="readonly"
+                                            th:readonly="${member.emailDomain eq 'naver.com' or member.emailDomain eq 'daum.net' or member.emailDomain eq 'gmail.com' ? 'readonly' : false}"
                                             th:field="*{emailDomain}"
                                             type="text"
                                     />
@@ -481,7 +506,7 @@
                                             class="select2 form-select shadow-none select2-hidden-accessible"
                                             data-select2-id="1" id="changedmain2" onchange="changeDomain(this);"
                                             style="width: 100%; height: 36px" tabindex="-1">
-                                        <option th:selected="*{emailDomain} == ''" value="">직접입력</option>
+                                        <option th:selected="*{emailDomain} == '' or *{emailDomain} == null" value="">직접입력</option>
                                         <option th:selected="*{emailDomain} == 'naver.com'" value="naver.com">
                                             naver.com
                                         </option>
@@ -521,7 +546,7 @@
                                 <div class="col-sm-3">
                                     <input class="form-control" id="rank" name="rank" placeholder="직급을 입력하세요."
                                            th:field="*{rank}"
-                                           maxlength="5"
+                                           maxlength="8"
                                            type="text"/>
                                 </div>
                             </div>
