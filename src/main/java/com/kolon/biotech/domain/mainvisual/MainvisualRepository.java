@@ -23,4 +23,8 @@ public interface MainvisualRepository extends JpaRepository<Mainvisual, Integer>
     Page<Mainvisual> findAllByOrderByOrderSeqDesc(Pageable pageable);
 
     Page<Mainvisual> findAllByDispYnOrderByOrderSeqDesc(String dispYn, Pageable pageable);
+
+    Page<Mainvisual> findAllByLangKoYnOrderByOrderSeqDesc(String langKorYn, Pageable pageable);
+
+    Page<Mainvisual> findAllByDispYnAndLangKoYnOrderByOrderSeqDesc(String dispYn,String langKorYn, Pageable pageable);
 }

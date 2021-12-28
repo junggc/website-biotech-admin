@@ -60,8 +60,12 @@ public class MainvisualService {
         pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC,"id"));
 
         Page<Mainvisual> list = null;
-        if(mainvisual.getDispYn() != null && !"".equals(mainvisual.getDispYn())){
-            list = mainvisualRepository.findAllByDispYnOrderByOrderSeqDesc(mainvisual.getDispYn(), pageable);
+        if((mainvisual.getDispYn() != null && !"".equals(mainvisual.getDispYn())) && (mainvisual.getLangKoYn() != null && !"".equals(mainvisual.getLangKoYn())) ){
+            list = mainvisualRepository.findAllByDispYnAndLangKoYnOrderByOrderSeqDesc(mainvisual.getDispYn(), mainvisual.getLangKoYn(), pageable);
+        }else if(mainvisual.getDispYn() != null && !"".equals(mainvisual.getDispYn())){
+            list = mainvisualRepository.findAllByDispYnOrderByOrderSeqDesc(mainvisual.getDispYn(),pageable);
+        }else if(mainvisual.getLangKoYn() != null && !"".equals(mainvisual.getLangKoYn())){
+            list = mainvisualRepository.findAllByLangKoYnOrderByOrderSeqDesc(mainvisual.getLangKoYn(),pageable);
         }else{
             list = mainvisualRepository.findAllByOrderByOrderSeqDesc(pageable);
         }
