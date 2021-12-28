@@ -190,10 +190,10 @@
 
 		var excelHandler = {
 			getExcelFileName : function(){
-				return 'table-test.xlsx';
+				return 'biotech_권한부여로그_'+/*[[${#calendars.format(#calendars.createNow(),'yyyyMMdd')+'.xlsx'}]]*/;
 			},
 			getSheetName : function(){
-				return 'Table Test Sheet';
+				return '권한부여로그';
 			},
 			getExcelData : function(){
 
