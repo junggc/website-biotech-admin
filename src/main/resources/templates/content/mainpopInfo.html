@@ -142,7 +142,7 @@
 					heightPoint: {num:"숫자만 입력가능합니다."},
 					dispStartDay: {required:"전시시작일을 입력해주세요."},
 					dispStartTime: {required:"전시시작시간을 입력해주세요."},
-					dispEndDay: {required:"정시종료일을 입력해주세요."},
+					dispEndDay: {required:"전시종료일을 입력해주세요."},
 					dispEndTime: {required:"전시종료시간을 입력해주세요."}
 				},
 				errorPlacement: function(error, element) {
@@ -630,8 +630,8 @@
 								<div class="col-md-2">
 									<select aria-hidden="true"
 											class="select2 form-select shadow-none select2-hidden-accessible form-control"
-											data-select2-id="1" id="dispEndTime" name="dispEndTime"
-											style="width: 100%; height: 36px" tabindex="-1">
+											data-select2-id="23" id="dispEndTime" name="dispEndTime"
+											style="width: 100%; height: 36px"  tabindex="-1">
 										<option th:selected="*{dispEndTime} == '00'" value="00">00시</option>
 										<option th:selected="*{dispEndTime} == '01'" value="01">01시</option>
 										<option th:selected="*{dispEndTime} == '02'" value="02">02시</option>
@@ -655,7 +655,7 @@
 										<option th:selected="*{dispEndTime} == '20'" value="20">20시</option>
 										<option th:selected="*{dispEndTime} == '21'" value="21">21시</option>
 										<option th:selected="*{dispEndTime} == '22'" value="22">22시</option>
-										<option th:selected="*{dispEndTime} == '23'" value="23">23시</option>
+										<option th:selected="*{dispEndTime} == '23'" value="23" selected="selected">23시</option>
 									</select>
 								</div>
 								<div class="col-md-4">
