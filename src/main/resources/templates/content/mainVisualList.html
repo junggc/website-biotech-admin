@@ -60,6 +60,7 @@
                          return JSON.stringify(json);
                     },
                     complete : function(res) {
+						$("#mainCheckbox").multicheck($(".listCheckbox"));
                     },
                     error : function (jqXHR, textStatus, errorThrown) {
 						console.log(jqXHR.status);
@@ -78,7 +79,7 @@
                   columnDefs: [
                     {
                       data: function (data, type) {
-                          return '<label onclick="checkingbox();" class="customcheckbox"><input type="checkbox" name="checkedbox"  data-dispyn="'+data.dispYn+'" value="'+data.id+'" class="listCheckbox"><span class="checkmark"></span></label>';
+                          return '<label class="customcheckbox"><input type="checkbox" name="checkedbox"  data-dispyn="'+data.dispYn+'" value="'+data.id+'" class="listCheckbox"/><span class="checkmark"></span></label>';
                       },
                       targets: 0,
                       orderable: false,
@@ -139,35 +140,6 @@
             });
 
             $(".dataTables_filter").html('<button class="btn btn-outline-primary" id="refresh" onclick="location.href=\'/mainvisualInfo\';">등록</button><button class="btn btn-outline-danger" id="refresh" onclick="deletelist();">삭제</button>');
-
-			$("#mainCheckbox").on("click",function(){
-				if ($(this).is(":checked") == true) {
-					$("input:checkbox[name='checkedbox']").each(function () {
-						$(this).attr("checked",true);
-						$(this).checked = true;
-					});
-				} else {
-					$("input:checkbox[name='checkedbox']").each(function () {
-						$(this).removeAttr("checked");
-						$(this).checked = false;
-					});
-				}
-			});
-
-			checkingbox = function(){
-				console.log("123123");
-				console.log($("input:checkbox[name='checkedbox']:checked").length);
-				console.log($("input:checkbox[name='checkedbox']").length);
-
-				if($("input:checkbox[name='checkedbox']:checked").length == $("input:checkbox[name='checkedbox']").length){
-					$("#mainCheckbox").attr("checked",true);
-					$("#mainCheckbox").checked = true;
-				}else{
-					$("#mainCheckbox").removeAttr("checked");
-					$("#mainCheckbox").checked = false;
-				}
-
-			}
 
 
 			$("#zero_config_paginate").parent("div").addClass("page-wrap");
@@ -287,7 +259,7 @@
 		</div>
 	</div>
 
-	<div class="container-fluid">
+	<div class="">
 		<div class="card">
 			<div class="card-body">
 				<h5 class="card-title">메인비주얼 목록</h5>
@@ -346,7 +318,7 @@
 						<tr>
 							<th style="width:3%;">
 								<label class="customcheckbox mb-3">
-									<input id="mainCheckbox" type="checkbox">
+									<input id="mainCheckbox" type="checkbox"/>
 									<span class="checkmark"></span>
 								</label>
 							</th>
@@ -362,15 +334,19 @@
 						</thead>
 						<tbody>
 						</tbody>
-						<tfoot>
-						</tfoot>
 					</table>
 				</div>
 			</div>
 		</div>
+
+
+
 	</div>
 
 
+
 </div>
+
+
 
 </html>
