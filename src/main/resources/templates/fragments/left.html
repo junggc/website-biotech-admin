@@ -23,12 +23,12 @@
 						</a>
 						<ul aria-expanded="false" class="collapse first-level">
 							<li class="sidebar-item">
-								<a class="sidebar-link" th:href="@{/mainvisualList}" href="/mainvisualList">
+								<a class="sidebar-link" onclick="dtClear();" th:href="@{/mainvisualList}" href="/mainvisualList">
 									<i class="mdi mdi-note-outline"></i>
 									<span class="hide-menu">메인비주얼 관리</span></a>
 							</li>
 							<li class="sidebar-item">
-								<a class="sidebar-link" th:href="@{/mainpopList}" href="/mainpopList">
+								<a class="sidebar-link" onclick="dtClear();" th:href="@{/mainpopList}" href="/mainpopList">
 									<i class="mdi mdi-note-plus"></i>
 									<span class="hide-menu">메인팝업 관리</span>
 								</a>
@@ -45,7 +45,7 @@
 						</a>
 						<ul aria-expanded="false" class="collapse first-level">
 							<li class="sidebar-item">
-								<a class="sidebar-link" th:href="@{/noticeList}" href="/noticeList">
+								<a class="sidebar-link" onclick="dtClear();" th:href="@{/noticeList}" href="/noticeList">
 									<i class="mdi mdi-note-outline"></i>
 									<span class="hide-menu">공지사항 관리</span></a>
 							</li>
@@ -55,7 +55,7 @@
 
 				<li class="sidebar-item">
 					<a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-					   th:href="@{/qnaList}" href="qnaList">
+					   th:href="@{/qnaList}" onclick="dtClear();" href="qnaList">
 						<i class="mdi mdi-chart-bubble"></i>
 						<span class="hide-menu">문의하기 관리</span>
 					</a>
@@ -70,33 +70,33 @@
 						<ul aria-expanded="false" class="collapse first-level">
 							<th:block th:if="${#strings.equals(#authentication.getPrincipal().getAuthorities()[0], 'ROLE_ADMIN')}">
 								<li class="sidebar-item">
-									<a class="sidebar-link" th:href="@{/userList}" href="/userList">
+									<a class="sidebar-link" onclick="dtClear();" th:href="@{/userList}" href="/userList">
 										<i class="mdi mdi-note-outline"></i>
 										<span class="hide-menu">관리자 관리</span>
 									</a>
 								</li>
 							</th:block>
 							<li class="sidebar-item">
-								<a class="sidebar-link" th:href="@{/subsidiaryList}"  href="/subsidiaryList">
+								<a class="sidebar-link" onclick="dtClear();" th:href="@{/subsidiaryList}"  href="/subsidiaryList">
 									<i class="mdi mdi-note-plus"></i>
 									<span class="hide-menu">계열사 사이트 관리</span>
 								</a>
 							</li>
 							<li class="sidebar-item">
-								<a class="sidebar-link" th:href="@{/prbinfoList}" href="/prbinfoList">
+								<a class="sidebar-link" onclick="dtClear();" th:href="@{/prbinfoList}" href="/prbinfoList">
 									<i class="mdi mdi-note-plus"></i>
 									<span class="hide-menu">개인정보처리방침 관리</span>
 								</a>
 							</li>
 							<th:block th:if="${#authentication.getPrincipal().getLogAuthority() == 'Y' or #strings.equals(#authentication.getPrincipal().getAuthorities()[0], 'ROLE_ADMIN')}">
 								<li class="sidebar-item">
-									<a class="sidebar-link" th:href="@{/grantHistory}" href="/grantHistory">
+									<a class="sidebar-link" onclick="dtClear();" th:href="@{/grantHistory}" href="/grantHistory">
 										<i class="mdi mdi-note-plus"></i>
 										<span class="hide-menu">권한부여 로그 관리</span>
 									</a>
 								</li>
 								<li class="sidebar-item">
-									<a class="sidebar-link" th:href="@{/jobHistory}" href="/jobHistory">
+									<a class="sidebar-link" onclick="dtClear();" th:href="@{/jobHistory}" href="/jobHistory">
 										<i class="mdi mdi-note-plus"></i>
 										<span class="hide-menu">작업로그 관리</span>
 									</a>
