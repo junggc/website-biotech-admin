@@ -56,8 +56,12 @@ public class MainpopService {
 
         Page<Mainpop> list = null;
 
-        if(mainpop.getDispYn() != null && !"".equals(mainpop.getDispYn())){
+        if((mainpop.getDispYn() != null && !"".equals(mainpop.getDispYn())) && (mainpop.getLangKoYn() != null && !"".equals(mainpop.getLangKoYn()))){
+            list = mainPopRepository.findAllByDispYnAndLangKoYnOrderByIdDesc(mainpop.getDispYn(), mainpop.getLangKoYn(), pageable);
+        }else if((mainpop.getDispYn() != null && !"".equals(mainpop.getDispYn())) && (mainpop.getLangKoYn() != null && "".equals(mainpop.getLangKoYn()))){
             list = mainPopRepository.findAllByDispYnOrderByIdDesc(mainpop.getDispYn(), pageable);
+        }else if((mainpop.getDispYn() != null && "".equals(mainpop.getDispYn())) && (mainpop.getLangKoYn() != null && !"".equals(mainpop.getLangKoYn()))){
+            list = mainPopRepository.findAllByLangKoYnOrderByIdDesc(mainpop.getLangKoYn(), pageable);
         }else{
             list = mainPopRepository.findAllByOrderByIdDesc(pageable);
         }

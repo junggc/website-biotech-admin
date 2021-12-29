@@ -50,6 +50,7 @@
                     },
                     data: function (p) {
 						p.dispYn = $("#dispYn").val();
+						p.langKoYn = $("#langKoYn").val();
                         p.page = $("#zero_config").DataTable().page.info().page+1;
                         p.size = $("#zero_config").DataTable().page.len();
                     },
@@ -199,8 +200,9 @@
 				}
 			}
 
-			reset = function(){
+			reset1 = function(){
 				$("#dispYn").val('');
+				$("#langKoYn").val('');
 			}
 
 			search = function(){
@@ -238,24 +240,36 @@
 								<table class="table table-bordered">
 									<tr>
 										<td style="vertical-align:middle"><label style="margin:0;">전시여부</label></td>
-										<td>
+										<td style="width:30%;">
 											<select name="dispYn" id="dispYn"
 													aria-hidden="true"
 													class="select2 form-select shadow-none select2-hidden-accessible form-control col-md-3"
 													data-select2-id="1"
-													style="width: 15%; height: 35px" tabindex="-1" height="35px">
+													style="width: 40%; height: 35px" tabindex="-1" height="35px">
 												<option value="">전체</option>
 												<option value="Y">전시</option>
 												<option value="N">미전시</option>
 											</select>
 										</td>
+										<td style="vertical-align:middle;width:20%;"><label style="margin:0;">언어구분</label></td>
+										<td style="width:30%;">
+											<select name="langKoYn" id="langKoYn"
+													aria-hidden="true"
+													class="select2 form-select shadow-none select2-hidden-accessible form-control col-md-3"
+													data-select2-id="1"
+													style="width: 40%; height: 35px" tabindex="-1" height="35px">
+												<option value="">전체</option>
+												<option value="Y">국문</option>
+												<option value="N">영문</option>
+											</select>
+										</td>
 									</tr>
 									<tr>
-										<td colspan="2" style="text-align: center;">
+										<td colspan="4" style="text-align: center;">
 											<button class="btn btn-success text-white" onclick="search();" type="button">
 												검색
 											</button>
-											<button class="btn btn-secondary text-white" onclick="reset();"  type="button">
+											<button class="btn btn-secondary text-white" onclick="reset1();"  type="button">
 												초기화
 											</button>
 										</td>
