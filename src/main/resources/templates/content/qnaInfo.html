@@ -365,6 +365,15 @@
 							</div>
 
 							<div class="form-group row">
+								<label class="col-md-3">첨부파일</label>
+								<div class="col-sm-9">
+									<th:block th:if="*{filePath} != null and *{filePath} != ''">
+										<a href="#none" th:href="@{/download(id=*{id})}" th:utext="*{fileName}">Kolon_20211111657419.pdf</a>
+									</th:block>
+								</div>
+							</div>
+
+							<div class="form-group row">
 								<label class="col-md-3">답변 날짜</label>
 								<div class="col-sm-9" th:text="${#temporals.format(obj.answerDate, 'yyyy-MM-dd')}">
 
