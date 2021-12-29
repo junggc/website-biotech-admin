@@ -374,7 +374,6 @@
                                                     class="form-control"
                                                     id="loginId"
                                                     name="loginId"
-                                                    placeholder="ID를 입력하세요."
                                                     maxlength="14"
                                                     onkeyup="recheck(this)"
                                                     th:errorclass="is-invalid"
@@ -405,7 +404,6 @@
                                             class="form-control"
                                             id="name"
                                             name="name"
-                                            placeholder="이름을 입력하세요."
                                             maxlength="5"
                                             th:field="*{name}"
                                             type="text"
@@ -482,7 +480,6 @@
                                             class="form-control"
                                             id="emailId"
                                             name="emailId"
-                                            placeholder="이메일 아이디를 입력하세요."
                                             maxlength="25"
                                             th:field="*{emailId}"
                                             type="text"
@@ -494,7 +491,6 @@
                                             class="form-control"
                                             id="emailDomain"
                                             name="emailDomain"
-                                            placeholder="이메일 도메인을 입력하세요."
                                             maxlength="50"
                                             th:readonly="${member.emailDomain eq 'naver.com' or member.emailDomain eq 'daum.net' or member.emailDomain eq 'gmail.com' ? 'readonly' : false}"
                                             th:field="*{emailDomain}"
@@ -544,7 +540,7 @@
                                         class="col-md-3"
                                         for="rank">직급</label>
                                 <div class="col-sm-3">
-                                    <input class="form-control" id="rank" name="rank" placeholder="직급을 입력하세요."
+                                    <input class="form-control" id="rank" name="rank"
                                            th:field="*{rank}"
                                            maxlength="8"
                                            type="text"/>
