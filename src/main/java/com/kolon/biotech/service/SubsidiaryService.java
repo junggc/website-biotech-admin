@@ -67,7 +67,7 @@ public class SubsidiaryService {
         String codeValue = String.format("%03d",tMax);
 
         obj.setCode("KF"+codeValue);
-        obj.setOrderSeq(String.valueOf(tMax));
+        obj.setOrderSeq(tMax);
 
         Subsidiary r_obj = subsidiaryRepository.save(obj);
 
@@ -94,36 +94,30 @@ public class SubsidiaryService {
         Subsidiary subsidiary = subsidiaryRepository.findById(id).get();
 
         if("up".equals(flag)){
-            String seq = subsidiary.getOrderSeq();
-            int _seq = Integer.valueOf(seq);
-            int t_seq = 0;
-            if(_seq > 1){
-                t_seq = _seq - 1;
-
+            int _seq = subsidiary.getOrderSeq();
+            int t_seq = subsidiaryRepository.findMinOrderSeq();
+            if(_seq > t_seq){
                 //위의 정보
-                Subsidiary t_subsidiary = subsidiaryRepository.findByOrderSeq(String.valueOf(t_seq)).get();
+                Subsidiary t_subsidiary = subsidiaryRepository.findTop1ByOrderSeqBeforeOrderByOrderSeqDesc(_seq);
 
                 //optional이라 자동수정되는가?
-                subsidiary.setOrderSeq(String.valueOf(t_seq));
-                t_subsidiary.setOrderSeq(String.valueOf(_seq));
+                subsidiary.setOrderSeq(t_subsidiary.getOrderSeq());
+                t_subsidiary.setOrderSeq(_seq);
 
             }
 
         }else{
-            String seq = subsidiary.getOrderSeq();
-            int maxCount = subsidiaryRepository.findAll().size();
-            int _seq = Integer.valueOf(seq);
-            int t_seq = 0;
-            if(_seq < maxCount){
-                t_seq = _seq + 1;
-
+            int _seq = subsidiary.getOrderSeq();
+            int t_seq = subsidiaryRepository.findMaxOrderSeq();
+            log.debug("#####_seq"+_seq+":::t_seq"+t_seq);
+            if(_seq < t_seq){
                 //위의 정보
-                Subsidiary t_subsidiary = subsidiaryRepository.findByOrderSeq(String.valueOf(t_seq)).get();
+                Subsidiary t_subsidiary = subsidiaryRepository.findTop1ByOrderSeqAfterOrderByOrderSeqAsc(_seq);
 
                 //optional이라 자동수정되는가?
-                subsidiary.setOrderSeq(String.valueOf(t_seq));
-                t_subsidiary.setOrderSeq(String.valueOf(_seq));
-
+                log.debug("#####t_subsidiary.getOrderSeq()"+t_subsidiary.getOrderSeq()+":::_seq"+_seq);
+                subsidiary.setOrderSeq(t_subsidiary.getOrderSeq());
+                t_subsidiary.setOrderSeq(_seq);
             }
         }
     }

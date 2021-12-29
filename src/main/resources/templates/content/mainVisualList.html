@@ -132,7 +132,7 @@
 							return toStringByFormattingHm(date,'-');
 						}, targets: 7, orderable: false, visible: true},
 					{data: function(data, type){
-							return '<i class="me-2 mdi mdi-chevron-double-up" onclick="chup_orderSeq('+data.id+');"></i><i class="me-2 mdi mdi-chevron-double-down" onclick="chdn_orderSeq('+data.id+');"></i>';
+							return '<button type="button" className="btn" onClick="chup_orderSeq('+data.id+');"><i class="fa fa-arrow-up"></i></button><button type="button" className="btn" onClick="chdn_orderSeq('+data.id+');"><i class="fa fa-arrow-down"></i></button>';
 						}, targets: 8, orderable: false, visible: true
 					}
 

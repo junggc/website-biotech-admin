@@ -111,7 +111,7 @@
                         }, targets: 5, orderable: false, visible: true
                     },
 					{data: function(data, type){
-						  return '<i class="me-2 mdi mdi-chevron-double-up" onclick="ch_orderSeq('+data.id+',\'up\')"></i><i class="me-2 mdi mdi-chevron-double-down" onclick="ch_orderSeq('+data.id+',\'down\')"></i>';
+							return '<button type="button" className="btn" onClick="ch_orderSeq('+data.id+',\'up\');"><i class="fa fa-arrow-up"></i></button><button type="button" className="btn" onClick="ch_orderSeq('+data.id+',\'down\');"><i class="fa fa-arrow-down"></i></button>';
 						  }, targets: 6, orderable: false, visible: true
 					}
 

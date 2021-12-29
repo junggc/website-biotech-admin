@@ -33,7 +33,7 @@ public class Subsidiary extends BaseTimeEntity {
     private String useYn;
 
     @Column(name = "ORDER_SEQ")
-    private String orderSeq;
+    private int orderSeq;
 
 //    @Builder
 //    public Subsidiary(String code,

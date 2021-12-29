@@ -332,7 +332,7 @@ public class MainvisualService {
         int max = mainvisualRepository.findMaxOrderSeq();
         if(mvSeq < max){
             //현재아이디의 ordeerseq+1의 값을 가진 놈을 구함.
-            Mainvisual umv = mainvisualRepository.findByOrderSeq(mvSeq+1);
+            Mainvisual umv = mainvisualRepository.findTop1ByOrderSeqAfterOrderByOrderSeqAsc(mvSeq);
             mv.setOrderSeq(umv.getOrderSeq());
             umv.setOrderSeq(mvSeq);
         }
@@ -345,8 +345,8 @@ public class MainvisualService {
         int mvSeq = mv.getOrderSeq();
         int min = mainvisualRepository.findMinOrderSeq();
         if(mvSeq > min){
-            //현재아이디의 ordeerseq+1의 값을 가진 놈을 구함.
-            Mainvisual umv = mainvisualRepository.findByOrderSeq(mvSeq-1);
+            //현재아이디를 제외한 제일큰 놈을구한다.
+            Mainvisual umv = mainvisualRepository.findTop1ByOrderSeqBeforeOrderByOrderSeqDesc(mvSeq);
             mv.setOrderSeq(umv.getOrderSeq());
             umv.setOrderSeq(mvSeq);
         }
