@@ -212,7 +212,7 @@
 					      th:object="${obj}">
 						<input type="hidden" name="id" th:value="*{id}"/>
 						<div class="card-body">
-							<h4 class="card-title">개인정보처리방침 등록</h4>
+							<h4 class="card-title">개인정보처리방침 <th:block th:if="*{id == null}" th:text="등록"></th:block><th:block th:if="*{id != null}" th:text="수정"></th:block><p style="text-align: right;color:red;font-size:15px">*항목은 필수 입력입니다.</p></h4>
 
 							<div class="form-group row">
 								<label class="col-md-1">등록일</label>

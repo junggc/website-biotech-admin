@@ -353,7 +353,7 @@
                         <input id="id" name="id" th:value="*{id}" type="hidden">
                         <input id="samecheck" name="samecheck" value="" type="hidden">
                         <div class="card-body">
-                            <h4 class="card-title">관리자 <th:block th:if="*{id == null}" th:text="등록"></th:block><th:block th:if="*{id != null}" th:text="수정"></th:block></h4>
+                            <h4 class="card-title">관리자 <th:block th:if="*{id == null}" th:text="등록"></th:block><th:block th:if="*{id != null}" th:text="수정"></th:block><p style="text-align: right;color:red;font-size:15px">*항목은 필수 입력입니다.</p></h4>
 
 
                             <div class="form-group row">

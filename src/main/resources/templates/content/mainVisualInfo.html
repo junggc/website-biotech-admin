@@ -671,7 +671,8 @@
 						<input type="hidden" name="id" th:value="*{id}"/>
 						<div class="card-body">
 
-							<h4 class="card-title">메인비주얼 <th:block th:if="*{id == null}" th:text="등록"></th:block><th:block th:if="*{id != null}" th:text="수정"></th:block></h4>
+							<h4 class="card-title">메인비주얼 <th:block th:if="*{id == null}" th:text="등록"></th:block><th:block th:if="*{id != null}" th:text="수정"></th:block><p style="text-align: right;color:red;font-size:15px">*항목은 필수 입력입니다.</p></h4>
+
 
 							<div class="form-group required row">
 								<label class="col-sm-3 control-label" data-name="dispYn">전시여부</label>

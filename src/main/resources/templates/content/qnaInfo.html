@@ -312,7 +312,7 @@
 						<input type="hidden" name="filePath" th:value="*{filePath}"/>
 
 						<div class="card-body">
-							<h4 class="card-title">문의하기 <th:block th:if="*{answerDate == null}" th:text="등록"></th:block><th:block th:if="*{answerDate != null}" th:text="수정"></th:block></h4>
+							<h4 class="card-title">문의하기 <th:block th:if="*{answerDate == null}" th:text="등록"></th:block><th:block th:if="*{answerDate != null}" th:text="수정"></th:block><p style="text-align: right;color:red;font-size:15px">*항목은 필수 입력입니다.</p></h4>
 
 							<div class="form-group row">
 								<label class="col-md-3">문의 구분</label>
