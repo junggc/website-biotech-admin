@@ -59,14 +59,20 @@ public class MainvisualService {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() -1);
         pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC,"id"));
 
+        log.debug("######"+mainvisual.getDispYn());
+        log.debug("######"+mainvisual.getLangKoYn());
         Page<Mainvisual> list = null;
         if((mainvisual.getDispYn() != null && !"".equals(mainvisual.getDispYn())) && (mainvisual.getLangKoYn() != null && !"".equals(mainvisual.getLangKoYn())) ){
+            log.debug("111111");
             list = mainvisualRepository.findAllByDispYnAndLangKoYnOrderByOrderSeqDesc(mainvisual.getDispYn(), mainvisual.getLangKoYn(), pageable);
-        }else if(mainvisual.getDispYn() != null && !"".equals(mainvisual.getDispYn())){
+        }else if(mainvisual.getDispYn() != null && !"".equals(mainvisual.getDispYn()) && (mainvisual.getLangKoYn() != null && "".equals(mainvisual.getLangKoYn()))){
+            log.debug("111112");
             list = mainvisualRepository.findAllByDispYnOrderByOrderSeqDesc(mainvisual.getDispYn(),pageable);
-        }else if(mainvisual.getLangKoYn() != null && !"".equals(mainvisual.getLangKoYn())){
+        }else if(mainvisual.getLangKoYn() != null && !"".equals(mainvisual.getLangKoYn()) && mainvisual.getDispYn() != null && "".equals(mainvisual.getDispYn())){
+            log.debug("111113");
             list = mainvisualRepository.findAllByLangKoYnOrderByOrderSeqDesc(mainvisual.getLangKoYn(),pageable);
         }else{
+            log.debug("111114");
             list = mainvisualRepository.findAllByOrderByOrderSeqDesc(pageable);
         }
 
