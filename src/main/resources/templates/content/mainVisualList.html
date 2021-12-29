@@ -21,6 +21,9 @@
 			rel="stylesheet"
 			th:href="@{/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css}"
 	/>
+	<style>
+		.tdtitle {width:32%;word-break:break-all;}
+	</style>
 	<!-- this page js -->
 	<script href="/assets/extra-libs/multicheck/datatable-checkbox-init.js"
 	        th:src="@{/assets/extra-libs/multicheck/datatable-checkbox-init.js}"></script>
@@ -114,7 +117,7 @@
                     {
                         data:function(data, type){
                             return '<a href="/mainvisualInfo?id='+data.id+'">'+data.title+'</a>';
-                        }, targets: 4, orderable: false, visible: true
+                        }, targets: 4, orderable: false, visible: true, className:'tdtitle'
                     },
 					{data: function(data, type){
 						if(data.type=='I'){
@@ -323,20 +326,20 @@
 					>
 						<thead>
 						<tr>
-							<th style="width:3%;">
+							<th style="width:3%;word-break:break-all;">
 								<label class="customcheckbox mb-3">
 									<input id="mainCheckbox" type="checkbox"/>
 									<span class="checkmark"></span>
 								</label>
 							</th>
-							<th style="width:5%;">번호</th>
-							<th style="width:10%;">전시여부</th>
-							<th style="width:5%;">언어</th>
-							<th style="width:32%;">제목</th>
-							<th style="width:10%;">유형</th>
-							<th style="width:10%;">등록자</th>
-							<th style="width:15%;">등록일시</th>
-							<th style="width:10%;">전시순서</th>
+							<th style="width:5%;word-break:break-all;">번호</th>
+							<th style="width:10%;word-break:break-all;">전시여부</th>
+							<th style="width:5%;word-break:break-all;">언어</th>
+							<th style="width:32%;word-break:break-all;">제목</th>
+							<th style="width:10%;word-break:break-all;">유형</th>
+							<th style="width:10%;word-break:break-all;">등록자</th>
+							<th style="width:15%;word-break:break-all;">등록일시</th>
+							<th style="width:10%;word-break:break-all;">전시순서</th>
 						</tr>
 						</thead>
 						<tbody>
