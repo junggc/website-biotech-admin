@@ -202,7 +202,7 @@
 					return false;
 				}
 
-				if(confirm("선택한 메인비쥬얼을 삭제하시겠습니까?")){
+				if(confirm("선택한 메인비주얼을 삭제하시겠습니까?")){
 					var form = $("#is_form")[0];
 					var formData = new FormData(form);
 
@@ -215,7 +215,7 @@
 							delete_lists.push($(this).val());
 						}else{
 							flag = false;
-							alert("전시중인 비쥬얼은 삭제할 수 없습니다.");
+							alert("전시중인 비주얼은 삭제할 수 없습니다.");
 							return false;
 						}
 					});
