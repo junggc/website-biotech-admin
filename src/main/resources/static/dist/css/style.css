@@ -3574,9 +3574,12 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     font-size: 1.09375rem;
 }
 #articlefileChange,
+#mvarticlefileChange,
 #moarticlefileChange {padding-top:10px;}
 #articlefileChange img,
 #moarticlefileChange img {width:auto !important;height:auto !important;max-height:120px;}
+#mvarticlefileChange .mdi:before,
+#mvarticlefileChange .mdi-set,
 #articlefileChange .mdi-minus:before,
 #moarticlefileChange .mdi-minus:before {width:22px;height:22px;border-radius:100%;text-align:center;background:#000;color:#fff;line-height:22px;margin-left:10px;}
 .custom-file {
@@ -13927,10 +13930,10 @@ table.table-striped.dataTable .customcheckbox input[type=checkbox] {
 }
 table.table-striped.dataTable .customcheckbox .checkmark {
     display: inline-block;
-    position: static;
+    position: relative;
 }
 table.table-striped.dataTable .customcheckbox .checkmark:after {
-    left: 16px;
+    left: 8px;
 }
 a {
     color: #006ebd;
@@ -13953,3 +13956,7 @@ a {
 .before-page-wrap {
     display: none!important;
 }
+.btnup,
+.btndown {display:inline-block;margin:0 2px;}
+.t-align-center {text-align:center !important;}
+.t-align-left {text-align:left !important;}

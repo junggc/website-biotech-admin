@@ -136,7 +136,7 @@
 							return toStringByFormattingHm(date,'-');
 						}, targets: 7, orderable: false, visible: true},
 					{data: function(data, type){
-							return '<button type="button" className="btn" onClick="chup_orderSeq('+data.id+');"><i class="fa fa-arrow-up"></i></button><button type="button" className="btn" onClick="chdn_orderSeq('+data.id+');"><i class="fa fa-arrow-down"></i></button>';
+							return '<button type="button" class="btnup" onClick="chup_orderSeq('+data.id+');"><i class="fa fa-arrow-up"></i></button><button type="button" class="btndown" onClick="chdn_orderSeq('+data.id+');"><i class="fa fa-arrow-down"></i></button>';
 						}, targets: 8, orderable: false, visible: true
 					}
 

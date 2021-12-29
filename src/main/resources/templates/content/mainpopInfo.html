@@ -260,7 +260,10 @@
 			var sdate = new Date($("#datepicker-autoclose1").val());
 			var edate = new Date($("#datepicker-autoclose2").val());
 
-			if(sdate>=edate){
+			if(sdate.getTime()>edate.getTime()){
+				alert("전시시작일, 전시종료일를 확인해주세요.");
+				return false;
+			}else if(sdate.getTime() == edate.getTime() && $("#dispStartTime").val() >= $("#dispEndTime").val() ){
 				alert("전시시작일, 전시종료일를 확인해주세요.");
 				return false;
 			}
