@@ -21,6 +21,9 @@
 			rel="stylesheet"
 			th:href="@{/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css}"
 	/>
+	<style>
+		.tdtitle {width:37%;word-break:break-all;}
+	</style>
 	<!-- this page js -->
 	<script href="/assets/extra-libs/multicheck/datatable-checkbox-init.js"
 	        th:src="@{/assets/extra-libs/multicheck/datatable-checkbox-init.js}"></script>
@@ -111,7 +114,7 @@
                     {
                         data:function(data, type){
                             return '<a href="/mainpopInfo?id='+data.id+'">'+data.title+'</a>';
-                        }, targets: 4, orderable: false, visible: true
+                        }, targets: 4, orderable: false, visible: true, className:'tdtitle'
                     },
 					{data: function(data, type){
 						return data.dispStartDay+' '+data.dispStartTime;
