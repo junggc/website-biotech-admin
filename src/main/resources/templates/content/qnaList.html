@@ -79,6 +79,11 @@
 			$("#searchAnsStat").val(/*[[ ${searchDto.searchAnsStat} ]]*/);
 			/*[/]*/
 
+			/*[# th:if="${searchDto.searchCate != null}"]*/
+			$("#searchCate").val(/*[[ ${searchDto.searchCate} ]]*/);
+			/*[/]*/
+
+
 
             var dataTable1=$("#zero_config").DataTable({
                 ajax : {
@@ -386,7 +391,7 @@
 												<option value="RECRUIMENT">RECRUIMENT</option>
 												<option value="OTHER">OTHER</option>
 											</select>
-											<input type="text" name="searchText" id="searchText" class="form-control col-md-5" placeholder="작성자,내용">
+											<input type="text" name="searchText" id="searchText" class="form-control col-md-5" style="display: inline-block;" placeholder="작성자,내용">
 										</td>
 									</tr>
 									<tr>
