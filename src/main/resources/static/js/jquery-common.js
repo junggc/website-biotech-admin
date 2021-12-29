@@ -28,7 +28,7 @@
     });
 
     $.validator.addMethod("regex", function(value, element, regexpr) {
-        return regexpr.test(value);
+        return this.optional(element) || regexpr.test(value);
     }, "Please enter a valid pasword.");
 
     $.validator.addMethod("sameidcheck", function(value, element) {
