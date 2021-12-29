@@ -35,6 +35,7 @@
 	<script href="/js/js-common.js" th:src="@{/js/js-common.js}"></script>
 
 	<script>
+		var searchFalg = false;
         $(function () {
 
             var dataTable1=$("#zero_config").DataTable({
@@ -49,8 +50,11 @@
                     beforeSend : function() {
                     },
                     data: function (p) {
-						p.dispYn = $("#dispYn").val();
-						p.langKoYn = $("#langKoYn").val();
+						if(searchFalg){
+							p.dispYn = $("#dispYn").val();
+							p.langKoYn = $("#langKoYn").val();
+						}
+
                         p.page = $("#zero_config").DataTable().page.info().page+1;
                         p.size = $("#zero_config").DataTable().page.len();
                     },
@@ -251,7 +255,10 @@
 			}
 
 			search = function(){
+				searchFalg = true;
+				dataTable1Clear();
 				dataTable1.draw();
+				searchFalg = false;
 			}
 
 			dataTable1Clear = function(){

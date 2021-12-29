@@ -38,6 +38,9 @@
 	<script href="/js/tableexport.js" th:src="@{/js/tableexport.js}"></script>
 
 	<script th:inline="javascript">
+		var searchFalg = false;
+		var _sdate;
+		var _edate;
         $(function () {
 
 			var $sdate = $("#datepicker-autoclose1").datepicker({
@@ -48,6 +51,7 @@
 			});
 
 			$sdate.datepicker('setDate','-1M');
+			_sdate = $("#datepicker-autoclose1").val();
 
 			var $edate = $("#datepicker-autoclose2").datepicker({
 				format:'yyyy-mm-dd',
@@ -57,6 +61,7 @@
 			});
 
 			$edate.datepicker('setDate',new Date());
+			_edate = $("#datepicker-autoclose2").val();
 
             var dataTable1=$("#zero_config").DataTable({
                 ajax : {
@@ -71,9 +76,22 @@
                     },
                     data: function (p) {
 						p.jobFlag = "G";
-						p.searchText = $("#searchText").val();
-						p.searchStartDate = $("#datepicker-autoclose1").val();
-						p.searchEndDate = $("#datepicker-autoclose2").val();
+
+						if(searchFalg){
+							p.searchStartDate = $("#datepicker-autoclose1").val();
+							p.searchEndDate = $("#datepicker-autoclose2").val();
+						}else{
+							p.searchStartDate = _sdate;
+							p.searchEndDate = _edate
+						}
+
+						if(searchFalg){
+							p.searchText = $("#searchText").val();
+						}else{
+							p.searchText = '';
+						}
+
+
                         p.page = $("#zero_config").DataTable().page.info().page+1;
                         p.size = $("#zero_config").DataTable().page.len();
                     },
@@ -150,7 +168,13 @@
 					alert("시작일자, 종료일자를 확인해주세요.");
 					return false;
 				}
+
+				_sdate = $("#datepicker-autoclose1").val();
+				_edate = $("#datepicker-autoclose2").val();
+				searchFalg = true;
+				dataTable1Clear();
 				dataTable1.draw();
+				searchFalg = false;
 			}
 
 			reset1 = function(){
