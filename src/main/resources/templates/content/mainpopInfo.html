@@ -499,6 +499,7 @@
 											placeholder=""
 											th:field="*{widthPoint}"
 											type="text"
+											onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
 									/>
 								</div>
 							</div>
@@ -516,6 +517,7 @@
 											placeholder=""
 											th:field="*{heightPoint}"
 											type="text"
+											onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
 									/>
 								</div>
 							</div>
