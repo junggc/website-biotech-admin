@@ -154,27 +154,27 @@
 
 			$('#topSubTxt').keyup(function (e){
 				var content = $(this).val();
-				$('#tcounter').html("("+content.length+" / 최대 100자)");    //글자수 실시간 카운팅
-				if (content.length > 100){
+				$('#tcounter').html("("+content.length+" / 최대 30자)");    //글자수 실시간 카운팅
+				if (content.length > 30){
 					alert("최대 100자까지 입력 가능합니다.");
-					$(this).val(content.substring(0, 100));
-					$('#tcounter').html("(100 / 최대 100자)");
+					$(this).val(content.substring(0, 30));
+					$('#tcounter').html("(30 / 최대 30자)");
 				}
 			});
 
-			$('#tcounter').html("("+$("#topSubTxt").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+			$('#tcounter').html("("+$("#topSubTxt").val().length+" / 최대 30자)");    //글자수 실시간 카운팅
 
 			$('#bottomMainTxt').keyup(function (e){
 				var content = $(this).val();
-				$('#bcounter').html("("+content.length+" / 최대 100자)");    //글자수 실시간 카운팅
-				if (content.length > 100){
-					alert("최대 100자까지 입력 가능합니다.");
-					$(this).val(content.substring(0, 100));
-					$('#bcounter').html("(100 / 최대 100자)");
+				$('#bcounter').html("("+content.length+" / 최대 30자)");    //글자수 실시간 카운팅
+				if (content.length > 30){
+					alert("최대 30자까지 입력 가능합니다.");
+					$(this).val(content.substring(0, 30));
+					$('#bcounter').html("(30 / 최대 30자)");
 				}
 			});
 
-			$('#bcounter').html("("+$("#bottomMainTxt").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
+			$('#bcounter').html("("+$("#bottomMainTxt").val().length+" / 최대 30자)");    //글자수 실시간 카운팅
 
 			$("#is_form").validate({
 				ignore: "",
@@ -233,8 +233,8 @@
 						,extension2: 'mp4'
 						,filesize : 10485760
 					},
-					topSubTxt: {maxlength:100},
-					bottomMainTxt: {maxlength:100}
+					topSubTxt: {maxlength:30},
+					bottomMainTxt: {maxlength:30}
 
 				},
 
@@ -248,8 +248,8 @@
 					videosWay: {required: "동영상선택을 선택해주세요."},
 					videosUrl: {required: "동영상 연결 url을 입력해주세요."},
 					mvFileCheck: {required: "동영상을 선택해주세요.",extension2: "동영상은 mp4만 업로드 가능합니다.", filesize: "동영상은 10MB이하만 업로드 가능합니다."},
-					topSubTxt: {maxlength:"최대 100글자까지 입력가능합니다."},
-					bottomMainTxt: {maxlength:"최대 100글자까지 입력가능합니다."}
+					topSubTxt: {maxlength:"메인비주얼 상단 서브 텍스트는 최대 30글자까지 입력가능합니다."},
+					bottomMainTxt: {maxlength:"메인비주얼 하단 메인 텍스트는 최대 30글자까지 입력가능합니다."}
 				},
 				errorPlacement: function(error, element) {
 
@@ -927,20 +927,20 @@
 							<div class="form-group row">
 								<label for="topSubTxt" class="col-sm-3">메인비주얼 상단 서브 텍스트</label>
 								<div class="col-sm-4">
-									<textarea maxlength="100" id="topSubTxt" name="topSubTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{topSubTxt}" placeholder="메인 비주얼에 표시될 상단 서브 텍스트를 입력해주세요.&#13;&#10태그 포함 최대 100자 이내"></textarea>
+									<textarea maxlength="30" id="topSubTxt" name="topSubTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{topSubTxt}" placeholder="메인 비주얼에 표시될 상단 서브 텍스트를 입력해주세요.&#13;&#10태그 포함 최대 100자 이내"></textarea>
 								</div>
 								<div class="col-md-4">
-									<middle class="text-muted">텍스트만 입력 가능<span id="tcounter">(0 / 최대 100자)</span></middle>
+									<middle class="text-muted">텍스트만 입력 가능<span id="tcounter">(0 / 최대 30자)</span></middle>
 								</div>
 							</div>
 
 							<div class="form-group row">
 								<label for="bottomMainTxt" class="col-sm-3">메인비주얼 하단 메인 텍스트</label>
 								<div class="col-sm-4">
-									<textarea maxlength="100" id="bottomMainTxt" name="bottomMainTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{bottomMainTxt}" placeholder="  메인 비주얼에 표시될 하단 메인 텍스트를 입력해주세요.&#13;&#10태그 포함 최대 100자 이내"></textarea>
+									<textarea maxlength="30" id="bottomMainTxt" name="bottomMainTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{bottomMainTxt}" placeholder="  메인 비주얼에 표시될 하단 메인 텍스트를 입력해주세요.&#13;&#10태그 포함 최대 100자 이내"></textarea>
 								</div>
 								<div class="col-md-4">
-									<middle class="text-muted">텍스트만 입력 가능<span id="bcounter">(0 / 최대 100자)</span></middle>
+									<middle class="text-muted">텍스트만 입력 가능<span id="bcounter">(0 / 최대 30자)</span></middle>
 								</div>
 							</div>
 
