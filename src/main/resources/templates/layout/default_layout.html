@@ -254,6 +254,20 @@
     .user-layerpop .inner .btn-close {font-size:0;line-height:0;position:absolute;top:10px;right:30px;height:30px;color:#000;text-decoration:none;}
     .user-layerpop .inner .btn-close:before {content:"X";display:block;font-size:25px;font-weight:normal;line-height:30px;}
 </style>
+
+<div class="dim2"><div class="abs_loading"><div></div><div></div><div></div><div></div></div></div>
+<style>
+    .dim2 {position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;display:none;}
+    .abs_loading {display:block;position:absolute;width:64px;height:64px;top:50%;left:50%;margin:-32px 0 0 -32px;}
+    .abs_loading div {box-sizing:border-box;display:block;position:absolute;width:51px;height:51px;margin:6px;border:6px solid #fff;border-radius:50%;animation:abs_loading 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;border-color:#fff transparent transparent transparent;}
+    .abs_loading div:nth-child(1) {animation-delay:-0.45s;}
+    .abs_loading div:nth-child(2) {animation-delay:-0.3s;}
+    .abs_loading div:nth-child(3) {animation-delay:-0.15s;}
+    @keyframes abs_loading {
+        0% {transform: rotate(0deg);}
+        100% {transform: rotate(360deg);}
+    }
+</style>
 </body>
 
 </html>

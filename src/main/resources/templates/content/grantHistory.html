@@ -184,7 +184,8 @@
 			}
 
 			exceldown = function(){
-				exportExcel();
+				$(".dim2").show();
+				setTimeout(() => exportExcel(), 500);
 			}
 
 			$("#searchText").keypress(function(e) {
@@ -262,7 +263,7 @@
 
 					}
 					, complete : function (changes) {
-
+						$(".dim2").hide();
 					}
 				});
 				return objlist;
