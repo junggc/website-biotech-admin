@@ -467,7 +467,7 @@
 									<div class="custom-file">
 										<input class="custom-file-input" id="input_file"  type="file">
 										<input type="hidden" name="popImgCheck" id="popImgCheck" value="" th:value="*{popImgName}" th:attr="data-ext=*{popImgExt}" th:attrappend="data-size=*{popImgLength}"/>
-										<label class="custom-file-label" for="input_file">2MB 이하의 jpg, png만 업로드 가능</label>
+										<label class="custom-file-label" for="input_file"></label>
 										<br/>
 										<div id="articlefileChange">
 											<th:block th:if="*{not #strings.isEmpty(popImgPath)}">
