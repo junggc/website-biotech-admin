@@ -2,7 +2,7 @@
 <dext5>
   <license>
     <product_key>011R-8661-5H8W-D22L</product_key>
-    <license_key>BJV5lJVvpJrhZArVoJrPiJ8OrHWZm3nZGXWZnDTqiYh4LuU9wzMqDz1nPmqsDb5rPmIsDutVQfMUPTeVPTeVBfQ7BfcUQyMqJfv8QS67SfhuPxLVQkU4QfctRStUQTeVPe74</license_key>
+    <license_key>BJV5lJVvpJrhZArVoJrPiJ8OrHWZm3nZGXWZnDTqiYh4LuU9wzMqDz1nPmqsDb5rPmIsDSt7Qi0UIferIjerQjx7JjkVQfcZFbyWFg7qDmErC85ZD80rv85qBfMtQjMqQTMqQWa4QWy4QfeUxi60IjvUPTyMJaEqRfMVTHttQfdaPfeVQWcZTut=</license_key>
     <mime_use mimeCharset="utf-8">0</mime_use>
     <print_preview></print_preview>
     <print_header>Header</print_header>
@@ -68,7 +68,7 @@
     <tool>separator</tool>
     <tool>accessibility_validation</tool>
     <tool>setting</tool>
-    <tool>full_screen</tool>    
+    <tool>full_screen</tool>
   </tool_bar_1>
   <tool_bar_2>
     <tool>formatting</tool>
@@ -86,7 +86,7 @@
     <tool>remove_css</tool>
     <tool>separator</tool>
     <tool>font_color</tool>
-    <tool>font_bg_color</tool>    
+    <tool>font_bg_color</tool>
     <tool>separator</tool>
     <tool>list_number</tool>
     <tool>list_bullets</tool>
