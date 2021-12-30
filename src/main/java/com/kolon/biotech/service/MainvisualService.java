@@ -325,28 +325,50 @@ public class MainvisualService {
 
 
     @Transactional(rollbackFor = Exception.class)
-    public void upOrder(Integer id) throws Exception{
+    public void upOrder(Integer id,String dispYn, String langKoYn) throws Exception{
         //현재 아이디의 orderseq를 구하고 maxorderseq와 비교했을떄 max보다 작은경우만 동작
         Mainvisual mv = mainvisualRepository.findById(id).get();
         int mvSeq = mv.getOrderSeq();
         int max = mainvisualRepository.findMaxOrderSeq();
         if(mvSeq < max){
             //현재아이디의 ordeerseq+1의 값을 가진 놈을 구함.
-            Mainvisual umv = mainvisualRepository.findTop1ByOrderSeqAfterOrderByOrderSeqAsc(mvSeq);
+            //다만 조건에 따라 틀려짐
+            Mainvisual umv = null;
+            if( (dispYn != null && !"".equals(dispYn)) && (langKoYn != null && !"".equals(langKoYn)) ){
+                umv = mainvisualRepository.findTop1ByOrderSeqAfterAndDispYnAndLangKoYnOrderByOrderSeqAsc(mvSeq,dispYn,langKoYn);
+            }else if( (dispYn != null && !"".equals(dispYn)) && (langKoYn != null && "".equals(langKoYn)) ){
+                umv = mainvisualRepository.findTop1ByOrderSeqAfterAndDispYnOrderByOrderSeqAsc(mvSeq,dispYn);
+            }else if( (dispYn != null && "".equals(dispYn)) && (langKoYn != null && !"".equals(langKoYn)) ){
+                umv = mainvisualRepository.findTop1ByOrderSeqAfterAndLangKoYnOrderByOrderSeqAsc(mvSeq,langKoYn);
+            }else{
+                umv = mainvisualRepository.findTop1ByOrderSeqAfterOrderByOrderSeqAsc(mvSeq);
+            }
+
             mv.setOrderSeq(umv.getOrderSeq());
             umv.setOrderSeq(mvSeq);
         }
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void dnOrder(Integer id) throws Exception{
+    public void dnOrder(Integer id,String dispYn, String langKoYn) throws Exception{
         //현재 아이디의 orderseq를 구하고 maxorderseq와 비교했을떄 max보다 작은경우만 동작
         Mainvisual mv = mainvisualRepository.findById(id).get();
         int mvSeq = mv.getOrderSeq();
         int min = mainvisualRepository.findMinOrderSeq();
         if(mvSeq > min){
             //현재아이디를 제외한 제일큰 놈을구한다.
-            Mainvisual umv = mainvisualRepository.findTop1ByOrderSeqBeforeOrderByOrderSeqDesc(mvSeq);
+            Mainvisual umv = null;
+            if( (dispYn != null && !"".equals(dispYn)) && (langKoYn != null && !"".equals(langKoYn)) ){
+                umv = mainvisualRepository.findTop1ByOrderSeqBeforeAndDispYnAndLangKoYnOrderByOrderSeqDesc(mvSeq,dispYn,langKoYn);
+            }else if( (dispYn != null && !"".equals(dispYn)) && (langKoYn != null && "".equals(langKoYn)) ){
+                umv = mainvisualRepository.findTop1ByOrderSeqBeforeAndDispYnOrderByOrderSeqDesc(mvSeq,dispYn);
+            }else if( (dispYn != null && "".equals(dispYn)) && (langKoYn != null && !"".equals(langKoYn)) ){
+                umv = mainvisualRepository.findTop1ByOrderSeqBeforeAndLangKoYnOrderByOrderSeqDesc(mvSeq,langKoYn);
+            }else{
+                umv = mainvisualRepository.findTop1ByOrderSeqBeforeOrderByOrderSeqDesc(mvSeq);
+            }
+
+            //Mainvisual umv = mainvisualRepository.findTop1ByOrderSeqBeforeOrderByOrderSeqDesc(mvSeq);
             mv.setOrderSeq(umv.getOrderSeq());
             umv.setOrderSeq(mvSeq);
         }

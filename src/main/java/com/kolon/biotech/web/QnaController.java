@@ -38,6 +38,9 @@ public class QnaController {
     @RequestMapping("qnaInfo")
     public String qnaInfo(@ModelAttribute Qna obj, @ModelAttribute SearchDto searchDto, Model model){
 
+        String nlString = System.getProperty("line.separator").toString();
+        log.debug("#####nlString="+nlString);
+        model.addAttribute("nlString",nlString);
         model.addAttribute("searchDto",searchDto);
         model.addAttribute("obj",qnaService.getInfo(obj.getId()));
         return "content/qnaInfo";

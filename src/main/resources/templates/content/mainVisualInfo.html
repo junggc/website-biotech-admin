@@ -92,9 +92,9 @@
 				if(cvalue == 'I' || cvalue == ''){
 					$("#pcImgFile").show();
 					$("#moImgFile").show();
-					$("#mvFileSelect").hide();
+					//$("#mvFileSelect").hide();
 					$("#mvFileInfo").hide();
-					$("#mvFileUrlInfo").hide();
+					//$("#mvFileUrlInfo").hide();
 					$("#mvFileCheck").val('');
 					mvcontent_files = [];
 					$('#mvarticlefileChange').html('');
@@ -104,7 +104,8 @@
 				}else if(cvalue == 'M'){
 					$("#pcImgFile").hide();
 					$("#moImgFile").hide();
-					$("#mvFileSelect").show();
+					//$("#mvFileSelect").show();
+					$("#mvFileInfo").show();
 					$("#pcImgCheck").val('');
 					content_files = [];
 					$('#articlefileChange').html('');
@@ -113,32 +114,32 @@
 					$('#moarticlefileChange').html('');
 
 					//첫번째거 강제선택
-					$("input[type=radio][name=videosWay][value=URL]").prop('checked', true);
-					$("input[type=radio][name=videosWay]").trigger('change');
+					// $("input[type=radio][name=videosWay][value=URL]").prop('checked', true);
+					// $("input[type=radio][name=videosWay]").trigger('change');
 
 				}
 			});
 
 			$("input[type=radio][name=type]").trigger('change');
 
-			$("input[type=radio][name=videosWay]").change(function(){
-				var cvalue = $("input[name='videosWay']:checked").val();
-				if(cvalue == 'URL'){
-					$("#mvFileUrlInfo").show();
-					$("#mvFileInfo").hide();
+			// $("input[type=radio][name=videosWay]").change(function(){
+			// 	var cvalue = $("input[name='videosWay']:checked").val();
+			// 	if(cvalue == 'URL'){
+			// 		//$("#mvFileUrlInfo").show();
+			// 		$("#mvFileInfo").hide();
+			//
+			// 		mvcontent_files = [];
+			// 		$('#mvarticlefileChange').html('');
+			//
+			// 	}else if(cvalue == 'UPLOAD'){
+			// 		//$("#mvFileUrlInfo").hide();
+			// 		$("#mvFileInfo").show();
+			//
+			// 		$("#videosUrl").val('');
+			// 	}
+			// });
 
-					mvcontent_files = [];
-					$('#mvarticlefileChange').html('');
-
-				}else if(cvalue == 'UPLOAD'){
-					$("#mvFileUrlInfo").hide();
-					$("#mvFileInfo").show();
-
-					$("#videosUrl").val('');
-				}
-			});
-
-			$("input[type=radio][name=videosWay]").trigger('change');
+			//$("input[type=radio][name=videosWay]").trigger('change');
 
 			$('#title').keyup(function (e){
 				var content = $(this).val();
@@ -604,11 +605,12 @@
 
 		function listAction(){
 			//location.href='/mainvisualList';
-			if(document.referrer.indexOf('/mainvisualList') > -1){
-				history.back();
-			}else{
-				location.href='/mainvisualList';
-			}
+			// if(document.referrer.indexOf('/mainvisualList') > -1){
+			// 	history.back();
+			// }else{
+			// 	location.href='/mainvisualList';
+			// }
+			$("#sch_form").attr("action", "/mainvisualList").submit();
 		}
 
 		function cancelAction(){
@@ -665,6 +667,10 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card">
+					<form id="sch_form" name="sch_form" method="post">
+						<input type="hidden" name="dispYn" th:value="${searchDto.dispYn}"/>
+						<input type="hidden" name="langKoYn" th:value="${searchDto.langKoYn}"/>
+					</form>
 					<form class="form-horizontal" id="is_form" method="post" enctype="multipart/form-data"
 						  name="is_form"
 						  th:object="${mainvisual}">
@@ -862,44 +868,44 @@
 								</div>
 							</div>
 
-							<div id="mvFileSelect" class="form-group required row" style="display:none;">
-								<label class="col-sm-3 control-label" data-name="videosWay">동영상 선택</label>
-								<div class="col-md-4">
-									<div class="form-check">
-										<input class="form-check-input" id="videosWay1" name="videosWay"
-											   th:checked="videosWay == 'URL'"
-											   th:field="*{videosWay}"
-											   type="radio" value="URL">
-										<label class="form-check-label mb-0" for="videosWay1">URL 방식</label>
-									</div>
-									<div class="form-check">
-										<input class="form-check-input" id="videosWay2" name="videosWay"
-											   th:checked="videosWay == 'UPLOAD'"
-											   th:field="*{videosWay}"
-											   type="radio" value="UPLOAD">
-										<label class="form-check-label mb-0" for="videosWay2">업로드 방식</label>
-									</div>
-								</div>
-							</div>
+<!--							<div id="mvFileSelect" class="form-group required row" style="display:none;">-->
+<!--								<label class="col-sm-3 control-label" data-name="videosWay">동영상 선택</label>-->
+<!--								<div class="col-md-4">-->
+<!--									<div class="form-check">-->
+<!--										<input class="form-check-input" id="videosWay1" name="videosWay"-->
+<!--											   th:checked="videosWay == 'URL'"-->
+<!--											   th:field="*{videosWay}"-->
+<!--											   type="radio" value="URL">-->
+<!--										<label class="form-check-label mb-0" for="videosWay1">URL 방식</label>-->
+<!--									</div>-->
+<!--									<div class="form-check">-->
+<!--										<input class="form-check-input" id="videosWay2" name="videosWay"-->
+<!--											   th:checked="videosWay == 'UPLOAD'"-->
+<!--											   th:field="*{videosWay}"-->
+<!--											   type="radio" value="UPLOAD">-->
+<!--										<label class="form-check-label mb-0" for="videosWay2">업로드 방식</label>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
 
-							<div  id = "mvFileUrlInfo" class="form-group required row" style="display:none;">
-								<label
-										class="col-sm-3 control-label"
-										data-name="videosUrl"
-										for="title"
-								>동영상 url</label
-								>
-								<div class="col-md-4">
-									<input
-											class="form-control"
-											id="videosUrl"
-											name="videosUrl"
-											placeholder="연결할 URL을 입력해주세요."
-											th:field="*{videosUrl}"
-											type="text"
-									/>
-								</div>
-							</div>
+<!--							<div  id = "mvFileUrlInfo" class="form-group required row" style="display:none;">-->
+<!--								<label-->
+<!--										class="col-sm-3 control-label"-->
+<!--										data-name="videosUrl"-->
+<!--										for="title"-->
+<!--								>동영상 url</label-->
+<!--								>-->
+<!--								<div class="col-md-4">-->
+<!--									<input-->
+<!--											class="form-control"-->
+<!--											id="videosUrl"-->
+<!--											name="videosUrl"-->
+<!--											placeholder="연결할 URL을 입력해주세요."-->
+<!--											th:field="*{videosUrl}"-->
+<!--											type="text"-->
+<!--									/>-->
+<!--								</div>-->
+<!--							</div>-->
 
 							<div id = "mvFileInfo" class="form-group required row" style="display:none;">
 								<label class="col-sm-3 control-label" data-name="mvFile">동영상 업로드</label>
@@ -938,7 +944,7 @@
 							<div class="form-group row">
 								<label for="bottomMainTxt" class="col-sm-3">메인비주얼 하단 메인 텍스트</label>
 								<div class="col-sm-4">
-									<textarea maxlength="30" id="bottomMainTxt" name="bottomMainTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{bottomMainTxt}" placeholder="  메인 비주얼에 표시될 하단 메인 텍스트를 입력해주세요.&#13;&#10태그 포함 최대 100자 이내"></textarea>
+									<textarea maxlength="30" id="bottomMainTxt" name="bottomMainTxt" class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 78px;" th:utext="*{bottomMainTxt}" placeholder="메인 비주얼에 표시될 하단 메인 텍스트를 입력해주세요.&#13;&#10태그 포함 최대 100자 이내"></textarea>
 								</div>
 								<div class="col-md-4">
 									<middle class="text-muted">텍스트만 입력 가능<span id="bcounter">(0 / 최대 30자)</span></middle>

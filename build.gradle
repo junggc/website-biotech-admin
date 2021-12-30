@@ -69,6 +69,10 @@ dependencies {
     implementation('ch.qos.logback:logback-classic')
 
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+    // editor
+    compile fileTree(dir: 'lib', include: ['*.jar'])
+
 }
 
 

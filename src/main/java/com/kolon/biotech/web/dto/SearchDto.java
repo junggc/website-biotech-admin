@@ -13,4 +13,6 @@ public class SearchDto {
     private String id;
     private String searchAnsStat;
     private String searchCate;
+    private String dispYn;
+    private String langKoYn;
 }

@@ -19,7 +19,19 @@ public interface MainvisualRepository extends JpaRepository<Mainvisual, Integer>
 
     public Mainvisual findTop1ByOrderSeqBeforeOrderByOrderSeqDesc(int orderSeq);
 
+    public Mainvisual findTop1ByOrderSeqBeforeAndDispYnOrderByOrderSeqDesc(int orderSeq ,String dispYn);
+
+    public Mainvisual findTop1ByOrderSeqBeforeAndLangKoYnOrderByOrderSeqDesc(int orderSeq, String langKoYn);
+
+    public Mainvisual findTop1ByOrderSeqBeforeAndDispYnAndLangKoYnOrderByOrderSeqDesc(int orderSeq, String dispYn, String langKoYn);
+
     public Mainvisual findTop1ByOrderSeqAfterOrderByOrderSeqAsc(int orderSeq);
+
+    public Mainvisual findTop1ByOrderSeqAfterAndDispYnOrderByOrderSeqAsc(int orderSeq, String dispYn);
+
+    public Mainvisual findTop1ByOrderSeqAfterAndLangKoYnOrderByOrderSeqAsc(int orderSeq, String langKoYn);
+
+    public Mainvisual findTop1ByOrderSeqAfterAndDispYnAndLangKoYnOrderByOrderSeqAsc(int orderSeq, String dispYn, String langKoYn);
 
     @Query("select min(e.orderSeq) as orderSeq from Mainvisual e")
     public int findMinOrderSeq();

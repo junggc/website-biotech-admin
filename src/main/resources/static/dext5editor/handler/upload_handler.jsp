@@ -1,6 +1,8 @@
 ﻿<%@ page contentType="text/html;charset=utf-8"%><%@ page import="com.dext5.DEXT5Handler" %><% 
 	out.clear(); // Servlet으로 handler 작업을 하시려면 제거해주세요.
-	
+
+	System.out.println("##############allowUploadDirectoryPath####################????????");
+
 	String _allowFileExt = "gif, jpg, jpeg, png, bmp, wmv, asf, swf, avi, mpg, mpeg, mp4, txt, doc, docx, xls, xlsx, ppt, pptx, hwp, zip, pdf,flv";
 	int upload_max_size = 2147483647;
 
@@ -9,7 +11,7 @@
 	// ServletContext application = getServletContext();
 
 	DEXT5Handler DEXT5 = new DEXT5Handler();
-	
+
 	// 환경설정파일 물리적 폴더 (서버 환경변수를 사용할 경우)
 	//DEXT5.SetConfigPhysicalPath("C:/dext5/config");
 
@@ -19,6 +21,7 @@
 
 	// ***************보안 설정 : 업로드 가능한 경로 설정 - 이외의 경로로 업로드 불가능***************
 	String[] allowUploadDirectoryPath = { request.getSession().getServletContext().getRealPath("/") };
+	System.out.println("##############allowUploadDirectoryPath####################"+allowUploadDirectoryPath);
 	DEXT5.SetAllowUploadDirectoryPath(allowUploadDirectoryPath);
 
 	String result = DEXT5.DEXTProcess(request, response, application, _allowFileExt, upload_max_size);
@@ -41,7 +44,7 @@
 			String strLastError = DEXT5.LastErrorMessage();
 		}
 		*/
-		
+
 		/*
 		// 썸네일 파일 생성
 		String strSourceFile = DEXT5.LastSaveFile();
@@ -51,7 +54,7 @@
 			String strLastError = DEXT5.LastErrorMessage();
 		}
 		*/
-		
+
 		/*
 		// 이미지 포멧 변경
 		String strSourceFile = DEXT5.LastSaveFile();
@@ -69,7 +72,7 @@
 			String strLastError = DEXT5.LastErrorMessage();
 		}
 		*/
-		
+
 		/*
 		// 이미지 크기 변환
 		String strSourceFile = DEXT5.LastSaveFile();
@@ -78,7 +81,7 @@
 			String strLastError = DEXT5.LastErrorMessage();
 		}
 		*/
-		
+
 		/*
 		// 비율로 이미지 크기 변환
 		String strSourceFile = DEXT5.LastSaveFile();
@@ -87,7 +90,7 @@
 			String strLastError = DEXT5.LastErrorMessage();
 		}
 		*/
-		
+
 		/*
 		// 비율로 이미지 크기 변환
 		String strSourceFile = DEXT5.LastSaveFile();
@@ -96,7 +99,7 @@
 			String strLastError = DEXT5.LastErrorMessage();
 		}
 		*/
-		
+
 		/*
 		// 이미지 회전
 		String strSourceFile = DEXT5.LastSaveFile();
@@ -105,7 +108,7 @@
 			String strLastError = DEXT5.LastErrorMessage();
 		}
 		*/
-		
+
 		/*
 		// 이미지 워터마크
 		String strSourceFile = DEXT5.LastSaveFile();
@@ -125,16 +128,16 @@
 			String strLastError = DEXT5.LastErrorMessage();
 		}
 		*/
-        
+
         /*
-		// 다른 파일명.확장자 
+		// 다른 파일명.확장자
 		String strSourceFile = DEXT5.LastSaveFile();
         String rtn_value = DEXT5.GetNewFileNameEx("jpg", "TIME");
 		if (rtn_value.equals("")) {
 			String strLastError = DEXT5.LastErrorMessage();
 		}
         */
-        
+
         /*
         // 이미지 가로(Width) 크기
         String strSourceFile = DEXT5.LastSaveFile();
@@ -143,7 +146,7 @@
             String strLastError = DEXT5.LastErrorMessage();
         }
         */
-		
+
 		/*
 		// 이미지 세로(Height) 크기
 		String strSourceFile = DEXT5.LastSaveFile();
@@ -161,7 +164,7 @@
 			String strLastError = DEXT5.LastErrorMessage();
 		}
 		*/
-		
+
 		/*
 		// 이미지 파일 크기
 		String strSourceFile = DEXT5.LastSaveFile();
@@ -170,7 +173,7 @@
 			String strLastError = DEXT5.LastErrorMessage();
 		}
 		*/
-		
+
 		/*
 		// 파일 삭제
 		String strSourceFile = DEXT5.LastSaveFile();
@@ -187,17 +190,17 @@
 	}
 
 	// 파일 저장 경로 (물리적 경로)
-	//if(DEXT5.LastSaveFile().length() > 0) { 
+	//if(DEXT5.LastSaveFile().length() > 0) {
 	//	System.out.println("save file : [" + DEXT5.LastSaveFile() + "]");
 	//}
 
 	// 파일 저장 경로 (WEB URL)
-	//if(DEXT5.LastSaveUrl().length() > 0) { 
+	//if(DEXT5.LastSaveUrl().length() > 0) {
 	//System.out.println("save url : [" + DEXT5.LastSaveUrl() + "]");
 	//}
 
-	// 에러 Message 
-	//if(DEXT5.LastErrorMessage().length() > 0) { 
+	// 에러 Message
+	//if(DEXT5.LastErrorMessage().length() > 0) {
 	//	System.out.println("DEXT5 Handler Error : [" + DEXT5.LastErrorMessage() + "]");
 	//}
 

@@ -48,7 +48,7 @@ public class QnaRestController {
         return _obj;
     }
 
-    @PostMapping(value="/qnaListAjax")
+    @RequestMapping(value="/qnaListAjax")
     public Page<Qna> listAjax(@PageableDefault Pageable pageable,@ModelAttribute SearchDto searchDto, Model model){
         log.debug("=========qnaListAjax============");
         Page<Qna> list = qnaService.getList(searchDto,pageable);

@@ -36,7 +36,17 @@
 
 	<script>
 		var searchFalg = false;
+		var dispYn = '[[ ${searchDto.dispYn} ]]';
+		var langKoYn = '[[ ${searchDto.langKoYn} ]]';
         $(function () {
+
+			/*[# th:if="${searchDto.dispYn != null}"]*/
+			//$("#dispYn").val(/*[[ ${searchDto.dispYn} ]]*/);
+			/*[/]*/
+
+			/*[# th:if="${searchDto.langKoYn != null}"]*/
+			//$("#langKoYn").val(/*[[ ${searchDto.langKoYn} ]]*/);
+			/*[/]*/
 
             var dataTable1=$("#zero_config").DataTable({
                 ajax : {
@@ -50,10 +60,12 @@
                     beforeSend : function() {
                     },
                     data: function (p) {
-						if(searchFalg){
-							p.dispYn = $("#dispYn").val();
-							p.langKoYn = $("#langKoYn").val();
-						}
+
+						$("#dispYn").val(dispYn);
+						$("#langKoYn").val(langKoYn);
+
+						p.dispYn = $("#dispYn").val();
+						p.langKoYn = $("#langKoYn").val();
 
                         p.page = $("#zero_config").DataTable().page.info().page+1;
                         p.size = $("#zero_config").DataTable().page.len();
@@ -120,7 +132,7 @@
 				    },
                     {
                         data:function(data, type){
-                            return '<a href="/mainvisualInfo?id='+data.id+'">'+data.title+'</a>';
+                            return '<a href="javascript:mvform(\''+data.id+'\');">'+data.title+'</a>';
                         }, targets: 4, orderable: false, visible: true, className:'tdtitle'
                     },
 					{data: function(data, type){
@@ -153,7 +165,7 @@
 				bStateSave: true
             });
 
-            $(".dataTables_filter").html('<button class="btn btn-outline-primary" id="refresh" onclick="location.href=\'/mainvisualInfo\';">등록</button><button class="btn btn-outline-danger" id="refresh" onclick="deletelist();">삭제</button>');
+            $(".dataTables_filter").html('<button type="button" class="btn btn-outline-primary" id="refresh" onclick="location.href=\'/mainvisualInfo\';">등록</button><button type="button" class="btn btn-outline-danger" id="refresh" onclick="deletelist();">삭제</button>');
 
 
 			$("#zero_config_paginate").parent("div").addClass("page-wrap");
@@ -161,10 +173,12 @@
 
 			//순서변경
 			chup_orderSeq = function(ida){
+
+
 				$.ajax({
 					type: "POST",
 					url: "/mainvisualUpOrder",
-					data : "id="+ida,
+					data : "id="+ida+"&dispYn="+dispYn+"&langKoYn="+langKoYn,
 					sync:true,
 					success: function (data) {
 						console.log('data',data);
@@ -182,7 +196,7 @@
 				$.ajax({
 					type: "POST",
 					url: "/mainvisualDnOrder",
-					data : "id="+ida,
+					data : "id="+ida+"&dispYn="+dispYn+"&langKoYn="+langKoYn,
 					sync:true,
 					success: function (data) {
 						console.log('data',data);
@@ -237,7 +251,7 @@
 							success: function (data) {
 								console.log('data',data);
 								alert(data.message);
-								location.reload();
+								$('#zero_config').DataTable().ajax.reload(null, false);
 							},
 							error: function (xhr, status, error) {
 								alert("서버오류로 지연되고있습니다. 잠시 후 다시 시도해주시기 바랍니다.");
@@ -249,6 +263,11 @@
 				}
 			}
 
+			mvform = function(id){
+				$("#id").val(id);
+				$("form#is_form").attr("action", "/mainvisualInfo").submit();
+			}
+
 			reset1 = function(){
 				$("#dispYn").val('');
 				$("#langKoYn").val('');
@@ -256,6 +275,8 @@
 
 			search = function(){
 				searchFalg = true;
+				dispYn = $("#dispYn").val();
+				langKoYn = $("#langKoYn").val();
 				dataTable1Clear();
 				dataTable1.draw();
 				searchFalg = false;
@@ -282,6 +303,9 @@
 
 	<div class="container-fluid">
 		<div class="card">
+			<form class="form-horizontal" id="is_form" method="get" name="is_form" >
+				<input type="hidden" name="id" id="id" />
+
 			<div class="card-body">
 				<h5 class="card-title">메인비주얼 목록</h5>
 				<div class="table-responsive">
@@ -358,6 +382,7 @@
 					</table>
 				</div>
 			</div>
+			</form>
 		</div>
 
 

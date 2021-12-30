@@ -32,7 +32,7 @@ public class MainRestController {
     @Autowired
     private MainvisualService mainvisualService;
 
-    @PostMapping("mainVisualListAjax")
+    @RequestMapping("mainVisualListAjax")
     public Page<Mainvisual> mainVisualListAjax(@ModelAttribute Mainvisual mainvisual, @PageableDefault Pageable pageable, Model model){
         Page<Mainvisual> mainVisual = mainvisualService.getMainvisualList(mainvisual, pageable);
         return mainVisual;
@@ -80,12 +80,12 @@ public class MainRestController {
     }
 
     @RequestMapping(value="/mainvisualUpOrder")
-    public ResultJsonPagingDto mainvisualUpOrder(@RequestParam(value="id", required = false) Integer id){
+    public ResultJsonPagingDto mainvisualUpOrder(@RequestParam(value="id", required = false) Integer id,@RequestParam(value="dispYn", required = false) String dispYn,@RequestParam(value="langKoYn", required = false) String langKoYn){
         log.debug("####mainvisualUpOrder###"+id);
         ResultJsonPagingDto dto = new ResultJsonPagingDto();
 
         try{
-            mainvisualService.upOrder(id);
+            mainvisualService.upOrder(id,dispYn,langKoYn);
             dto.setSuccess(true);
         }catch(Exception e){
             dto.setSuccess(false);
@@ -96,12 +96,12 @@ public class MainRestController {
     }
 
     @RequestMapping(value="/mainvisualDnOrder")
-    public ResultJsonPagingDto mainvisualDnOrder(@RequestParam(value="id", required = false) Integer id){
+    public ResultJsonPagingDto mainvisualDnOrder(@RequestParam(value="id", required = false) Integer id,@RequestParam(value="dispYn", required = false) String dispYn,@RequestParam(value="langKoYn", required = false) String langKoYn){
         log.debug("####mainvisualDnOrder###"+id);
         ResultJsonPagingDto dto = new ResultJsonPagingDto();
 
         try{
-            mainvisualService.dnOrder(id);
+            mainvisualService.dnOrder(id,dispYn,langKoYn);
             dto.setSuccess(true);
         }catch(Exception e){
             dto.setSuccess(false);

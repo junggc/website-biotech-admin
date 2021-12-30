@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.LocaleResolver;
 
 import java.security.Principal;
@@ -32,7 +33,7 @@ public class MainpopController {
     @Autowired
     private MainpopService mainpopService;
 
-    @GetMapping("mainpopInfo")
+    @RequestMapping("mainpopInfo")
     public String mainpopInfo(Principal principal, @ModelAttribute SearchDto searchDto, @ModelAttribute Mainpop obj, Model model){
 
         model.addAttribute("searchDto",searchDto);
@@ -40,7 +41,7 @@ public class MainpopController {
         return "content/mainpopInfo";
     }
 
-    @GetMapping("mainpopList")
+    @RequestMapping("mainpopList")
     public String mainpopList(@AuthenticationPrincipal MemberDto memberDto, @ModelAttribute SearchDto searchDto, Model model){
         model.addAttribute("searchDto",searchDto);
         return "content/mainpopList";

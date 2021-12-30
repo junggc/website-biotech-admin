@@ -287,9 +287,6 @@
 						<input type="hidden" name="searchText" th:value="${searchDto.searchText}"/>
 						<input type="hidden" name="searchStartDate" th:value="${searchDto.searchStartDate}"/>
 						<input type="hidden" name="searchEndDate" th:value="${searchDto.searchEndDate}"/>
-						<input type="hidden" name="jobFlag" th:value="${searchDto.jobFlag}"/>
-						<input type="hidden" name="page" th:value="${searchDto.page}"/>
-						<input type="hidden" name="size" th:value="${searchDto.size}"/>
 						<input type="hidden" name="searchAnsStat" th:value="${searchDto.searchAnsStat}"/>
 						<input type="hidden" name="searchCate" th:value="${searchDto.searchCate}"/>
 					</form>
@@ -361,7 +358,7 @@
 
 							<div class="form-group row">
 								<label class="col-md-3">문의 내용</label>
-								<div class="col-sm-9" th:utext="*{userContents}">
+								<div class="col-sm-9" th:utext="${#strings.replace(obj.userContents, nlString, '&lt;br /&gt;')}">
 								</div>
 							</div>
 

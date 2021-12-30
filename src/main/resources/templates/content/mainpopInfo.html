@@ -306,11 +306,12 @@
 
 		function listAction(){
 			// location.href='/mainpopList';
-			if(document.referrer.indexOf('/mainpopList') > -1){
-				history.back();
-			}else{
-				location.href='/mainpopList';
-			}
+			// if(document.referrer.indexOf('/mainpopList') > -1){
+			// 	history.back();
+			// }else{
+			// 	location.href='/mainpopList';
+			// }
+			$("#sch_form").attr("action", "/mainpopList").submit();
 		}
 
 		function cancelAction(){
@@ -367,6 +368,10 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card">
+					<form id="sch_form" name="sch_form" method="post">
+						<input type="hidden" name="dispYn" th:value="${searchDto.dispYn}"/>
+						<input type="hidden" name="langKoYn" th:value="${searchDto.langKoYn}"/>
+					</form>
 					<form class="form-horizontal" id="is_form" method="post" enctype="multipart/form-data"
 						  name="is_form"
 						  th:object="${mainpop}">

@@ -23,7 +23,7 @@ public class XssRequest extends HttpServletRequestWrapper {
 
     public XssRequest(HttpServletRequest request) {
         super(request);
-        LOGGER.debug( "XssRequest ");
+        LOGGER.debug( "XssRequest "+request.getRequestURI());
     }
 
     @Override

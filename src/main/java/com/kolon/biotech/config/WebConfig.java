@@ -99,7 +99,10 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(localeChangeInterceptor());
         registry.addInterceptor(customInterceptor())
                 .addPathPatterns("/*")  //해당 경로에 접근전 동작
-                .excludePathPatterns("/sample");  //해당경로는 동작안함
+                .excludePathPatterns("/sample")  //해당경로는 동작안함
+                .excludePathPatterns("/editorUpload")
+                .excludePathPatterns("/assets/*")
+                .excludePathPatterns("/assets/*/*");
     }
 
     @Bean
