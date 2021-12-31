@@ -14,20 +14,24 @@ function toStringByFormatting(source, delimiter = '-') {
 }
 
 function toStringByFormattingHm(source, delimiter = '-') {
+    const timeDelimiter = ':';
+
     const year = source.getFullYear();
     const month = leftPad(source.getMonth() + 1);
     const day = leftPad(source.getDate());
     const hour = leftPad(source.getHours());
     const minutes = leftPad(source.getMinutes());
-    return [year, month, day].join(delimiter)+" "+[hour, minutes].join(delimiter);
+    return [year, month, day].join(delimiter)+" "+[hour, minutes].join(timeDelimiter);
 }
 
 function toStringByFormattingHms(source, delimiter = '-') {
+    const timeDelimiter = ':';
+
     const year = source.getFullYear();
     const month = leftPad(source.getMonth() + 1);
     const day = leftPad(source.getDate());
     const hour = leftPad(source.getHours());
     const minutes = leftPad(source.getMinutes());
     const second = leftPad(source.getSeconds());
-    return [year, month, day].join(delimiter)+" "+[hour, minutes, second].join(delimiter);
+    return [year, month, day].join(delimiter)+" "+[hour, minutes, second].join(timeDelimiter);
 }
