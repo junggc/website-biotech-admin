@@ -5,6 +5,7 @@ import com.oreilly.servlet.MultipartRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
@@ -38,14 +39,6 @@ public class EditorController {
         DEXT5.SetAllowUploadDirectoryPath(allowUploadDirectoryPath);
         DEXT5.SetTempRealPath("/data/upload/temp");
 
-        MultipartRequest multi = new MultipartRequest(request, "/data/upload/temp", upload_max_size, "UTF-8");
-        if(multi != null){
-            System.out.println("@@@@@"+multi.getParameterNames());
-            while(multi.getParameterNames().hasMoreElements()){
-                String a = (String)multi.getParameterNames().nextElement();
-                System.out.println(">????"+a);
-            }
-        }
         String result = DEXT5.DEXTProcess(request, response, application, _allowFileExt, upload_max_size);
 
         //if(!result.equals("")) {
