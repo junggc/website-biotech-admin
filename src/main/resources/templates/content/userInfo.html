@@ -226,10 +226,10 @@
                 , success : function (changes) {
                     console.log('changes',changes);
                     if(!changes){
-                        alert("사용중인 아이디입니다.");
+                        alert("이미 사용중인 아이디입니다.");
                         $("#samecheck").val('');
                     }else{
-                        alert("사용가능 아이디입니다.");
+                        alert("사용가능한 아이디입니다.");
                         $("#samecheck").val('true');
                     }
                 }
