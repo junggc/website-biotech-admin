@@ -19,12 +19,14 @@ public class XssFilter implements Filter {
         // 필터적용
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
+
         if(request.getRequestURI().indexOf("/editorUpload")>-1){
             logger.debug("=======================================================");
             logger.debug( "NoXssFilter ");
             logger.debug("=======================================================");
-            request.setCharacterEncoding("utf-8");
-            chain.doFilter(req, res);
+            ContentCachingRequestWrapper crequest = new ContentCachingRequestWrapper(request);
+            crequest.setCharacterEncoding("utf-8");
+            chain.doFilter(crequest, res);
         }else{
             logger.debug("=======================================================");
             logger.debug( "XssFilter ");

@@ -30,12 +30,8 @@ public class EditorController {
         DEXT5Handler DEXT5 = new DEXT5Handler();
 
         ServletContext application = request.getServletContext();
-        //String[] allowUploadDirectoryPath = { targetRootLocation+"/editor" };
-        String[] allowUploadDirectoryPath = { request.getSession().getServletContext().getRealPath("/") };
-        System.out.println("##############allowUploadDirectoryPath####################"+allowUploadDirectoryPath.length);
-        for(String t : allowUploadDirectoryPath){
-            System.out.println("@@@@@@"+t);
-        }
+        String[] allowUploadDirectoryPath = { targetRootLocation+"/editor" };
+
         DEXT5.SetAllowUploadDirectoryPath(allowUploadDirectoryPath);
         DEXT5.SetTempRealPath("/data/upload/temp");
 

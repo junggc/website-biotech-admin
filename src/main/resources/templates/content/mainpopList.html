@@ -54,13 +54,15 @@
                     data: function (p) {
 
 						$("#dispYn").val(dispYn);
+						p.dispYn = dispYn;
+
 						$("#langKoYn").val(langKoYn);
+						p.langKoYn = langKoYn;
 
-						p.dispYn = $("#dispYn").val();
-						p.langKoYn = $("#langKoYn").val();
-
-                        p.page = $("#zero_config").DataTable().page.info().page+1;
+						p.page = $("#zero_config").DataTable().page.info().page+1;
                         p.size = $("#zero_config").DataTable().page.len();
+
+						console.log('p',p);
                     },
                     dataSrc: function(res) {
                         var data = res.data;
@@ -149,7 +151,13 @@
                   pageLength: 10,
                   paging: true,
 				bStateSave: true
-            });
+            })
+			.on('stateSaveParams.dt',function(e,settings, data){
+				data.search.dispYn = dispYn;
+				data.search.langKoYn = langKoYn;
+
+				console.log('data.search',data.search);
+			});
 
             $(".dataTables_filter").html('<button type="button" class="btn btn-outline-primary" id="refresh" onclick="location.href=\'/mainpopInfo\';">등록</button><button type="button" class="btn btn-outline-danger" id="refresh" onclick="deletelist();">삭제</button>');
 
@@ -214,15 +222,17 @@
 			}
 
 			reset1 = function(){
+				dispYn = '';
+				langKoYn = '';
 				$("#dispYn").val('');
 				$("#langKoYn").val('');
 			}
 
 			search = function(){
 				searchFalg = true;
+				dataTable1Clear();
 				dispYn = $("#dispYn").val();
 				langKoYn = $("#langKoYn").val();
-				dataTable1Clear();
 				dataTable1.draw();
 				searchFalg = false;
 			}
@@ -230,6 +240,35 @@
 			dataTable1Clear = function(){
 				dataTable1.state.clear();
 			}
+
+			dataTable1State = function(){
+				// 초기화 중에 로드 된 테이블 상태를 가져온다.
+				var state = dataTable1.state.loaded();
+				console.log(2);
+				console.log('satate', state);
+				if ( state ) {
+					console.log(3);
+
+					var search = state.search;
+					if(search.dispYn){
+						$("#dispYn").val(search.dispYn);
+						dispYn = search.dispYn;
+					}
+
+					if(search.langKoYn){
+						$("#langKoYn").val(search.langKoYn);
+						langKoYn = search.langKoYn;
+					}
+				}else{
+					console.log(4);
+				}
+
+				console.log('dispYn = ',dispYn);
+				setTimeout(() => dataTable1.draw('page'), 300);
+				//dataTable1.draw('page');
+			}
+
+			dataTable1State();
         });
 
 

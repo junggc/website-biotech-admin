@@ -100,12 +100,11 @@
                     data: function (p) {
 
 						$("#searchText").val(searchText);
-						// if(_sdate != '') $("#datepicker-autoclose1").val(_sdate); else $sdate.datepicker('setDate','-1M');
-						// if(_edate != '') $("#datepicker-autoclose2").val(_edate); else $edate.datepicker('setDate',new Date());
+						if(_sdate != '') $("#datepicker-autoclose1").val(_sdate);
+						if(_edate != '') $("#datepicker-autoclose2").val(_edate);
 						$("#searchAnsStat").val(searchAnsStat);
 						$("#searchCate").val(searchCate);
 
-//alert($("#datepicker-autoclose1").val());
 						p.searchStartDate = $("#datepicker-autoclose1").val();
 						p.searchEndDate = $("#datepicker-autoclose2").val();
 						p.searchText = $("#searchText").val();
@@ -192,7 +191,17 @@
                   pageLength: 10,
                   paging: true,
 				  bStateSave: true
-            });
+            })
+			.on('stateSaveParams.dt',function(e,settings, data){
+
+				data.search.searchStartDate = _sdate;
+				data.search.searchEndDate = _edate;
+				data.search.searchText = searchText;
+				data.search.searchAnsStat = searchAnsStat;
+				data.search.searchCate = searchCate;
+
+				console.log('data.search',data.search);
+			});
 
             $(".dataTables_filter").html('<button class="btn btn-outline-danger" id="refresh" onclick="deletelist();">삭제</button>');
 
@@ -205,6 +214,8 @@
 			}
 
 			search = function(){
+
+
 				var sdate = new Date($("#datepicker-autoclose1").val());
 				var edate = new Date($("#datepicker-autoclose2").val());
 
@@ -212,6 +223,8 @@
 					alert("시작일자, 종료일자를 확인해주세요.");
 					return false;
 				}
+				dataTable1Clear();
+
 				_sdate = $("#datepicker-autoclose1").val();
 				_edate = $("#datepicker-autoclose2").val();
 				searchText=$("#searchText").val();
@@ -219,17 +232,25 @@
 				searchCate=$("#searchCate").val();
 
 				searchFalg = true;
-				dataTable1Clear();
 				dataTable1.draw();
 				searchFalg = false;
 			}
 
 			reset1 = function(){
+
+
 				$("#searchAnsStat").val('');
 				$("#searchText").val('');
 				$("#searchCate").val('');
 				$sdate.datepicker('setDate','-1M');
 				$edate.datepicker('setDate',new Date());
+
+				_sdate = $("#datepicker-autoclose1").val();
+				_edate = $("#datepicker-autoclose2").val();
+				searchText='';
+				searchAnsStat='';
+				searchCate='';
+
 			}
 
 			moveInfo = function(id){
@@ -328,6 +349,51 @@
 			dataTable1Clear = function(){
 				dataTable1.state.clear();
 			}
+
+			dataTable1State = function(){
+				// 초기화 중에 로드 된 테이블 상태를 가져온다.
+				var state = dataTable1.state.loaded();
+				console.log(2);
+				console.log('satate', state);
+				if ( state ) {
+					console.log(3);
+
+					var search = state.search;
+
+					if(search.searchText){
+						$("#searchText").val(search.searchText);
+						searchText = search.searchText;
+					}
+
+					if(search.searchAnsStat){
+						$("#searchAnsStat").val(search.searchAnsStat);
+						searchAnsStat = search.searchAnsStat;
+					}
+
+					if(search.searchCate){
+						$("#searchCate").val(search.searchCate);
+						searchCate = search.searchCate;
+					}
+
+					if(search._sdate){
+						$("#datepicker-autoclose1").val(search._sdate);
+						_sdate = search._sdate;
+					}
+
+					if(search._edate){
+						$("#datepicker-autoclose2").val(search._edate);
+						_edate = search._edate;
+					}
+
+				}else{
+					console.log(4);
+				}
+
+				setTimeout(() => dataTable1.draw('page'), 300);
+				//dataTable1.draw('page');
+			}
+
+			dataTable1State();
 
         });
 
