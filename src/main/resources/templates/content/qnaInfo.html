@@ -418,12 +418,12 @@
 									<th:block th:if="*{answerDate == null}" th:text="등록"></th:block>
 									<th:block th:if="*{answerDate != null}" th:text="수정"></th:block>
 								</button>
-								<th:block th:if="*{id == null}">
+								<th:block th:if="*{answerDate == null}">
 									<button class="btn btn-danger text-white" onclick="cancelAction();" type="button">
 										취소
 									</button>
 								</th:block>
-								<th:block th:if="*{id != null}">
+								<th:block th:if="*{answerDate != null}">
 									<button class="btn btn-danger text-white" th:onclick="deleteAction([[*{id}]]);" type="button">
 										삭제
 									</button>
