@@ -10,6 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 @Slf4j
@@ -39,6 +42,12 @@ public class EditorController {
             // 파일 이름 가져오기
             byte[] bytes = upload.getBytes();
             // 업로드 경로
+            String filePath = targetRootLocation + File.separator + "editor";
+            Path fileLocation = Paths.get(filePath);
+            if (!Files.isDirectory(fileLocation)) {
+                Files.createDirectories(fileLocation);
+            }
+
             String ckUploadPath = targetRootLocation + File.separator + "editor" + File.separator + uid + "_" + fileName;
             out = new FileOutputStream(new File(ckUploadPath));
             out.write(bytes);
