@@ -127,6 +127,12 @@
                   pageLength: 10,
                   paging: true,
 				bStateSave: true
+				,"fnDrawCallback": function (oSettings) {
+					//console.log('dddd',this.api().page.info());
+					//체크박스 초기화
+					$("#mainCheckbox").prop("checked", false);
+					$("#mainCheckbox").trigger("multicheck.nonechecked");
+				}
             });
 
             $(".dataTables_filter").html('<button class="btn btn-outline-primary" id="refresh" onclick="location.href=\'/subsidiaryInfo\';">등록</button><button class="btn btn-outline-danger" id="refresh" onclick="deletelist();">삭제</button>');

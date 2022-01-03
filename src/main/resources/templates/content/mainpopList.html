@@ -151,6 +151,12 @@
                   pageLength: 10,
                   paging: true,
 				bStateSave: true
+				,"fnDrawCallback": function (oSettings) {
+					//console.log('dddd',this.api().page.info());
+					//체크박스 초기화
+					$("#mainCheckbox").prop("checked", false);
+					$("#mainCheckbox").trigger("multicheck.nonechecked");
+				}
             })
 			.on('stateSaveParams.dt',function(e,settings, data){
 				data.search.dispYn = dispYn;
