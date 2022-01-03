@@ -66,6 +66,7 @@
 			resize_enaleb : false,
 			enterMode : CKEDITOR.ENTER_BR,
 			shiftEnterMode : CKEDITOR.ENTER_P,
+			height:550,
 			filebrowserUploadUrl: "/editor/ckUpload"
 		};
 	</script>
@@ -238,7 +239,7 @@
 								>내용</label
 								>
 								<div class="col-sm-9">
-									<textarea th:text="*{content}" name="content" id="content" style="display:none" ></textarea>
+									<textarea th:text="*{content}" name="content" id="content"></textarea>
 									<script type="text/javascript">
 										CKEDITOR.replace('content', ckeditor_config);
 									</script>

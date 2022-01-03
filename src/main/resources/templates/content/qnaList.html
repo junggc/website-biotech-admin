@@ -359,7 +359,7 @@
 			dataTable1State = function(){
 				// 초기화 중에 로드 된 테이블 상태를 가져온다.
 				var state = dataTable1.state.loaded();
-				console.log(2);
+				console.log(dataTable1.page.info().page+1);
 				console.log('satate', state);
 				if ( state ) {
 					console.log(3);
@@ -395,8 +395,9 @@
 					console.log(4);
 				}
 
-				setTimeout(() => dataTable1.draw('page'), 300);
-				//dataTable1.draw('page');
+				setTimeout(() => dataTable1.draw('page'), 500);
+
+				//dataTable1.fnPageChange(dataTable1.page.info().page+1);
 			}
 
 			dataTable1State();
