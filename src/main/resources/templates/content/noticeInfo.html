@@ -166,7 +166,7 @@
 			// 파일 배열 담기
 			var filesArr = Array.prototype.slice.call(files);
 
-			fileCount = $('#articlefileChange').children().length;
+			fileCount = $('#articlefileChange').children("div").length;
 			// 파일 개수 확인 및 제한
 			if (fileCount + filesArr.length > totalCount) {
 				alert('파일은 최대 '+totalCount+'개까지 업로드 할 수 있습니다.');
@@ -200,9 +200,9 @@
 				reader.onload = function (e) {
 					content_files.push(f);
 					$('#articlefileChange').append(
-							'<div id="file' + fileNum + '" onclick="fileDelete(\'file' + fileNum + '\')" data-ext="'+ext+'" data-size="'+size+'">'
+							'<div id="file' + fileNum + '"  data-ext="'+ext+'" data-size="'+size+'">'
 							+ '<font style="font-size:12px">' + f.name + '</font>'
-							+ '<i class="me-2 mdi mdi-minus"></i>'
+							+ '<i class="me-2 mdi mdi-minus" onclick="fileDelete(\'file' + fileNum + '\')"></i>'
 							+ '</div>'
 					);
 					fileNum ++;
@@ -263,9 +263,7 @@
 				}
 			}
 
-			for(var y = 0; y<delete_files.length; y++){
-				formData.append("deletefilenum", delete_files[y]);
-			}
+			formData.append("deletefilenum", delete_files);
 
 
 			/*
@@ -515,9 +513,9 @@
 										<input class="custom-file-input" id="input_file" type="file" />
 										<br/>
 										<div id="articlefileChange">
-											<div th:each="filedata, i: ${notice.noticefileList}" th:id="'dbfile'+${filedata.id}" th:onclick="'removeContent(' + ${filedata.id} + ');'" th:attr="data-ext=${filedata.fileExt}" th:attrappend="data-size=${filedata.fileLength},data-name=${filedata.fileName}" >
+											<div th:each="filedata, i: ${notice.noticefileList}" th:id="'dbfile'+${filedata.id}" th:attr="data-ext=${filedata.fileExt}" th:attrappend="data-size=${filedata.fileLength},data-name=${filedata.fileName}" >
 												<font style="font-size:12px" th:utext="${filedata.fileName}"></font>
-												<i class="me-2 mdi mdi-minus"></i>
+												<i class="me-2 mdi mdi-minus" th:onclick="'removeContent(' + ${filedata.id} + ');'" ></i>
 											</div>
 											<label class="custom-file-label" for="input_file">10MB 이하의 jpg, jpeg, gif, png, pdf, doc, docx, hwp, mp4 파일만 첨부 가능합니다.</label>
 										</div>

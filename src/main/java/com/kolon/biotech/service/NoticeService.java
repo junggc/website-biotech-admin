@@ -71,7 +71,7 @@ public class NoticeService {
     }
 
     @Transactional
-    public Notice setWriteStroeNotice(Notice notice, MultipartFile[] files, List<Integer> deleteFileList) throws IOException {
+    public Notice setWriteStroeNotice(Notice notice, MultipartFile[] files, Integer[] deleteFileList) throws IOException {
         log.debug("===================setWriteStroeNotice============================");
         log.debug("########"+notice.getId()+"#########");
         Notice r_notice = noticeRepository.save(notice);
@@ -93,10 +93,6 @@ public class NoticeService {
 
                 Files.copy(file.getInputStream(), fileLocation.resolve(newFilename));
 
-//                File f = new File(filePath+"/"+newFilename);
-//
-//                file.transferTo(f);
-
                 Noticefile noticefile = Noticefile.builder().noticeId(r_notice.getId()).fileName(oriFileName)
                         .filePath(filePath+"/"+newFilename)
                         .uriPath(uriPath+"/"+path+"/"+newFilename)
@@ -110,16 +106,17 @@ public class NoticeService {
         }
 
         //파일 삭제
-        if(deleteFileList != null && !deleteFileList.isEmpty()){
-            for(Integer id : deleteFileList){
+        if(deleteFileList != null && deleteFileList.length > 0){
 
-                //실제 파일 삭제
-                Noticefile nfile = noticefileRepository.findById(id).get();
-                File f = new File(nfile.getFilePath());
-                f.delete();
+            List<Noticefile> nfile = noticefileRepository.findAllByIdIn(deleteFileList);
 
-                noticefileRepository.deleteById(id);
+            for(Noticefile nf : nfile){
+                File f = new File(nf.getFilePath());
+                if(f!=null && f.isFile()){
+                    f.delete();
+                }
             }
+            noticefileRepository.deleteAllByIdIn(deleteFileList);
 
         }
 
@@ -142,7 +139,7 @@ public class NoticeService {
                 }
             }
 
-            noticefileRepository.deleteAllByIdIn(deleteList);
+            noticefileRepository.deleteAllByNoticeIdIn(deleteList);
             noticeRepository.deleteAllByIdIn(deleteList);
 
         }

@@ -38,7 +38,7 @@ public class NoticeRestController {
     private NoticeService noticeService;
 
     @PostMapping("/noticeEditProcess")
-    public Notice noticeEditProcess(@ModelAttribute Notice notice, @RequestParam(value = "file", required = false) MultipartFile[] noticefile, @RequestParam(value = "deletefilenum", required = false) List<Integer> deleteFileList) throws Exception{
+    public Notice noticeEditProcess(@ModelAttribute Notice notice, @RequestParam(value = "file", required = false) MultipartFile[] noticefile, @RequestParam(value = "deletefilenum", required = false) Integer[] deleteFileList) throws Exception{
         log.debug("=========noticeEditProcess============");
         Notice _notice = noticeService.setWriteStroeNotice(notice, noticefile, deleteFileList);
 
