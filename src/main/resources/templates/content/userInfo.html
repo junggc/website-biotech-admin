@@ -26,6 +26,11 @@
     />
     <style>
         .form-group.required .control-label:after { content:"*";color:red; }
+        input[type=password]::-ms-reveal {
+            display: none;
+            width: 0;
+            height: 0;
+        }
     </style>
     <!-- This Page JS -->
     <script href="/assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"
@@ -225,11 +230,10 @@
                 , data : { loginId: $("#loginId").val() }
                 , success : function (changes) {
                     console.log('changes',changes);
-                    if(!changes){
-                        alert("이미 사용중인 아이디입니다.");
+                    alert(changes.message);
+                    if(!changes.success){
                         $("#samecheck").val('');
                     }else{
-                        alert("사용가능한 아이디입니다.");
                         $("#samecheck").val('true');
                     }
                 }
@@ -361,6 +365,7 @@
                                        for="loginId">관리자 구분</label>
                                 <div class="col-sm-9">
                                     <th:block th:if="*{auth} == 'ROLE_USER'">일반관리자</th:block>
+                                    <th:block th:if="*{auth} == null">일반관리자</th:block>
                                     <th:block th:if="*{auth} == 'ROLE_ADMIN'">마스터관리자</th:block>
                                 </div>
                             </div>

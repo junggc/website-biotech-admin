@@ -20,6 +20,7 @@ import org.springframework.web.servlet.LocaleResolver;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Locale;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -36,18 +37,45 @@ public class UserRestController {
 
 
     @PostMapping("/loginSameCheck")
-    public boolean loginSameCheck(@ModelAttribute Member member){
+    public ResultJsonPagingDto loginSameCheck(@ModelAttribute Member member){
         log.debug("=========loginSameCheck============");
-        Member _member = userService.getLoginId(member);
+        ResultJsonPagingDto resultJsonPagingDto = new ResultJsonPagingDto();
 
-        boolean _bol = true;
-        if(_member.getId() != null && _member.getId() != 0){
-            if(_member.getLoginId() != null && !"".equals(_member.getLoginId())){
-                _bol = false;
+        String[] idlist = {"adm", "admin", "manager", "master", "system", "root", "administrator"};
+        boolean idcheck = false;
+
+        for(String id : idlist){
+            if(member.getLoginId().toLowerCase().contains(id)){
+                idcheck = false;
+                break;
+            }else{
+                idcheck = true;
             }
         }
 
-        return _bol;
+        if(idcheck){
+            Member _member = userService.getLoginId(member);
+
+            boolean _bol = true;
+            if(_member.getId() != null && _member.getId() != 0){
+                if(_member.getLoginId() != null && !"".equals(_member.getLoginId())){
+                    _bol = false;
+                }
+            }
+
+            resultJsonPagingDto.setSuccess(_bol);
+            if(_bol){
+                resultJsonPagingDto.setMessage("사용가능한 아이디입니다.");
+            }else{
+                resultJsonPagingDto.setMessage("이미 사용중인 아이디입니다.");
+            }
+        }else{
+            resultJsonPagingDto.setSuccess(false);
+            resultJsonPagingDto.setMessage("사용할 수 없는 단어가 포함되어있습니다.");
+        }
+
+
+        return resultJsonPagingDto;
     }
 
     @PostMapping(value="/userListAjax")

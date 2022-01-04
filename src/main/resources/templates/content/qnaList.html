@@ -160,7 +160,25 @@
 					{data: function(data, type){
 						return nameMasking(data.userName);
 						},    targets: 2, orderable: false, visible: true},
-					{data: 'qnaCate',    targets: 3, orderable: false, visible: true},
+					{data: function(data, type){
+
+							var txt = "";
+							if(data.qnaCate == 'CMO'){
+								txt = "위탁생산(CMO)";
+							}else if(data.qnaCate == 'CDO'){
+								txt = "공정개발(CDO)";
+							}else if(data.qnaCate == 'ADDSER'){
+								txt = "부가 서비스(품질시험, 보관 등)";
+							}else if(data.qnaCate == 'PARTNERSHIP'){
+								txt = "파트너십";
+							}else if(data.qnaCate == 'RECRUIMENT'){
+								txt = "채용";
+							}else if(data.qnaCate == 'OTHER'){
+								txt = "기타";
+							}
+
+							return txt;
+						},    targets: 3, orderable: false, visible: true},
 					{data: function(data, type){
 							return emailMasking(data.userEmail);
 						},    targets: 4, orderable: false, visible: true},
