@@ -129,11 +129,11 @@ public class UserService implements UserDetailsService {
                 }
             }else{
                 _resultMap.setSuccess(false);
-                _resultMap.setMessage("마스터 비밀번호를 확인해주세요.");
+                _resultMap.setMessage("마스터 관리자 비밀번호를 확인해주세요.");
 
                 history = History.builder().userId(suser.getLoginId())
                         .userName(suser.getUsername())
-                        .jobContent("마스터 비밀번호를 확인해주세요.")
+                        .jobContent("마스터 관리자 비밀번호를 확인해주세요.")
                         .jobFlag("J")
                         .requestDate(LocalDateTime.now())
                         .jobUrl(request.getRequestURI())
@@ -398,7 +398,7 @@ public class UserService implements UserDetailsService {
             }
         }else{
             _resultMap.setSuccess(false);
-            _resultMap.setMessage("마스터 비밀번호를 확인해주세요.");
+            _resultMap.setMessage("마스터 관리자 비밀번호를 확인해주세요.");
         }
 
         return _resultMap;
