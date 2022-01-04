@@ -78,8 +78,9 @@
                    , success : function (changes) {
                        //debugger;
                        var msg = changes.message;
-
-                        msg += "\n다시 로그인해주세요.";
+                       if(changes.success == true) {
+                           msg += "\n다시 로그인해주세요.";
+                       }
 
 
                        alert(msg);

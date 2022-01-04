@@ -205,9 +205,9 @@
 					$("#popImgCheck").attr('data-ext',ext);
 					$("#popImgCheck").attr('data-size',size);
 					$('#articlefileChange').append(
-							'<div id="file' + fileNum + '" width="100" hight="100" onclick="fileDelete(\'file' + fileNum + '\')">'
+							'<div id="file' + fileNum + '" width="100" hight="100" >'
 							+ '<img src="' + e.target.result + '" alt="">'
-							+ '<i class="me-2 mdi mdi-minus"></i>'
+							+ '<i class="me-2 mdi mdi-minus" onclick="fileDelete(\'file' + fileNum + '\')"></i>'
 							+ '<br/>'
 							+ '<font style="font-size:12px">' + f.name + '</font>'
 							+ '</div>'
@@ -476,9 +476,9 @@
 										<br/>
 										<div id="articlefileChange">
 											<th:block th:if="*{not #strings.isEmpty(popImgPath)}">
-												<div th:id="'dbfile1'" th:onclick="removeContent([[*{popImgRealPath}]])">
+												<div th:id="'dbfile1'">
 													<img th:src="*{popImgPath}" width="100" height="100"/>
-													<i class="me-2 mdi mdi-minus"></i>
+													<i class="me-2 mdi mdi-minus"  th:onclick="removeContent([[*{popImgRealPath}]])"></i>
 													<br/>
 													<font style="font-size:12px" th:text="*{popImgName}"></font>
 												</div>
@@ -582,9 +582,6 @@
 											   type="text"
 											   th:value="*{dispStartDay}"
 											   readOnly="true">
-										<div class="input-group-append">
-											<span class="input-group-text h-100"><i class="mdi mdi-calendar"></i></span>
-										</div>
 									</div>
 								</div>
 								<div class="col-md-2">
@@ -632,9 +629,6 @@
 											   type="text"
 											   th:value="*{dispEndDay}"
 											   readOnly="true">
-										<div class="input-group-append">
-											<span class="input-group-text h-100"><i class="mdi mdi-calendar"></i></span>
-										</div>
 									</div>
 								</div>
 								<div class="col-md-2">

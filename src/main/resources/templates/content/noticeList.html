@@ -114,7 +114,7 @@
 				  },
                     {
                         data:function(data, type){
-                            return '<a href="/noticeInfo?id='+data.id+'">'+data.title+'</a>';
+                            return '<a href="/noticeInfo?id='+data.id+'">'+escapeHtml(data.title)+'</a>';
                         }, targets: 4, orderable: false, visible: true, className:'tdtitle'
                     },
                     {data: 'regId', targets: 5, orderable: false, visible: true},

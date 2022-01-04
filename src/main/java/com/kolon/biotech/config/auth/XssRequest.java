@@ -183,6 +183,9 @@ public class XssRequest extends HttpServletRequestWrapper {
             rslt = rslt.replaceAll("(?i)script", "scr1pt");
             rslt = rslt.replaceAll("(?i)alert", "a1ert");
             //#&;
+//            if("title".equals(key.toLowerCase())){
+//                rslt = rslt.replaceAll("&nbsp", "&amp;nbsp");
+//            }
 
         }
 
