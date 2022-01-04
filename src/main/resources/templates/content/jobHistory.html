@@ -39,8 +39,10 @@
 
 	<script th:inline="javascript">
 		var searchFalg = false;
+		var searchText;
 		var _sdate;
 		var _edate;
+		var rowcount = 0;
         $(function () {
 
 			var $sdate = $("#datepicker-autoclose1").datepicker({
@@ -77,19 +79,13 @@
                     data: function (p) {
 						p.jobFlag = "J";
 
-						if(searchFalg){
-							p.searchStartDate = $("#datepicker-autoclose1").val();
-							p.searchEndDate = $("#datepicker-autoclose2").val();
-						}else{
-							p.searchStartDate = _sdate;
-							p.searchEndDate = _edate
-						}
+						$("#searchText").val(searchText);
+						if(_sdate != '') $("#datepicker-autoclose1").val(_sdate);
+						if(_edate != '') $("#datepicker-autoclose2").val(_edate);
 
-						if(searchFalg){
-							p.searchText = $("#searchText").val();
-						}else{
-							p.searchText = '';
-						}
+						p.searchStartDate = $("#datepicker-autoclose1").val();
+						p.searchEndDate = $("#datepicker-autoclose2").val();
+						p.searchText = $("#searchText").val();
 
                         p.page = $("#zero_config").DataTable().page.info().page+1;
                         p.size = $("#zero_config").DataTable().page.len();
@@ -107,9 +103,17 @@
                             data: data.content
                          };
 
+						rowcount = data.totalElements;
+
                          return JSON.stringify(json);
                     },
                     complete : function(res) {
+
+						if(rowcount > 0){
+							$(".excelBtn").attr('disabled', false);
+						}else{
+							$(".excelBtn").attr('disabled', true);
+						}
                     },
                     error : function (jqXHR, textStatus, errorThrown) {
 						console.log(jqXHR.status);
@@ -173,6 +177,7 @@
 
 				_sdate = $("#datepicker-autoclose1").val();
 				_edate = $("#datepicker-autoclose2").val();
+				searchText=$("#searchText").val();
 				searchFalg = true;
 				dataTable1Clear();
 				dataTable1.draw();
@@ -320,7 +325,7 @@
 													   th:value="${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}"
 													   readOnly="true">
 
-												<span class="input-group-text h-100"><i class="mdi mdi-calendar"></i></span>
+
 
 												<span style="display:inline-block;padding:0 7px;line-height:36px;">-</span>
 
@@ -330,7 +335,7 @@
 													   th:value="${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}"
 													   readOnly="true">
 
-												<span class="input-group-text h-100"><i class="mdi mdi-calendar"></i></span>
+
 											</div>
 										</td>
 									</tr>

@@ -84,7 +84,7 @@
                   columnDefs: [
                     {
                       data: function (data, type) {
-                          return '<label class="customcheckbox"><input type="checkbox" name="checkedbox" value="'+data.id+'" class="listCheckbox"><span class="checkmark"></span></label>';
+                          return '<label class="customcheckbox"><input type="checkbox" name="checkedbox" data-delyn="'+(data.auth == 'ROLE_USER' ? 'Y' : 'N')+'" value="'+data.id+'" class="listCheckbox"><span class="checkmark"></span></label>';
                       },
                       targets: 0,
                       orderable: false,
@@ -213,7 +213,15 @@
 					delete_lists = [];
 
 					$("input:checkbox[name='checkedbox']:checked").each(function(){
-						delete_lists.push($(this).val());
+						if($(this).data("delyn") == 'Y'){
+							flag = true;
+							delete_lists.push($(this).val());
+						}else{
+							flag = false;
+							alert("마스터 관리자는 삭제할 수 없습니다.");
+							return false;
+						}
+
 					});
 
 					if(flag){

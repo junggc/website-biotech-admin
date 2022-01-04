@@ -612,9 +612,11 @@
                                     </button>
                                 </th:block>
                                 <th:block th:if="*{id != null}">
-                                    <button class="btn btn-danger text-white" th:onclick="deleteAction([[*{id}]]);" type="button">
-                                        삭제
-                                    </button>
+                                    <th:block th:if="*{auth} == 'ROLE_USER'">
+                                        <button class="btn btn-danger text-white" th:onclick="deleteAction([[*{id}]]);" type="button">
+                                            삭제
+                                        </button>
+                                    </th:block>
                                 </th:block>
                             </div>
                         </div>
