@@ -16,7 +16,7 @@ function escapeHtml (string) {
     string = String(string).replace(/&#34;/gi,'"');
     string = String(string).replace(/&#39;/gi,"'");
 
-    string = String(string).replace(/&#40;/gi,'(")');
+    string = String(string).replace(/&#40;/gi,'(');
     string = String(string).replace(/&#41;/gi,')');
 
     return String(string).replace(/[&<>"'`=\/]/g, function (s) {
