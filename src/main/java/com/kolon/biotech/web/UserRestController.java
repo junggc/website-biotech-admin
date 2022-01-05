@@ -71,7 +71,7 @@ public class UserRestController {
             }
         }else{
             resultJsonPagingDto.setSuccess(false);
-            resultJsonPagingDto.setMessage("사용할 수 없는 단어가 포함되어있습니다.");
+            resultJsonPagingDto.setMessage("사용할 수 없는 단어가 포함되어있습니다.\n사용불가 단어: adm, admin, manager, master, system, root, administrator");
         }
 
 
