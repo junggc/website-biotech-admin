@@ -124,7 +124,7 @@
 						}, targets: 3, orderable: false, visible: true},
                     {
                         data:function(data, type){
-                            return '<a href="javascript:mvform(\''+data.id+'\');">'+data.title+'</a>';
+                            return '<a href="javascript:mvform(\''+data.id+'\');">'+escapeHtml(data.title)+'</a>';
                         }, targets: 4, orderable: false, visible: true, className:'tdtitle'
                     },
 					{data: function(data, type){
