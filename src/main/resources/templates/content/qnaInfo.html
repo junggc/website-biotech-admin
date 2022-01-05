@@ -314,8 +314,13 @@
 
 							<div class="form-group row">
 								<label class="col-md-3">문의 구분</label>
-								<div class="col-sm-3" th:text="*{qnaCate}">
-									일반관리자
+								<div class="col-sm-3">
+									<th:block th:if="*{qnaCate == 'CMO'}" th:text="|위탁생산(CMO)|"></th:block>
+									<th:block th:if="*{qnaCate == 'CDO'}" th:text="|공정개발(CDO)|"></th:block>
+									<th:block th:if="*{qnaCate == 'ADDSER'}" th:text="|부가 서비스(품질시험, 보관 등)|"></th:block>
+									<th:block th:if="*{qnaCate == 'PARTNERSHIP'}" th:text="|파트너십|"></th:block>
+									<th:block th:if="*{qnaCate == 'RECRUIMENT'}" th:text="|채용|"></th:block>
+									<th:block th:if="*{qnaCate == 'OTHER'}" th:text="|기타|"></th:block>
 								</div>
 								<label class="col-md-3">작성 날짜</label>
 								<div class="col-sm-3" th:text="*{#temporals.format(regDtime, 'yyyy-MM-dd')}">
