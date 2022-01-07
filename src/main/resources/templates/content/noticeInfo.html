@@ -99,7 +99,7 @@
 				ignore: "",
 				rules: {
 					dispYn: {required:true},
-					dispStartDay: {required:true},
+					dispStartDay: {required:true, regex2:/^(\d{1,4}-\d{2}-\d{2})$/g, nowdatecheck:true},
 					dispStartTime: {required:true},
 					langKoYn: {required:true},
 					title: {required:function(elements){
@@ -115,7 +115,7 @@
 							}
 						}},
 					content: {required:function(element){
-							if(CKEDITOR.instances.content.getData() == ''){
+							if(CKEDITOR.instances.content.getData().replace(/&nbsp;/gi, '').replace(/^\s+|\s+$/g, '') == ''){
 								return true;
 							}else{
 								return false;
@@ -126,7 +126,7 @@
 
 				messages: {
 					dispYn: {required:"전시여부를 선택해주세요."},
-					dispStartDay: {required:"게시시작일을 입력해주세요."},
+					dispStartDay: {required:"게시시작일을 입력해주세요.", regex2:"게시시작일을 확인해주세요.", nowdatecheck:"게시시작일은 현재일보다 이전일 수 없습니다."},
 					dispStartTime: {required:"게시시작시간을 입력해주세요."},
 					langKoYn: {required:"언어구분을 선택해주세요."},
 					title: {required:"제목을 입력해주세요."},
@@ -239,7 +239,8 @@
 			// 	return false;
 			// }
 
-			if(CKEDITOR.instances.content.getData() == ''){
+			var editorContent = CKEDITOR.instances.content.getData().replace(/&nbsp;/gi, '').replace(/^\s+|\s+$/g, '');
+			if(editorContent == ''){
 				alert("내용을 입력해주세요.");
 				return false;
 			}

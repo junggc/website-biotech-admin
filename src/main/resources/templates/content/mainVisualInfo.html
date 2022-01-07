@@ -193,7 +193,7 @@
 								$('#counter').html("("+$("#title").val().length+" / 최대 100자)");    //글자수 실시간 카운팅
 								return false;
 							}
-						}},
+						},maxlength:100},
 					type: {required: true},
 					pcImgCheck: {
 						required: function(element){
@@ -242,7 +242,7 @@
 				messages: {
 					dispYn: {required:"전시여부를 선택해주세요."},
 					langKoYn: {required:"언어구분을 선택해주세요."},
-					title: {required:"제목을 입력해주세요."},
+					title: {required:"제목을 입력해주세요.",maxlength:"제목은 최대 100글자까지 입력가능합니다."},
 					type: {required: "유형를 선택해주세요."},
 					pcImgCheck: {required: "pc이미지를 선택해주세요.",extension2: "pc이미지는 jpg,png만 업로드 가능합니다.",filesize: "pc이미지는 2MB이하만 업로드 가능합니다."},
 					moImgCheck: {required: "모바일이미지를 선택해주세요.",extension2: "모바일이미지는 jpg,png만 업로드 가능합니다.",filesize: "모바일이미지는 2MB이하만 업로드 가능합니다."},
