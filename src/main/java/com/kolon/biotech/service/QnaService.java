@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -131,20 +132,32 @@ public class QnaService {
         return list;
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public Qna setWriteStroe(Qna obj, MultipartFile[] files, List<Integer> deleteFileList) throws Exception {
         log.debug("===================setWriteStroeNotice============================");
         log.debug("########"+obj.getId()+"#########");
-
-        Qna _qna = qnaRepository.findById(obj.getId()).get();
+        Qna _qna = null;
+        try{
+            _qna = qnaRepository.findById(obj.getId()).get();
 
 //        obj.setAnswerDate(LocalDateTime.now());
 //        Qna r_obj = qnaRepository.save(obj);
 
-        _qna.setAnswerDate(LocalDateTime.now());
-        _qna.setAnswerTitle(obj.getAnswerTitle());
-        _qna.setAnswerContents(obj.getAnswerContents());
+            _qna.setAnswerDate(LocalDateTime.now());
+            _qna.setAnswerTitle(obj.getAnswerTitle());
+            _qna.setAnswerContents(obj.getAnswerContents());
 
+
+        }catch(Exception e){
+            _qna = new Qna();
+        }
+
+        return _qna;
+
+    }
+
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
+    public void sendEmail(Qna _qna) throws Exception{
         //메일보내기
         Mailinfo mailinfo = mailinfoRepository.findByJob("REP".toUpperCase());
 
@@ -168,9 +181,6 @@ public class QnaService {
         mailDto.setNlString(nlString);
 
         mailUtil.sendMailInFile(mailDto);
-
-        return _qna;
-
     }
 
     @Transactional

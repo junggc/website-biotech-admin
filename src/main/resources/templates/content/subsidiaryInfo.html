@@ -249,7 +249,7 @@
 											name="name"
 											placeholder=""
 											maxlength="15"
-											th:field="*{name}"
+											th:value="${@commUtils.getUnEscHtml(obj.name)}"
 											type="text"
 									/>
 								</div>
@@ -270,7 +270,7 @@
 											name="nameEn"
 											placeholder=""
 											maxlength="30"
-											th:field="*{nameEn}"
+											th:value="${@commUtils.getUnEscHtml(obj.nameEn)}"
 											type="text"
 									/>
 								</div>

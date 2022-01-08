@@ -191,6 +191,11 @@
 							$("#mainCheckbox").prop("checked", false);
 							$("#mainCheckbox").trigger("multicheck.nonechecked");
 						}
+						,language:{
+							infoEmpty:"조회된 데이터가 없습니다.",
+							emptyTable:"조회된 데이터가 없습니다.",
+							zeroRecords:"조회된 데이터가 없습니다."
+						}
 
             })
 			.on('stateSaveParams.dt',function(e,settings, data){
@@ -201,7 +206,7 @@
 			})
 			;
 
-            $(".dataTables_filter").html('<button type="button" class="btn btn-outline-primary" id="refresh" onclick="location.href=\'/mainvisualInfo\';">등록</button><button type="button" class="btn btn-outline-danger" id="refresh" onclick="deletelist();">삭제</button>');
+            $(".dataTables_filter").html('<button type="button" class="btn btn-success text-white" id="refresh" onclick="location.href=\'/mainvisualInfo\';">등록</button><button type="button" class="btn btn-danger text-white" id="refresh" onclick="deletelist();">삭제</button>');
 
 
 			$("#zero_config_paginate").parent("div").addClass("page-wrap");

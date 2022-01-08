@@ -86,6 +86,17 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
             historyService.setWriteStroe(history);
 
             throw new LockedException("계정이 잠겼습니다.\\n마스터 관리자에게 문의하세요.");
+        }else if(!"Y".equals(findAccount.getUseYn())){
+            History history = History.builder().userId(findAccount.getLoginId())
+                    .jobContent("사용중인 계정이 아닙니다.")
+                    .jobFlag("J")
+                    .requestDate(LocalDateTime.now())
+                    .jobUrl(request.getRequestURI()).requestIp(request.getRemoteAddr())
+                    .userName(findAccount.getName()).build();
+
+            historyService.setWriteStroe(history);
+
+            throw new LockedException("미사용 계정입니다.\\n마스터 관리자에게 문의하세요.");
         }else{
 
             History history = History.builder().userId(findAccount.getLoginId())

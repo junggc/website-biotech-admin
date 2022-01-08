@@ -20,13 +20,13 @@ public interface HistoryRepository  extends JpaRepository<History, Integer> {
     @Query("select e from History e where e.requestDate between :startDate and :endDate and (e.userId like %:searchWord% or e.userName like %:searchWord% or e.jobContent like %:searchWord%) order by e.regDtime desc")
     Page<History> qfindAllByJobFlagAndRequestDateBetweenAndUserIdLikeOrUserNameLikeOrderByRegDtimeDesc(LocalDateTime startDate, LocalDateTime endDate, String searchWord, Pageable paging);
 
-    List<History> findAllByJobFlagAndRequestDateBetweenOrderByRegDtimeDesc(String jobFlag, LocalDateTime startDate, LocalDateTime endDate);
+    List<History> findAllByJobFlagAndRequestDateBetweenOrderByRegDtimeDescIdDesc(String jobFlag, LocalDateTime startDate, LocalDateTime endDate);
 
-    List<History> findAllByRequestDateBetweenOrderByRegDtimeDesc(LocalDateTime startDate, LocalDateTime endDate);
+    List<History> findAllByRequestDateBetweenOrderByRegDtimeDescIdDesc(LocalDateTime startDate, LocalDateTime endDate);
 
-    @Query("select e from History e where e.jobFlag=:jobFlag and e.requestDate between :startDate and :endDate and e.jobContent like %:searchWord%  order by e.regDtime desc")
+    @Query("select e from History e where e.jobFlag=:jobFlag and e.requestDate between :startDate and :endDate and e.jobContent like %:searchWord%  order by e.regDtime desc, e.id desc")
     List<History> qpfindAllByJobFlagAndRequestDateBetweenAndJobContentLikeOrderByRegDtimeDesc(String jobFlag, LocalDateTime startDate, LocalDateTime endDate, String searchWord);
 
-    @Query("select e from History e where e.requestDate between :startDate and :endDate and (e.userId like %:searchWord% or e.userName like %:searchWord% or e.jobContent like %:searchWord%) order by e.regDtime desc")
+    @Query("select e from History e where e.requestDate between :startDate and :endDate and (e.userId like %:searchWord% or e.userName like %:searchWord% or e.jobContent like %:searchWord%) order by e.regDtime desc, e.id desc")
     List<History> qpfindAllByJobFlagAndRequestDateBetweenAndUserIdLikeOrUserNameLikeOrderByRegDtimeDesc(LocalDateTime startDate, LocalDateTime endDate, String searchWord);
 }

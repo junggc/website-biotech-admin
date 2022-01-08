@@ -44,6 +44,9 @@ public class QnaRestController {
     public Qna editProcess(@ModelAttribute Qna obj, @RequestParam(value = "file", required = false) MultipartFile[] noticefile, @RequestParam(value = "deletefilenum", required = false) List<Integer> deleteFileList) throws Exception{
         log.debug("=========noticeEditProcess============");
         Qna _obj = qnaService.setWriteStroe(obj, noticefile, deleteFileList);
+        if(_obj != null && !ObjectUtils.isEmpty(_obj)){
+            qnaService.sendEmail(_obj);
+        }
 
         return _obj;
     }

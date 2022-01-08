@@ -81,6 +81,17 @@
 				}
 			});
 
+			$('#answerContents').keyup(function (e){
+				var content = $(this).val();
+				$('#counter').html("("+content.length+" / 최대 5000자)");    //글자수 실시간 카운팅
+				if (content.length > 5000){
+					alert("최대 5000자까지 입력 가능합니다.");
+					$(this).val(content.substring(0, 5000));
+					$('#counter').html("(5000 / 최대 5000자)");
+				}
+			});
+
+			$('#counter').html("("+$("#answerContents").val().length+" / 최대 5000자)");
 
 			$("#is_form").validate({
 				ignore: "",
@@ -401,7 +412,8 @@
 							<div class="form-group required row">
 								<label class="col-md-3 control-label">답변 내용</label>
 								<div class="col-sm-9">
-									<textarea class="form-control" style="margin-top: 0px; margin-bottom: 0px; height: 150px;" id="answerContents" name="answerContents" th:utext="*{answerContents}"></textarea>
+									<textarea class="form-control" maxlength="5000" style="margin-top: 0px; margin-bottom: 0px; height: 150px;" id="answerContents" name="answerContents" th:utext="*{answerContents}"></textarea>
+									<middle class="text-muted">텍스트만 입력 가능<span id="counter">(0 / 최대 5000자)</span></middle>
 								</div>
 							</div>
 

@@ -90,7 +90,7 @@
 			ignore: "",
 			rules: {
 				content: {required:function(element){
-						if(CKEDITOR.instances.content.getData() == ''){
+						if(CKEDITOR.instances.content.getData().replace(/<br \/>/gi, '').replace(/&nbsp;/gi, '').replace(/^\s+|\s+$/g, '') == ''){
 							return true;
 						}else{
 							return false;

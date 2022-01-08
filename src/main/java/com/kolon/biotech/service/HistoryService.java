@@ -81,13 +81,13 @@ public class HistoryService {
             if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
                 list = historyRepository.qpfindAllByJobFlagAndRequestDateBetweenAndUserIdLikeOrUserNameLikeOrderByRegDtimeDesc(startDate, endDate, searchDto.getSearchText());
             }else{
-                list = historyRepository.findAllByRequestDateBetweenOrderByRegDtimeDesc(startDate, endDate);
+                list = historyRepository.findAllByRequestDateBetweenOrderByRegDtimeDescIdDesc(startDate, endDate);
             }
         }else{
             if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
                 list = historyRepository.qpfindAllByJobFlagAndRequestDateBetweenAndJobContentLikeOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate, searchDto.getSearchText());
             }else{
-                list = historyRepository.findAllByJobFlagAndRequestDateBetweenOrderByRegDtimeDesc(searchDto.getJobFlag(), startDate, endDate);
+                list = historyRepository.findAllByJobFlagAndRequestDateBetweenOrderByRegDtimeDescIdDesc(searchDto.getJobFlag(), startDate, endDate);
             }
         }
 

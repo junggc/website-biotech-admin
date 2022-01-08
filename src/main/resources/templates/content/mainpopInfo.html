@@ -124,11 +124,12 @@
 					},
 					widthPoint: {num:true},
 					heightPoint: {num:true},
-					dispStartDay: {required:true, regex2:/^(\d{1,4}-\d{2}-\d{2})$/g, nowdatecheck:true},
+					dispStartDay: {required:true, regex2:/^(\d{1,4}-\d{2}-\d{2})$/g, /*[# th:if="${mainpop.id == null}"]*/nowdatecheck:true/*[/]*/},
 					dispStartTime: {required:true},
-					dispEndDay: {required:true, regex2:/^(\d{1,4}-\d{2}-\d{2})$/g, nowdatecheck:true},
+					dispEndDay: {required:true, regex2:/^(\d{1,4}-\d{2}-\d{2})$/g, /*[# th:if="${mainpop.id == null}"]*/nowdatecheck:true/*[/]*/},
 					dispEndTime: {required:true}
 				},
+
 
 				messages: {
 					dispYn: {required:"전시여부를 선택해주세요."},
@@ -140,9 +141,9 @@
 					},
 					widthPoint: {num:"숫자만 입력가능합니다."},
 					heightPoint: {num:"숫자만 입력가능합니다."},
-					dispStartDay: {required:"전시시작일을 입력해주세요.", regex2:"전시시작일을 확인해주세요.", nowdatecheck:"전시시작일은 현재일보다 이전일 수 없습니다."},
+					dispStartDay: {required:"전시시작일을 입력해주세요.", regex2:"전시시작일을 확인해주세요.", /*[# th:if="${mainpop.id == null}"]*/nowdatecheck:"전시시작일은 현재일보다 이전일 수 없습니다."/*[/]*/},
 					dispStartTime: {required:"전시시작시간을 입력해주세요."},
-					dispEndDay: {required:"전시종료일을 입력해주세요.", regex2:"전시종료일을 확인해주세요.", nowdatecheck:"전시종료일은 현재일보다 이전일 수 없습니다."},
+					dispEndDay: {required:"전시종료일을 입력해주세요.", regex2:"전시종료일을 확인해주세요.", /*[# th:if="${mainpop.id == null}"]*/nowdatecheck:"전시종료일은 현재일보다 이전일 수 없습니다."/*[/]*/},
 					dispEndTime: {required:"전시종료시간을 입력해주세요."}
 				},
 				errorPlacement: function(error, element) {

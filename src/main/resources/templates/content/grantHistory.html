@@ -157,9 +157,14 @@
                   pageLength: 10,
                   paging: true,
 				  bStateSave: true
+				,language:{
+					infoEmpty:"조회된 데이터가 없습니다.",
+					emptyTable:"조회된 데이터가 없습니다.",
+					zeroRecords:"조회된 데이터가 없습니다."
+				}
             });
 
-            $(".dataTables_filter").html('<button class="btn btn-outline-primary excelBtn" id="refresh" onclick="exceldown();">엑셀 다운로드</button>');
+            $(".dataTables_filter").html('<button class="btn btn-success text-white excelBtn" id="refresh" onclick="exceldown();">엑셀 다운로드</button>');
 			$("#zero_config_paginate").parent("div").addClass("page-wrap");
 			$("#zero_config_paginate").parent("div").siblings("div").addClass("before-page-wrap");
 
