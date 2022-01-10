@@ -3,7 +3,7 @@
 
     <property resource="logback.properties"/>
 
-    <springProperty scope="context" name="LOG_LEVEL" source="logging.level.root"/>
+    <springProperty scope="context" name="LOG_LEVEL" source="logging.level.com"/>
     <property name="LOG_PATH" value="${log.config.path}"/>
     <property name="LOG_FILE_NAME" value="${log.config.filename}"/>
     <property name="ERR_LOG_FILE_NAME" value="err_log_admin"/>
