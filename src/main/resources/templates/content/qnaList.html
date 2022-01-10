@@ -37,7 +37,7 @@
 
 	<script href="/js/js-common.js" th:src="@{/js/js-common.js}"></script>
 
-	<script th:inline="javascript">
+	<script>
 		var searchFalg = false;
 		var _sdate = '[[ ${searchDto.searchStartDate} ]]';
 		var _edate = '[[ ${searchDto.searchEndDate} ]]';
@@ -180,14 +180,10 @@
 							return txt;
 						},    targets: 3, orderable: false, visible: true},
 					{data: function(data, type){
-
-							// var encUserEmail =  /*'[[ ${@commUtils.aes256Decode('+data.userEmail+')} ]]'*/ data.userEmail ;
-							// console.log('encUserEmail',encUserEmail);
-
 							return emailMasking(data.userEmail);
 						},    targets: 4, orderable: false, visible: true},
 					{data:function(data, type){
-						return '<a href="javascript:mvform(\''+data.id+'\');">'+nameMasking(data.userName)+'이 문의합니다.</a>';
+						return '<a href="javascript:mvform(\''+data.id+'\');">'+nameMasking(data.userName)+'님이 문의합니다.</a>';
 						}, targets: 5, orderable: false, visible: true
                     },
                     {data: function(data, type){

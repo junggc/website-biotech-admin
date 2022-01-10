@@ -1,5 +1,6 @@
 package com.kolon.biotech.domain.qna;
 
+import com.kolon.biotech.config.custom.AES256Cipher;
 import com.kolon.biotech.domain.BaseTimeEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -74,5 +75,66 @@ public class Qna extends BaseTimeEntity {
 
     @Column(name = "DEL_YN", length = 1)
     private String delYn;
+
+    public void setUserName(String userName){
+        AES256Cipher a256 = AES256Cipher.getInstance();
+        try{
+            this.userName = a256.AES_Encode(userName);
+        }catch(Exception e){
+            this.userName = userName;
+        }
+
+    }
+
+    public String getUserName(){
+        AES256Cipher a256 = AES256Cipher.getInstance();
+        String str = "";
+        try{
+            str = a256.AES_Decode(this.userName);
+        }catch(Exception e){
+            str = this.userName;
+        }
+        return str;
+    }
+
+    public void setUserEmail(String userEmail){
+        AES256Cipher a256 = AES256Cipher.getInstance();
+        try{
+            this.userEmail = a256.AES_Encode(userEmail);
+        }catch(Exception e){
+            this.userEmail = userEmail;
+        }
+    }
+
+    public String getUserEmail(){
+        AES256Cipher a256 = AES256Cipher.getInstance();
+        String str = "";
+        try{
+            str = a256.AES_Decode(this.userEmail);
+        }catch(Exception e){
+            str = this.userEmail;
+        }
+        return str;
+    }
+
+    public void setPhone(String phone){
+        AES256Cipher a256 = AES256Cipher.getInstance();
+        try{
+            this.phone = a256.AES_Encode(phone);
+        }catch(Exception e){
+            this.phone = phone;
+        }
+    }
+
+    public String getPhone(){
+        AES256Cipher a256 = AES256Cipher.getInstance();
+        String str = "";
+        try{
+            str = a256.AES_Decode(this.phone);
+        }catch(Exception e){
+            str = this.phone;
+        }
+        return str;
+    }
 
 }
