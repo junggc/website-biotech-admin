@@ -67,7 +67,10 @@ public class SubsidiaryService {
         String codeValue = String.format("%03d",tMax);
 
         obj.setCode("KF"+codeValue);
-        obj.setOrderSeq(tMax);
+        if(!(obj.getOrderSeq() > 0)){
+            obj.setOrderSeq(tMax);
+        }
+
 
         Subsidiary r_obj = subsidiaryRepository.save(obj);
 
