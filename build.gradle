@@ -70,6 +70,10 @@ dependencies {
 
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 
+    // https://mvnrepository.com/artifact/commons-codec/commons-codec
+    implementation group: 'commons-codec', name: 'commons-codec', version: '1.10'
+
+
     // editor
     compile fileTree(dir: 'lib', include: ['*.jar'])
 
