@@ -382,6 +382,7 @@
                                                     maxlength="14"
                                                     placeholder="ID를 입력하세요."
                                                     onkeyup="recheck(this)"
+                                                    oninput="numberMaxLength(this);"
                                                     th:errorclass="is-invalid"
                                                     th:field="*{loginId}" type="text"
                                             />
@@ -411,6 +412,7 @@
                                             id="name"
                                             name="name"
                                             maxlength="5"
+                                            oninput="numberMaxLength(this);"
                                             th:field="*{name}"
                                             type="text"
                                     />
@@ -428,6 +430,7 @@
                                             id="passwd"
                                             name="password"
                                             maxlength="25"
+                                            oninput="numberMaxLength(this);"
                                             placeholder="비밀번호를 입력하세요."
                                             type="password"
                                     />
@@ -449,6 +452,7 @@
                                                 id="passwd1"
                                                 name="password1"
                                                 maxlength="25"
+                                                oninput="numberMaxLength(this);"
                                                 placeholder="비밀번호를 재입력하세요."
                                                 type="password"
                                         />
@@ -468,6 +472,7 @@
                                                 id="mpasswd"
                                                 name="mPassword"
                                                 maxlength="25"
+                                                oninput="numberMaxLength(this);"
                                                 placeholder="마스터 관리자 비밀번호를 입력하세요."
                                                 type="password"
                                         />
@@ -487,6 +492,7 @@
                                             id="emailId"
                                             name="emailId"
                                             maxlength="25"
+                                            oninput="numberMaxLength(this);"
                                             th:field="*{emailId}"
                                             type="text"
                                     />
@@ -498,6 +504,7 @@
                                             id="emailDomain"
                                             name="emailDomain"
                                             maxlength="50"
+                                            oninput="numberMaxLength(this);"
                                             th:readonly="${member.emailDomain eq 'naver.com' or member.emailDomain eq 'daum.net' or member.emailDomain eq 'gmail.com' ? 'readonly' : false}"
                                             th:field="*{emailDomain}"
                                             type="text"
@@ -533,6 +540,7 @@
                                             name="pnum"
                                             placeholder="010-1234-1234"
                                             maxlength="13"
+                                            oninput="numberMaxLength(this);"
                                             th:field="*{pnum}"
                                             type="text"
                                     />
@@ -549,6 +557,7 @@
                                     <input class="form-control" id="rank" name="rank"
                                            th:field="*{rank}"
                                            maxlength="8"
+                                           oninput="numberMaxLength(this);"
                                            type="text"/>
                                 </div>
                             </div>

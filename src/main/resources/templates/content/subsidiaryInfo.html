@@ -250,6 +250,7 @@
 											placeholder=""
 											maxlength="15"
 											th:value="${@commUtils.getUnEscHtml(obj.name)}"
+											oninput="numberMaxLength(this);"
 											type="text"
 									/>
 								</div>
@@ -271,6 +272,7 @@
 											placeholder=""
 											maxlength="30"
 											th:value="${@commUtils.getUnEscHtml(obj.nameEn)}"
+											oninput="numberMaxLength(this);"
 											type="text"
 									/>
 								</div>

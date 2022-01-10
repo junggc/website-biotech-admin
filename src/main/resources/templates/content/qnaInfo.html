@@ -403,6 +403,7 @@
 											name="answerTitle"
 											placeholder="제목을 입력하세요."
 											maxlength="200"
+											oninput="numberMaxLength(this);"
 											th:value="${@commUtils.getUnEscHtml(obj.answerTitle == null ? '안녕하세요, 코오롱바이오텍입니다.' : obj.answerTitle)}"
 											type="text"
 									/>
@@ -412,7 +413,7 @@
 							<div class="form-group required row">
 								<label class="col-md-3 control-label">답변 내용</label>
 								<div class="col-sm-9">
-									<textarea class="form-control" maxlength="5000" style="margin-top: 0px; margin-bottom: 0px; height: 150px;" id="answerContents" name="answerContents" th:utext="*{answerContents}"></textarea>
+									<textarea class="form-control" maxlength="5000" style="margin-top: 0px; margin-bottom: 0px; height: 150px;" id="answerContents" name="answerContents" th:utext="*{answerContents}" oninput="numberMaxLength(this);"></textarea>
 									<middle class="text-muted">텍스트만 입력 가능<span id="counter">(0 / 최대 5000자)</span></middle>
 								</div>
 							</div>

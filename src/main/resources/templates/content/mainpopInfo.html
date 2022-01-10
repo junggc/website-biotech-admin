@@ -460,6 +460,7 @@
 											maxlength="100"
 											placeholder="제목을 입력하세요."
 											th:value="${@commUtils.getUnEscHtml(mainpop.title)}"
+											oninput="numberMaxLength(this);"
 											type="text"
 									/>
 								</div>
