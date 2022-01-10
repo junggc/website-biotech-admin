@@ -60,10 +60,11 @@
         iday = iday >= 10 ? iday : '0' + iday;          //day 두자리로 저장
 
 
-        var nowymd=nyear+nmonth+nday;
-        var inputymd=iyear+imonth+iday;
+        var nowymd=nyear+""+nmonth+""+nday;
+        var inputymd=iyear+""+imonth+""+iday;
 
-        return !(inputymd < nowymd);
+
+        return !(Number(inputymd) < Number(nowymd));
     });
 
     $.validator.setDefaults({

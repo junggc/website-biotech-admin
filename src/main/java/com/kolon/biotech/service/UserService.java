@@ -352,10 +352,10 @@ public class UserService implements UserDetailsService {
             }
         }else{
             _resultMap.setSuccess(false);
-            _resultMap.setMessage("비밀번호가 다릅니다.");
+            _resultMap.setMessage("현재 비밀번호가 올바르지 않습니다.");
 
             History history = History.builder().userId(r_member.getLoginId())
-                    .jobContent("비밀번호가 다릅니다.")
+                    .jobContent("현재 비밀번호가 올바르지 않습니다.")
                     .jobFlag("J")
                     .requestDate(LocalDateTime.now())
                     .jobUrl(request.getRequestURI())

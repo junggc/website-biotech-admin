@@ -85,8 +85,8 @@
 				var content = $(this).val();
 				$('#counter').html("("+content.length+" / 최대 5000자)");    //글자수 실시간 카운팅
 				if (content.length > 5000){
-					alert("최대 5000자까지 입력 가능합니다.");
-					$(this).val(content.substring(0, 5000));
+					// alert("최대 5000자까지 입력 가능합니다.");
+					// $(this).val(content.substring(0, 5000));
 					$('#counter').html("(5000 / 최대 5000자)");
 				}
 			});

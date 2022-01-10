@@ -120,6 +120,12 @@
      * 폼 submit 로직
      */
         function registerAction(){
+			var editorContent = CKEDITOR.instances.content.getData().replace(/<br \/>/gi, '').replace(/&nbsp;/gi, '').replace(/^\s+|\s+$/g, '');
+			if(editorContent == ''){
+				alert("내용을 입력해주세요.");
+				return false;
+			}
+
 			if(!$("#is_form").valid()){
 				return false;
 			}
