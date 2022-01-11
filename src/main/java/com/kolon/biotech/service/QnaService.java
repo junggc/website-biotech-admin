@@ -1,5 +1,6 @@
 package com.kolon.biotech.service;
 
+import com.kolon.biotech.config.custom.AES256Cipher;
 import com.kolon.biotech.domain.mailinfo.Mailinfo;
 import com.kolon.biotech.domain.mailinfo.MailinfoRepository;
 import com.kolon.biotech.domain.prbinfo.Prbinfo;
@@ -75,23 +76,37 @@ public class QnaService {
         pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC,"id"));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-        LocalDateTime startDate = LocalDateTime.parse(searchDto.getSearchStartDate().replaceAll("-","")+"000000",formatter);
-        LocalDateTime endDate = LocalDateTime.parse(searchDto.getSearchEndDate().replaceAll("-","")+"235959",formatter);
+        //String.format("%04d", searchDto.getSearchEndDate().replaceAll("-",""));
+        LocalDateTime startDate = LocalDateTime.parse(String.format("%08d", Integer.parseInt(searchDto.getSearchStartDate().replaceAll("-","")))+"000000",formatter);
+        LocalDateTime endDate = LocalDateTime.parse(String.format("%08d", Integer.parseInt(searchDto.getSearchEndDate().replaceAll("-","")))+"235959",formatter);
         Page<Qna> list = null;
+        AES256Cipher aes256Cipher = AES256Cipher.getInstance();
 
         if(searchDto.getSearchCate() != null && "".equals(searchDto.getSearchCate())){
             if(searchDto.getSearchAnsStat() != null && "".equals(searchDto.getSearchAnsStat())){
                 if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
-                    list = qnaRepository.findAllByRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",startDate,endDate,searchDto.getSearchText(),pageable);
+                    String searchTextNm = "";
+                    try{
+                        searchTextNm = aes256Cipher.AES_Encode(searchDto.getSearchText());
+                    }catch(Exception e){
+                        searchTextNm = searchDto.getSearchText();
+                    }
+                    list = qnaRepository.findAllByRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",startDate,endDate, searchTextNm ,searchDto.getSearchText(),pageable);
                 }else{
                     list = qnaRepository.findAllByRegDtimeBetweenOrderByRegDtimeDesc("N",startDate, endDate,pageable);
                 }
             }else{
                 if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
+                    String searchTextNm = "";
+                    try{
+                        searchTextNm = aes256Cipher.AES_Encode(searchDto.getSearchText());
+                    }catch(Exception e){
+                        searchTextNm = searchDto.getSearchText();
+                    }
                     if("Y".equals(searchDto.getSearchAnsStat())){
-                        list = qnaRepository.findAllByAnsStateYAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",startDate,endDate,searchDto.getSearchText(),pageable);
+                        list = qnaRepository.findAllByAnsStateYAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",startDate,endDate,searchTextNm,searchDto.getSearchText(),pageable);
                     }else{
-                        list = qnaRepository.findAllByAnsStateNAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",startDate,endDate,searchDto.getSearchText(),pageable);
+                        list = qnaRepository.findAllByAnsStateNAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",startDate,endDate,searchTextNm,searchDto.getSearchText(),pageable);
                     }
                 }else{
                     if("Y".equals(searchDto.getSearchAnsStat())){
@@ -105,16 +120,28 @@ public class QnaService {
         }else{
             if(searchDto.getSearchAnsStat() != null && "".equals(searchDto.getSearchAnsStat())){
                 if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
-                    list = qnaRepository.findAllByRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",searchDto.getSearchCate(),startDate,endDate,searchDto.getSearchText(),pageable);
+                    String searchTextNm = "";
+                    try{
+                        searchTextNm = aes256Cipher.AES_Encode(searchDto.getSearchText());
+                    }catch(Exception e){
+                        searchTextNm = searchDto.getSearchText();
+                    }
+                    list = qnaRepository.findAllByRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",searchDto.getSearchCate(),startDate,endDate,searchTextNm,searchDto.getSearchText(),pageable);
                 }else{
                     list = qnaRepository.findAllByRegDtimeBetweenOrderByRegDtimeDesc("N",searchDto.getSearchCate(),startDate, endDate,pageable);
                 }
             }else{
                 if(searchDto.getSearchText() != null && !"".equals(searchDto.getSearchText())){
+                    String searchTextNm = "";
+                    try{
+                        searchTextNm = aes256Cipher.AES_Encode(searchDto.getSearchText());
+                    }catch(Exception e){
+                        searchTextNm = searchDto.getSearchText();
+                    }
                     if("Y".equals(searchDto.getSearchAnsStat())){
-                        list = qnaRepository.findAllByAnsStateYAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",searchDto.getSearchCate(),startDate,endDate,searchDto.getSearchText(),pageable);
+                        list = qnaRepository.findAllByAnsStateYAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",searchDto.getSearchCate(),startDate,endDate,searchTextNm,searchDto.getSearchText(),pageable);
                     }else{
-                        list = qnaRepository.findAllByAnsStateNAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",searchDto.getSearchCate(),startDate,endDate,searchDto.getSearchText(),pageable);
+                        list = qnaRepository.findAllByAnsStateNAndRegDtimeBetweenAndUserNameLikeOrUserContentsLike("N",searchDto.getSearchCate(),startDate,endDate,searchTextNm,searchDto.getSearchText(),pageable);
                     }
                 }else{
                     if("Y".equals(searchDto.getSearchAnsStat())){
