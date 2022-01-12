@@ -49,11 +49,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionFixation().changeSessionId()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
+                .exceptionHandling().accessDeniedPage("/error")
+                .and()
                 .headers().frameOptions().disable()
                 .and()
                 .csrf().disable()
                 .authorizeRequests() // 6
-                .antMatchers("/sample","/login","/editorUpload").permitAll()
+                .antMatchers("/sample","/login","/editorUpload","/error").permitAll()
                 .anyRequest().authenticated() // 나머지 요청들은 권한의 종류에 상관 없이 권한이 있어야 접근 가능
                 //.anyRequest().permitAll()
                 .and()

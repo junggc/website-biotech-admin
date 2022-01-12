@@ -493,7 +493,7 @@
                                             name="emailId"
                                             maxlength="25"
                                             oninput="numberMaxLength(this);"
-                                            th:field="*{emailId}"
+                                            th:value="${@commUtils.getUnEscHtml(member.emailId)}"
                                             type="text"
                                     />
                                 </div>
