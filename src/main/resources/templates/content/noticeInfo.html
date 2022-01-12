@@ -99,7 +99,7 @@
 				ignore: "",
 				rules: {
 					dispYn: {required:true},
-					dispStartDay: {required:true, regex2:/^(\d{1,4}-\d{2}-\d{2})$/g, /*[# th:if="${notice.id == null}"]*/nowdatecheck:true/*[/]*/},
+					dispStartDay: {required:true, regex2:/^(\d{1,4}-\d{2}-\d{2})$/g},
 					dispStartTime: {required:true},
 					langKoYn: {required:true},
 					title: {required:function(elements){
@@ -127,7 +127,7 @@
 
 				messages: {
 					dispYn: {required:"전시여부를 선택해주세요."},
-					dispStartDay: {required:"게시시작일을 입력해주세요.", regex2:"게시시작일을 확인해주세요.", /*[# th:if="${notice.id == null}"]*/nowdatecheck:"게시시작일은 현재일보다 이전일 수 없습니다."/*[/]*/},
+					dispStartDay: {required:"게시시작일을 입력해주세요.", regex2:"게시시작일을 확인해주세요."},
 					dispStartTime: {required:"게시시작시간을 입력해주세요."},
 					langKoYn: {required:"언어구분을 선택해주세요."},
 					title: {required:"제목을 입력해주세요."},
