@@ -189,7 +189,8 @@ public class QnaService {
         Mailinfo mailinfo = mailinfoRepository.findByJob("REP".toUpperCase());
 
         MailDto mailDto = new MailDto();
-        mailDto.setFromAddress(mailinfo.getAddress());
+        //mailDto.setFromAddress(mailinfo.getAddress());
+        mailDto.setFromAddress("best_cdmo@kolon.com");
         mailDto.setToAddress(_qna.getUserEmail());
         mailDto.setUserName(_qna.getUserName());
 
