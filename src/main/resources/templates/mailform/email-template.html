@@ -15,8 +15,8 @@
                     <!-- 수정 -->
                     <td height="3"  style="height:6px;font-size:0;line-height:0;">
                         <img th:if="${serverProfile == 'local'}" th:src="'http://test-kolonbiotech.co.kr/resources/images/mail_head.jpg'" src="../resources/images/mail_head.jpg" width="740" height="6" style="width:740px;height:6px;" />
-                        <img th:if="${serverProfile == 'dev' }" th:src="'http://52.141.61.255:9090/resources/images/mail_head.jpg'" src="../resources/images/mail_head.jpg" width="740" height="6" style="width:740px;height:6px;" />
-                        <img th:if="${serverProfile == 'prod'}" th:src="'http://www.kolonbiotech.co.kr/resources/images/mail_head.jpg'" src="../resources/images/mail_head.jpg" width="740" height="6" style="width:740px;height:6px;" />
+                        <img th:if="${serverProfile == 'dev' }" th:src="'http://test-kolonbiotech.co.kr/resources/images/mail_head.jpg'" src="../resources/images/mail_head.jpg" width="740" height="6" style="width:740px;height:6px;" />
+                        <img th:if="${serverProfile == 'prod'}" th:src="'https://www.kolonbiotech.co.kr/resources/images/mail_head.jpg'" src="../resources/images/mail_head.jpg" width="740" height="6" style="width:740px;height:6px;" />
                     </td>
                     <!-- //수정 -->
                 </tr>
@@ -34,8 +34,8 @@
                                             <td width="50" style="font-size:0;line-height:0;">&nbsp;</td>
                                             <td height="20"  style="height:20px;font-size:0;line-height:0;">
                                                 <img th:if="${serverProfile == 'local'}" th:src="'http://test-kolonbiotech.co.kr/resources/images/mail_logo.png'" src="../resources/images/mail_logo.png" width="210" height="20" style="width:210px;height:20px;" />
-                                                <img th:if="${serverProfile == 'dev'}" th:src="'http://52.141.61.255:9090/resources/images/mail_logo.png'" src="../resources/images/mail_logo.png" width="210" height="20" style="width:210px;height:20px;" />
-                                                <img th:if="${serverProfile == 'prod'}" th:src="'http://www.kolonbiotech.co.kr/resources/images/mail_logo.png'" src="../resources/images/mail_logo.png" width="210" height="20" style="width:210px;height:20px;" />
+                                                <img th:if="${serverProfile == 'dev'}" th:src="'http://test-kolonbiotech.co.kr/resources/images/mail_logo.png'" src="../resources/images/mail_logo.png" width="210" height="20" style="width:210px;height:20px;" />
+                                                <img th:if="${serverProfile == 'prod'}" th:src="'https://www.kolonbiotech.co.kr/resources/images/mail_logo.png'" src="../resources/images/mail_logo.png" width="210" height="20" style="width:210px;height:20px;" />
                                             </td>
                                             <td width="50" style="font-size:0;line-height:0;">&nbsp;</td>
                                         </tr>
@@ -160,10 +160,10 @@
                                                                     </td>
                                                                     <td width="182" style="font-size:0;line-height:0;">
 
-                                                                        <a th:href="${serverProfile == 'dev' or serverProfile == 'local' ? 'http://test-mng.kolonbiotech.co.kr' : 'http://web-mng.kolonbiotech.co.kr:8052'}" href="http://naver.com" target="_blank">
+                                                                        <a th:href="${serverProfile == 'dev' or serverProfile == 'local' ? 'http://test-mng.kolonbiotech.co.kr' : 'https://web-mng.kolonbiotech.co.kr:8052'}" href="http://naver.com" target="_blank">
                                                                             <img th:if="${serverProfile == 'local'}" th:src="'http://test-kolonbiotech.co.kr/resources/images/mail_btn.jpg'" src="../resources/images/mail_btn2.jpg" width="182" height="48" style="width:182px;height:48px;" align="right" valign="middle" />
                                                                             <img th:if="${serverProfile == 'dev'}" th:src="'http://test-kolonbiotech.co.kr/resources/images/mail_btn.jpg'" src="../resources/images/mail_btn2.jpg" width="182" height="48" style="width:182px;height:48px;" align="right" valign="middle" />
-                                                                            <img th:if="${serverProfile == 'prod'}" th:src="'http://www.kolonbiotech.co.kr/resources/images/mail_btn.jpg'" src="../resources/images/mail_btn2.jpg" width="182" height="48" style="width:182px;height:48px;" align="right" valign="middle" />
+                                                                            <img th:if="${serverProfile == 'prod'}" th:src="'https://www.kolonbiotech.co.kr/resources/images/mail_btn.jpg'" src="../resources/images/mail_btn2.jpg" width="182" height="48" style="width:182px;height:48px;" align="right" valign="middle" />
 
                                                                         </a>
                                                                     </td>
