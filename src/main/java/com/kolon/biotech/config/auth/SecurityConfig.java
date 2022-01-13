@@ -46,11 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .sessionManagement().sessionFixation().changeSessionId()
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .and()
-                .exceptionHandling().accessDeniedPage("/error")
-                .and()
                 .headers().frameOptions().disable()
                 .and()
                 .csrf().disable()
