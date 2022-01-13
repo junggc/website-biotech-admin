@@ -7,7 +7,7 @@ plugins { // (1)
 
 group 'com.kolon.biotech'
 version '1.0.0-SNAPSHOT-'+new Date().format("yyyyMMddHHmmss")
-sourceCompatibility = 1.8   
+sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -83,8 +83,8 @@ dependencies {
 //bootwar를 사용하면 단독실행가능
 //war를 사용할때는 외부 was에서만 실행가능
 //둘다 true일순 없다.
-bootWar.enabled = true
-war.enabled = false
+bootWar.enabled = false
+war.enabled = true
 
 sourceSets {
     String activeProfile
