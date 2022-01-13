@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests() // 6
                 .antMatchers("/sample","/login","/editorUpload","/error").permitAll()
                 .anyRequest().authenticated() // 나머지 요청들은 권한의 종류에 상관 없이 권한이 있어야 접근 가능
-                .and().requiresChannel().antMatchers("/main").requiresSecure()
+                //.and().requiresChannel().antMatchers("/main").requiresSecure()
                 //.anyRequest().permitAll()
                 .and()
                 .formLogin() // 7
