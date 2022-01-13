@@ -79,10 +79,10 @@ public class UserController {
     }
 
     //로그인 결과 페이지
-    @GetMapping("/loginSuccess")
-    public String loginSuccess(@AuthenticationPrincipal MemberDto memberDto){
-        return "redirect:/main";
-    }
+//    @GetMapping("/loginSuccess")
+//    public String loginSuccess(@AuthenticationPrincipal MemberDto memberDto){
+//        return "redirect:/main";
+//    }
 
     @GetMapping("/userList")
     public String userList(@AuthenticationPrincipal MemberDto memberDto, @ModelAttribute SearchDto searchDto, Model model){

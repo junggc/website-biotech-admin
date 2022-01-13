@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/login")
                 .usernameParameter("loginId")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/loginSuccess") // 로그인 성공 후 리다이렉트 주소
+                //.defaultSuccessUrl("/loginSuccess") // 로그인 성공 후 리다이렉트 주소
                 .successHandler(successHandler)
                 .failureHandler(failureHandler)
                 .and()
