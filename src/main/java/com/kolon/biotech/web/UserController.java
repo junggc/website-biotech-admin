@@ -81,7 +81,7 @@ public class UserController {
     //로그인 결과 페이지
     @GetMapping("/loginSuccess")
     public String loginSuccess(@AuthenticationPrincipal MemberDto memberDto){
-        return "redirect:/main";
+        return "content/main";
     }
 
     @GetMapping("/userList")
